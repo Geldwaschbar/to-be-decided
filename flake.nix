@@ -51,9 +51,8 @@
         devDependencies = with pkgs; [
           bacon
           sccache
-          wasm-pack
           nodejs
-          tiled
+          minify # minify bundle js
         ];
         libDependencies = with pkgs; [
           libGL
@@ -77,7 +76,7 @@
           };
           packages = {
             default = rustPlatform.buildRustPackage rec {
-              pname = "macroquad-template";
+              pname = "to-be-decided";
               version = "0.1.0";
               src = ./.;
               cargoLock.lockFile = ./Cargo.lock;

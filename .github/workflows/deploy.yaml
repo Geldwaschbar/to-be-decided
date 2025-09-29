@@ -28,9 +28,8 @@ jobs:
       - name: Prepare Deployment Directory
         run: |
           mkdir -p ./deploy
-          cp ./target/wasm32-unknown-unknown/release/macroquad-template.wasm ./deploy/
-          cp index.html ./deploy/
-          cp style.css ./deploy/
+          cp ./target/wasm32-unknown-unknown/release/to-be-decided.wasm ./deploy/
+          cp site/* ./deploy/
           cp -r assets/ ./deploy/
 
       - name: Deploy

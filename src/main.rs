@@ -8,12 +8,17 @@ use macroquad::ui::{
     Skin, hash, root_ui,
     widgets::{Group, Window},
 };
+use miniquad::conf;
 
 fn window_conf() -> Conf {
     Conf {
         window_title: String::from("Macroquad Template"),
         high_dpi: true,
-        sample_count: 2,
+        #[cfg(target_arch = "wasm32")]
+        platform: conf::Platform {
+            webgl_version: conf::WebGLVersion::WebGL2,
+            ..Default::default()
+        },
         ..Default::default()
     }
 }
@@ -67,9 +72,8 @@ async fn main() {
         });
         clear_background(WHITE);
 
-        Window::new(hash!(), vec2(400., 50.), vec2(320., 400.))
+        Window::new(hash!(), Vec2::new(400., 50.), Vec2::new(320., 400.))
             .label("Shop")
-            .titlebar(true)
             .ui(&mut *root_ui(), |ui| {
                 for i in 0..10 {
                     Group::new(hash!("shop", i), Vec2::new(300., 80.)).ui(ui, |ui| {
@@ -83,7 +87,7 @@ async fn main() {
                 }
             });
 
-        Window::new(hash!(), Vec2::new(50., 50.), vec2(300., 500.))
+        Window::new(hash!(), Vec2::new(50., 50.), Vec2::new(300., 500.))
             .label("E-Mails")
             .ui(&mut *root_ui(), |ui| {
                 for mail in player.fetch_mails() {
