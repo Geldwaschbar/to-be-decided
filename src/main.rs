@@ -1,8 +1,8 @@
 mod player;
-mod shaders;
+mod shader;
 
 use crate::player::{Mail, Player};
-use crate::shaders::{CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER};
+use crate::shader::{CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER};
 use macroquad::prelude::*;
 use macroquad::ui::{
     Skin, hash, root_ui,

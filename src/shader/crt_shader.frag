@@ -1,4 +1,4 @@
-pub const CRT_FRAGMENT_SHADER: &'static str = r#"#version 100
+#version 100
 precision lowp float;
 
 varying vec4 color;
@@ -17,7 +17,7 @@ vec2 CRTCurveUV(vec2 uv)
     return uv;
 }
 
-void DrawVignette( inout vec3 color, vec2 uv )
+void DrawVignette(inout vec3 color, vec2 uv)
 {
     float vignette = uv.x * uv.y * ( 1.0 - uv.x ) * ( 1.0 - uv.y );
     vignette = clamp( pow( 16.0 * vignette, 0.3 ), 0.0, 1.0 );
@@ -43,24 +43,4 @@ void main() {
     DrawVignette(res, crtUV);
     DrawScanline(res, uv);
     gl_FragColor = vec4(res, 1.0);
-
 }
-"#;
-
-pub const CRT_VERTEX_SHADER: &'static str = "#version 100
-attribute vec3 position;
-attribute vec2 texcoord;
-attribute vec4 color0;
-
-varying lowp vec2 uv;
-varying lowp vec4 color;
-
-uniform mat4 Model;
-uniform mat4 Projection;
-
-void main() {
-    gl_Position = Projection * Model * vec4(position, 1);
-    color = color0 / 255.0;
-    uv = texcoord;
-}
-";
