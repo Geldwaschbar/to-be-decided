@@ -1,0 +1,12 @@
+[package]
+name = "macroquad-template"
+version = "0.1.0"
+edition = "2024"
+description = "macroquad template for our gamejam's"
+repository = "https://github.com/Geldwaschbär/raylib-wasm-template.git"
+license = "MIT"
+
+[dependencies]
+macroquad = "0.4.14"
+macroquad-platformer = "0.2.0"
+macroquad-tiled = "0.2.1"
