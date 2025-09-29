@@ -8,15 +8,14 @@ use macroquad::ui::{
     Skin, hash, root_ui,
     widgets::{Group, Window},
 };
-use miniquad::conf;
 
 fn window_conf() -> Conf {
     Conf {
         window_title: String::from("Macroquad Template"),
         high_dpi: true,
         #[cfg(target_arch = "wasm32")]
-        platform: conf::Platform {
-            webgl_version: conf::WebGLVersion::WebGL2,
+        platform: miniquad::conf::Platform {
+            webgl_version: miniquad::conf::WebGLVersion::WebGL2,
             ..Default::default()
         },
         ..Default::default()
@@ -51,14 +50,11 @@ async fn main() {
     };
 
     let mut player = Player::new();
-    player.add_mail(Mail::new(
-        "Teewurst Inc.".into(),
-        "Welcome to Teewurst Inc.".into(),
-    ));
-    player.add_mail(Mail::new(
-        "Teewurst Inc.".into(),
-        "You are the new AI 9000. Your job is to\ncontrol the car market. Make no mistakes.".into(),
-    ));
+    let serialized = load_string("assets/mails.json").await.unwrap();
+    let mails: Vec<Mail> = serde_json::from_str(&serialized).unwrap();
+    for mail in mails {
+        player.add_mail(mail);
+    }
 
     loop {
         #[cfg(not(target_arch = "wasm32"))]
@@ -70,6 +66,7 @@ async fn main() {
             render_target: Some(render_target.clone()),
             ..Default::default()
         });
+        gl_use_material(&material);
         clear_background(WHITE);
 
         Window::new(hash!(), Vec2::new(400., 50.), Vec2::new(320., 400.))
@@ -103,8 +100,6 @@ async fn main() {
             });
 
         set_default_camera();
-        clear_background(WHITE);
-        gl_use_material(&material);
         draw_texture_ex(
             &render_target.texture,
             0.,

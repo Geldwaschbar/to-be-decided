@@ -1,7 +1,9 @@
 use macroquad::prelude::*;
+use serde::Deserialize;
 
-#[derive(Debug)]
+#[derive(Debug, Deserialize)]
 pub struct Mail {
+    #[serde(default)]
     pub id: usize,
     pub author: String,
     pub message: String,
