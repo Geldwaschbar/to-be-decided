@@ -7,7 +7,7 @@ mod shader;
 use crate::event::Event;
 use crate::modifier::{ModType, Modifier, Resource};
 use crate::player::Player;
-use crate::shader::{CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER};
+use crate::shader::{COL_BACKGROUND, CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER};
 use macroquad::prelude::*;
 use macroquad::ui::{
     Skin, hash, root_ui,
@@ -63,8 +63,13 @@ async fn main() {
             render_target: Some(render_target.clone()),
             ..Default::default()
         });
+
         gl_use_material(&material);
-        clear_background(WHITE);
+
+        // material.set_uniform("u_resolution", vec2(screen_width(), screen_height()));
+
+
+        clear_background(COL_BACKGROUND);
 
         Window::new(hash!(), Vec2::new(50., 250.), Vec2::new(320., 200.))
             .label("Shop")
