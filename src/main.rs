@@ -1,13 +1,14 @@
+mod component;
 mod effect;
-mod event;
-mod law;
-mod market;
 mod shader;
 
 use crate::{
-    event::Event,
-    law::{Law, Parlament, Party},
-    market::Market,
+    component::{
+        Component,
+        market::Market,
+        news::News,
+        parlament::{Law, Parlament, Party},
+    },
     shader::{COL_BACKGROUND, CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER},
 };
 use macroquad::prelude::*;
@@ -77,8 +78,8 @@ async fn main() {
         }
     };
 
-    let events: Vec<Event> = {
-        let serialized = load_string("assets/events.json").await.unwrap();
+    let mut news: News = {
+        let serialized = load_string("assets/news.json").await.unwrap();
         serde_json::from_str(&serialized).unwrap()
     };
 
@@ -105,7 +106,7 @@ async fn main() {
         Window::new(hash!(), Vec2::new(110., 80.), Vec2::new(400., 400.))
             .label("Parlament")
             .ui(&mut *root_ui(), |ui| {
-                parlament.update();
+                parlament.update(&mut news);
                 parlament.draw_on(ui);
             });
 
@@ -120,7 +121,7 @@ async fn main() {
         Window::new(hash!(), Vec2::new(480., 50.), Vec2::new(300., 500.))
             .label("News")
             .ui(&mut *root_ui(), |ui| {
-                for event in &events {
+                for event in &news {
                     event.draw_on(ui);
                 }
             });

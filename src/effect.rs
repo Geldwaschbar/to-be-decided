@@ -1,8 +1,7 @@
+use crate::component::{market::Market, parlament::Parlament};
 use serde::{Deserialize, Serialize};
 
-use crate::{law::Parlament, market::Market};
-
-#[derive(Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(tag = "type", content = "party")]
 pub enum Target {
     #[default]
@@ -13,7 +12,7 @@ pub enum Target {
     PartyPopularity(usize),
 }
 
-#[derive(Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub enum Modifier {
     // v = n
     Setter,
@@ -24,7 +23,7 @@ pub enum Modifier {
     Multiplier,
 }
 
-#[derive(Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Effect {
     target: Target,
     modifier: Modifier,
