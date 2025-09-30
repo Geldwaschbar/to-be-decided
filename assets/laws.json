@@ -1,18 +1,58 @@
 [
     {
+        "title": "Werbung",
         "description": "Beim warten an der Ampel, im Fahrstuhl usw. soll die\nAusstrahlung von Werbezeiten pflicht sein.",
-        "required_approval": 0.45
+        "required_approval": 0.45,
+        "effects": [
+            {
+                "target": {
+                    "type": "MarketStocks"
+                },
+                "modifier": "Multiplier",
+                "value": 0.85
+            }
+        ]
     },
     {
+        "title": "Überwachungskameras",
         "description": "Daten von Überwachungskameras werden Firmen zur\nKundengewinnung zur Verfügung gestellt.",
-        "required_approval": 0.55
+        "required_approval": 0.55,
+        "effects": [
+            {
+                "target": {
+                    "type": "MarketStocks"
+                },
+                "modifier": "Multiplier",
+                "value": 1.25
+            }
+        ]
     },
     {
+        "title": "Steuergeschenke",
         "description": "Steuergeschenke an alle Firmen.\nWer hat, dem wird gegeben!",
-        "required_approval": 0.2
+        "required_approval": 0.2,
+        "effects": [
+            {
+                "target": {
+                    "type": "MarketStocks"
+                },
+                "modifier": "Multiplier",
+                "value": 1.25
+            }
+        ]
     },
     {
+        "title": "Blah!",
         "description": "Bla... Bla... Bla...",
-        "required_approval": 0.1
+        "required_approval": 0.1,
+        "effects": [
+            {
+                "target": {
+                    "type": "MarketStocks"
+                },
+                "modifier": "Multiplier",
+                "value": 1.05
+            }
+        ]
     }
 ]
