@@ -1,7 +1,7 @@
+mod effect;
 mod event;
 mod law;
 mod market;
-mod modifier;
 mod shader;
 
 use crate::{
@@ -43,11 +43,6 @@ async fn main() {
 
     let mut market = Market::new();
 
-    let events: Vec<Event> = {
-        let serialized = load_string("assets/events.json").await.unwrap();
-        serde_json::from_str(&serialized).unwrap()
-    };
-
     let mut parlament = {
         let parties = vec![
             Party {
@@ -82,6 +77,11 @@ async fn main() {
         }
     };
 
+    let events: Vec<Event> = {
+        let serialized = load_string("assets/events.json").await.unwrap();
+        serde_json::from_str(&serialized).unwrap()
+    };
+
     loop {
         #[cfg(not(target_arch = "wasm32"))]
         if is_key_down(KeyCode::Q) | is_key_down(KeyCode::Escape) {
@@ -92,12 +92,7 @@ async fn main() {
             render_target: Some(render_target.clone()),
             ..Default::default()
         });
-
         gl_use_material(&material);
-
-        // material.set_uniform("u_resolution", vec2(screen_width(), screen_height()));
-
-
         clear_background(COL_BACKGROUND);
 
         Window::new(hash!(), Vec2::new(30., 50.), Vec2::new(200., 220.))

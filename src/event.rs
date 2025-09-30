@@ -1,4 +1,4 @@
-use crate::modifier::Modifier;
+use crate::effect::Effect;
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash, widgets::Group};
 use serde::{Deserialize, Serialize};
@@ -10,7 +10,8 @@ pub struct Event {
     /// e.g. Smart Fridge nimmt Affäre von Politiker xyz auf.
     pub description: String,
     /// e.g. +x% money
-    pub modifier: Modifier,
+    #[serde(default)]
+    pub effects: Vec<Effect>,
 }
 
 impl Event {

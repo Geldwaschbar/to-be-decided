@@ -4,9 +4,9 @@ use std::collections::VecDeque;
 
 #[derive(Debug)]
 pub struct Market {
-    money: f32,
-    price: f32,
-    stocks: usize,
+    pub money: f32,
+    pub price: f32,
+    pub stocks: f32,
     trading_time: f32,
     history: VecDeque<f32>,
 }
@@ -16,7 +16,7 @@ impl Market {
         Market {
             money: 100.,
             price: 10.,
-            stocks: 100,
+            stocks: 100.,
             trading_time: 0.,
             history: vec![
                 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4, 9.6, 9.8, 10., 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4,
@@ -72,13 +72,13 @@ impl Market {
         if ui.button(Vec2::new(140., 140.), "Buy") {
             if self.money >= self.price {
                 self.money -= self.price;
-                self.stocks += 1;
+                self.stocks += 1.;
             }
         }
         if ui.button(Vec2::new(140., 160.), "Sell") {
-            if self.stocks >= 1 {
+            if self.stocks >= 1. {
                 self.money += self.price;
-                self.stocks -= 1;
+                self.stocks -= 1.;
             }
         }
     }

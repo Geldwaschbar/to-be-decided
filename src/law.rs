@@ -13,6 +13,7 @@ pub struct Party {
     pub color: Color,
 }
 
+#[derive(Debug)]
 pub struct Parlament {
     pub parties: Vec<Party>,
     pub available_laws: VecDeque<Law>,
