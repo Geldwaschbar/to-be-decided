@@ -1,18 +1,18 @@
 mod event;
 mod law;
+mod market;
 mod modifier;
-mod player;
 mod shader;
 
-use crate::event::Event;
-use crate::modifier::{ModType, Modifier, Resource};
-use crate::player::Player;
-use crate::shader::{COL_BACKGROUND, CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER};
-use macroquad::prelude::*;
-use macroquad::ui::{
-    Skin, hash, root_ui,
-    widgets::{Group, Window},
+use crate::{
+    event::Event,
+    law::{Law, Parlament, Party},
+    market::Market,
+    shader::{COL_BACKGROUND, CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER},
 };
+use macroquad::prelude::*;
+use macroquad::ui::{hash, root_ui, widgets::Window};
+use std::collections::VecDeque;
 
 fn window_conf() -> Conf {
     Conf {
@@ -41,17 +41,46 @@ async fn main() {
     )
     .unwrap();
 
-    let mut player = Player::new();
-    let serialized = load_string("assets/events.json").await.unwrap();
-    let events: Vec<Event> = serde_json::from_str(&serialized).unwrap();
+    let mut market = Market::new();
 
-    let modifier = Modifier {
-        mod_type: ModType::Constant,
-        resource: Resource::Money,
-        value: 100.,
+    let events: Vec<Event> = {
+        let serialized = load_string("assets/events.json").await.unwrap();
+        serde_json::from_str(&serialized).unwrap()
     };
-    let serialized = serde_json::to_string(&modifier).unwrap();
-    dbg!(serialized);
+
+    let mut parlament = {
+        let parties = vec![
+            Party {
+                approval: 0.34,
+                popularity: 0.45,
+                color: RED,
+            },
+            Party {
+                approval: 0.82,
+                popularity: 0.35,
+                color: GREEN,
+            },
+            Party {
+                approval: 0.82,
+                popularity: 0.2,
+                color: BLUE,
+            },
+        ];
+
+        let available_laws: VecDeque<Law> = {
+            let serialized = load_string("assets/laws.json").await.unwrap();
+            serde_json::from_str(&serialized).unwrap()
+        };
+
+        let passed_laws: VecDeque<Law> = VecDeque::new();
+
+        Parlament {
+            parties,
+            available_laws,
+            passed_laws,
+            voting_time: 0.,
+        }
+    };
 
     loop {
         #[cfg(not(target_arch = "wasm32"))]
@@ -71,22 +100,29 @@ async fn main() {
 
         clear_background(COL_BACKGROUND);
 
-        Window::new(hash!(), Vec2::new(50., 250.), Vec2::new(320., 200.))
-            .label("Shop")
+        Window::new(hash!(), Vec2::new(30., 50.), Vec2::new(200., 220.))
+            .label("Stock Market")
             .ui(&mut *root_ui(), |ui| {
-                for i in 0..10 {
-                    Group::new(hash!("shop", i), Vec2::new(300., 80.)).ui(ui, |ui| {
-                        ui.label(Vec2::new(10., 10.), &format!("Item N {}", i));
-                        ui.label(Vec2::new(260., 40.), "10/10");
-                        ui.label(Vec2::new(200., 58.), &format!("{} kr", 800));
-                        if ui.button(Vec2::new(260., 55.), "buy") && player.can_buy(800.) {
-                            dbg!("buyed item");
-                        }
-                    });
+                market.update();
+                market.draw_on(ui);
+            });
+
+        Window::new(hash!(), Vec2::new(110., 80.), Vec2::new(400., 400.))
+            .label("Parlament")
+            .ui(&mut *root_ui(), |ui| {
+                parlament.update();
+                parlament.draw_on(ui);
+            });
+
+        Window::new(hash!(), Vec2::new(100., 400.), Vec2::new(400., 200.))
+            .label("Laws")
+            .ui(&mut *root_ui(), |ui| {
+                for law in &parlament.available_laws {
+                    law.draw_on(ui);
                 }
             });
 
-        Window::new(hash!(), Vec2::new(400., 50.), Vec2::new(300., 500.))
+        Window::new(hash!(), Vec2::new(480., 50.), Vec2::new(300., 500.))
             .label("News")
             .ui(&mut *root_ui(), |ui| {
                 for event in &events {

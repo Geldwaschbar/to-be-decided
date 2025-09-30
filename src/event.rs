@@ -15,7 +15,7 @@ pub struct Event {
 
 impl Event {
     pub fn draw_on(&self, ui: &mut Ui) {
-        Group::new(hash!(&self.source, &self.description), Vec2::new(292., 80.)).ui(ui, |ui| {
+        Group::new(hash!(&self.source, &self.description), Vec2::new(290., 80.)).ui(ui, |ui| {
             for line in self.description.split('\n') {
                 ui.label(None, line);
             }

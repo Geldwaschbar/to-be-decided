@@ -1,0 +1,18 @@
+[
+    {
+        "description": "Beim warten an der Ampel, im Fahrstuhl usw. soll die\nAusstrahlung von Werbezeiten pflicht sein.",
+        "required_approval": 0.45
+    },
+    {
+        "description": "Daten von Überwachungskameras werden Firmen zur\nKundengewinnung zur Verfügung gestellt.",
+        "required_approval": 0.55
+    },
+    {
+        "description": "Steuergeschenke an alle Firmen.\nWer hat, dem wird gegeben!",
+        "required_approval": 0.2
+    },
+    {
+        "description": "Bla... Bla... Bla...",
+        "required_approval": 0.1
+    }
+]
