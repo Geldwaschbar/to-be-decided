@@ -1,0 +1,29 @@
+[
+    {
+        "description": "\"Die Känguru Offenbarung\", stürtzt\nTeewurts-Industrie in den Ruin?!",
+        "source": "Newsletter",
+        "modifier": {
+            "mod_type": "Multiplier",
+            "resource": "Money",
+            "value": 0.85
+        }
+    },
+    {
+        "description": "Smart Fridge nimmt Affäre von Politiker\nxyz auf.",
+        "source": "Botnet Auftrag",
+        "modifier": {
+            "mod_type": "Constant",
+            "resource": "Money",
+            "value": 100.0
+        }
+    },
+    {
+        "description": "TEEWURST Whistleblower stirbt in\n\"Autounfall\" mit Robotaxi.",
+        "source": "Botnet Auftrag",
+        "modifier": {
+            "mod_type": "Constant",
+            "resource": "Money",
+            "value": -100.0
+        }
+    }
+]
