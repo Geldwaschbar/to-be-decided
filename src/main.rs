@@ -1,7 +1,12 @@
+mod event;
+mod law;
+mod modifier;
 mod player;
 mod shader;
 
-use crate::player::{Mail, Player};
+use crate::event::Event;
+use crate::modifier::{ModType, Modifier, Resource};
+use crate::player::Player;
 use crate::shader::{CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER};
 use macroquad::prelude::*;
 use macroquad::ui::{
@@ -36,25 +41,17 @@ async fn main() {
     )
     .unwrap();
 
-    let skin = {
-        let label_style = root_ui()
-            .style_builder()
-            .font_size(18)
-            .margin(RectOffset::new(2., 2., 2., 2.))
-            .build();
-
-        Skin {
-            label_style,
-            ..root_ui().default_skin()
-        }
-    };
-
     let mut player = Player::new();
-    let serialized = load_string("assets/mails.json").await.unwrap();
-    let mails: Vec<Mail> = serde_json::from_str(&serialized).unwrap();
-    for mail in mails {
-        player.add_mail(mail);
-    }
+    let serialized = load_string("assets/events.json").await.unwrap();
+    let events: Vec<Event> = serde_json::from_str(&serialized).unwrap();
+
+    let modifier = Modifier {
+        mod_type: ModType::Constant,
+        resource: Resource::Money,
+        value: 100.,
+    };
+    let serialized = serde_json::to_string(&modifier).unwrap();
+    dbg!(serialized);
 
     loop {
         #[cfg(not(target_arch = "wasm32"))]
@@ -69,7 +66,7 @@ async fn main() {
         gl_use_material(&material);
         clear_background(WHITE);
 
-        Window::new(hash!(), Vec2::new(400., 50.), Vec2::new(320., 400.))
+        Window::new(hash!(), Vec2::new(50., 250.), Vec2::new(320., 200.))
             .label("Shop")
             .ui(&mut *root_ui(), |ui| {
                 for i in 0..10 {
@@ -84,18 +81,11 @@ async fn main() {
                 }
             });
 
-        Window::new(hash!(), Vec2::new(50., 50.), Vec2::new(300., 500.))
-            .label("E-Mails")
+        Window::new(hash!(), Vec2::new(400., 50.), Vec2::new(300., 500.))
+            .label("News")
             .ui(&mut *root_ui(), |ui| {
-                for mail in player.fetch_mails() {
-                    Group::new(hash!(mail.get_message()), Vec2::new(292., 80.)).ui(ui, |ui| {
-                        ui.push_skin(&skin);
-                        ui.label(None, &format!("from: {}", mail.get_author()));
-                        ui.pop_skin();
-                        for line in mail.get_message().split('\n') {
-                            ui.label(None, line);
-                        }
-                    });
+                for event in &events {
+                    event.draw_on(ui);
                 }
             });
 
