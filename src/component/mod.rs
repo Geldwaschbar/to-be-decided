@@ -21,7 +21,7 @@ pub fn wrap(text: &str, max_width: f32) -> Vec<String> {
 
     for word in text.split_whitespace() {
         let new_size = measure_text(&format!("{builder} {word}"), None, 14, 1.0).width;
-        if new_size >= max_width - 50.0 {
+        if new_size >= max_width - 10.0 {
             strings.push(builder);
             builder = String::new();
         }

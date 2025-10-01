@@ -4,7 +4,7 @@ mod shader;
 
 use crate::{
     component::{Component, market::Market, news::News, parlament::Parlament},
-    shader::{COL_BACKGROUND, CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER},
+    shader::{COL_BACKGROUND, CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER, terminal_skin},
 };
 use macroquad::prelude::*;
 use macroquad::ui::{hash, root_ui, widgets::Window};
@@ -35,6 +35,8 @@ async fn main() {
         Default::default(),
     )
     .unwrap();
+    let skin = terminal_skin(&mut *root_ui());
+    root_ui().push_skin(&skin);
 
     let mut market = Market::new();
     let mut parlament = Parlament::new().await;
