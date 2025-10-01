@@ -2,10 +2,13 @@ use macroquad::prelude::*;
 use macroquad::ui::Ui;
 use std::collections::VecDeque;
 
+use crate::{component::Component, effect::Effect};
+
 #[derive(Debug)]
 pub struct Market {
     pub money: f32,
     pub price: f32,
+    trading_time: f32,
     history: VecDeque<f32>,
 }
 
@@ -14,6 +17,7 @@ impl Market {
         Market {
             money: 100.,
             price: 10.,
+            trading_time: 0.,
             history: vec![
                 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4, 9.6, 9.8, 10., 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4,
                 9.6, 9.8, 10., 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4, 9.6, 9.8, 10.,
@@ -21,8 +25,10 @@ impl Market {
             .into(),
         }
     }
+}
 
-    pub fn draw_on(&mut self, ui: &mut Ui) {
+impl Component for Market {
+    fn draw_on(&mut self, ui: &mut Ui) {
         let mut canvas = ui.canvas();
         let cursor = canvas.cursor();
 
@@ -66,11 +72,15 @@ impl Market {
         ui.label(Vec2::new(10., 160.), &format!("Price: {}", self.price));
     }
 
-    pub fn update(&mut self) {
-        self.history.push_back(self.price);
-        self.price += rand::gen_range(0.0, 2.2) - 1.;
-        self.history
-            .pop_front()
-            .expect("expect history marker exists");
+    fn update(&mut self, _effects: &mut Vec<Effect>) {
+        self.trading_time += get_frame_time();
+        if self.trading_time >= 1. {
+            self.history.push_back(self.price);
+            self.price += rand::gen_range(0.0, 2.2) - 1.;
+            self.history
+                .pop_front()
+                .expect("expect history marker exists");
+            self.trading_time -= 1.;
+        }
     }
 }

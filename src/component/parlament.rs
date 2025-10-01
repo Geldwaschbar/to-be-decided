@@ -1,16 +1,11 @@
-use crate::{
-    component::{
-        Component,
-        news::{Event, News},
-    },
-    effect::Effect,
-};
+use crate::{component::Component, effect::Effect};
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash, widgets::Group};
 use serde::Deserialize;
 use std::{collections::VecDeque, f64::consts::PI};
 
-const VOTING_TIME: f32 = 40.;
+// TODO: increase voting time
+const VOTING_TIME: f32 = 10.;
 
 #[derive(Debug)]
 pub struct Party {
@@ -28,39 +23,38 @@ pub struct Parlament {
 }
 
 impl Parlament {
-    pub fn update(&mut self, news: &mut News) {
-        let progress = self.voting_progress;
-        if progress >= 1. {
-            let law = self.available_laws.front().expect("expected law exists");
-            let mut votes = 0.;
-            for party in &self.parties {
-                if party.approval >= law.required_approval {
-                    votes += party.popularity;
-                }
-            }
-            if votes > 0.5 {
-                news.current.push_front(Event::new(
-                    "The Penguin".into(),
-                    format!(
-                        "Das folgende Gesetz wurde verabschiedet:\n\"{}\"",
-                        law.title
-                    ),
-                ));
-                let available = law.clone();
-                let passed = law.clone();
-                self.available_laws.push_back(available);
-                self.passed_laws.push_back(passed);
-                self.available_laws.pop_front();
-            } else {
-                news.current.push_front(Event::new(
-                    "The Penguin".into(),
-                    format!("Das folgende Gesetz wurde abgelehnt:\n\"{}\"", law.title),
-                ));
-            }
-            self.voting_progress -= 1.0;
-        }
+    pub async fn new() -> Parlament {
+        let parties = vec![
+            Party {
+                approval: 0.34,
+                popularity: 0.45,
+                color: RED,
+            },
+            Party {
+                approval: 0.82,
+                popularity: 0.35,
+                color: GREEN,
+            },
+            Party {
+                approval: 0.82,
+                popularity: 0.2,
+                color: BLUE,
+            },
+        ];
 
-        self.voting_progress += 1. / VOTING_TIME;
+        let available_laws: VecDeque<Law> = {
+            let serialized = load_string("assets/laws.json").await.unwrap();
+            serde_json::from_str(&serialized).unwrap()
+        };
+
+        let passed_laws: VecDeque<Law> = VecDeque::new();
+
+        Parlament {
+            parties,
+            available_laws,
+            passed_laws,
+            voting_progress: 0.,
+        }
     }
 }
 
@@ -133,6 +127,38 @@ impl Component for Parlament {
             ui.label(Vec2::new(WINDOW_CENTER - size.width * 0.5, 310.), text);
         }
     }
+
+    fn update(&mut self, effects: &mut Vec<Effect>) {
+        self.voting_progress += get_frame_time() / VOTING_TIME;
+        let progress = self.voting_progress;
+        if progress >= 1. {
+            let law = self.available_laws.front().expect("expected law exists");
+            let mut votes = 0.;
+            for party in &self.parties {
+                if party.approval >= law.required_approval {
+                    votes += party.popularity;
+                }
+            }
+            if votes > 0.5 {
+                if law.recurring {
+                    for effect in &law.effects {
+                        effects.push(effect.clone());
+                    }
+                    self.available_laws.push_back(law.clone());
+                } else {
+                    self.passed_laws.push_back(law.clone());
+                }
+                self.available_laws.pop_front();
+            }
+            self.voting_progress -= 1.0;
+
+            for law in &self.passed_laws {
+                for effect in &law.effects {
+                    effects.push(effect.clone());
+                }
+            }
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -147,6 +173,9 @@ pub struct Law {
     #[serde(default)]
     pub publicity: f32,
     pub effects: Vec<Effect>,
+    /// Whether or not this law can be passed multiple times.
+    #[serde(default)]
+    pub recurring: bool,
 }
 
 impl Law {

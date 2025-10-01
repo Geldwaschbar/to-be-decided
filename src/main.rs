@@ -3,17 +3,11 @@ mod effect;
 mod shader;
 
 use crate::{
-    component::{
-        Component,
-        market::Market,
-        news::News,
-        parlament::{Law, Parlament, Party},
-    },
+    component::{Component, market::Market, news::News, parlament::Parlament},
     shader::{COL_BACKGROUND, CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER},
 };
 use macroquad::prelude::*;
 use macroquad::ui::{hash, root_ui, widgets::Window};
-use std::collections::VecDeque;
 
 fn window_conf() -> Conf {
     Conf {
@@ -43,47 +37,10 @@ async fn main() {
     .unwrap();
 
     let mut market = Market::new();
+    let mut parlament = Parlament::new().await;
+    let mut news = News::new().await;
 
-    let mut parlament = {
-        let parties = vec![
-            Party {
-                approval: 0.34,
-                popularity: 0.45,
-                color: RED,
-            },
-            Party {
-                approval: 0.82,
-                popularity: 0.35,
-                color: GREEN,
-            },
-            Party {
-                approval: 0.82,
-                popularity: 0.2,
-                color: BLUE,
-            },
-        ];
-
-        let available_laws: VecDeque<Law> = {
-            let serialized = load_string("assets/laws.json").await.unwrap();
-            serde_json::from_str(&serialized).unwrap()
-        };
-
-        let passed_laws: VecDeque<Law> = VecDeque::new();
-
-        Parlament {
-            parties,
-            available_laws,
-            passed_laws,
-            voting_progress: 0.,
-        }
-    };
-
-    let mut news: News = {
-        let serialized = load_string("assets/news.json").await.unwrap();
-        serde_json::from_str(&serialized).unwrap()
-    };
-
-    let mut time = 0.;
+    let mut effects = Vec::new();
 
     loop {
         #[cfg(not(target_arch = "wasm32"))]
@@ -91,13 +48,13 @@ async fn main() {
             break;
         }
 
-        time += get_frame_time();
-        if time >= 1. {
-            market.update();
-            parlament.update(&mut news);
-            news.update();
-            time -= 1.
+        market.update(&mut effects);
+        parlament.update(&mut effects);
+        news.update(&mut effects);
+        for effect in &mut effects {
+            effect.resolve(&mut market, &mut parlament, &mut news);
         }
+        effects.clear();
 
         set_camera(&Camera2D {
             render_target: Some(render_target.clone()),
