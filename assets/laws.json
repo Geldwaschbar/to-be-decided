@@ -5,11 +5,19 @@
         "required_approval": 0.45,
         "effects": [
             {
-                "target": {
-                    "type": "MarketPrice"
-                },
-                "modifier": "Multiplier",
-                "value": 0.85
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Constant",
+                    "value": 5.0
+                }
+            },
+            {
+                "type": "CreateEvent",
+                "data": {
+                    "source": "Big Brother",
+                    "description": "Endlich mehr Werbung! Jeder vermisst\ndoch Werbung, oder?"
+                }
             }
         ]
     },
@@ -19,11 +27,12 @@
         "required_approval": 0.55,
         "effects": [
             {
-                "target": {
-                    "type": "MarketPrice"
-                },
-                "modifier": "Multiplier",
-                "value": 1.25
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Constant",
+                    "value": 5.0
+                }
             }
         ]
     },
@@ -33,13 +42,15 @@
         "required_approval": 0.2,
         "effects": [
             {
-                "target": {
-                    "type": "MarketPrice"
-                },
-                "modifier": "Multiplier",
-                "value": 1.25
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Constant",
+                    "value": 5.0
+                }
             }
-        ]
+        ],
+        "recurring": true
     },
     {
         "title": "Blah!",
@@ -47,12 +58,14 @@
         "required_approval": 0.1,
         "effects": [
             {
-                "target": {
-                    "type": "MarketPrice"
-                },
-                "modifier": "Multiplier",
-                "value": 1.05
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Constant",
+                    "value": 5.0
+                }
             }
-        ]
+        ],
+        "recurring": true
     }
 ]
