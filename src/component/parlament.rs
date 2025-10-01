@@ -64,7 +64,7 @@ impl Component for Parlament {
         let cursor = canvas.cursor();
 
         const TOTAL_SEATS: f32 = (5 * 4 + 4 * 3) as f32;
-        const WINDOW_CENTER: f32 = 190.;
+        let window_center = Vec2::new(380., 380.) * 0.5;
         let mut placed = 0.;
         let mut party_num = 0;
         for arc in 0..9 {
@@ -75,8 +75,8 @@ impl Component for Parlament {
                 // Draw a single parlament seat
                 canvas.rect(
                     Rect::new(
-                        WINDOW_CENTER + cursor.x - angle.cos() * 40. * (row + 5 - base) as f32,
-                        WINDOW_CENTER + cursor.y - angle.sin() * 40. * (row + 5 - base) as f32,
+                        window_center.x + cursor.x - angle.cos() * 40. * (row + 5 - base) as f32,
+                        window_center.y + cursor.y - angle.sin() * 40. * (row + 5 - base) as f32,
                         15.0,
                         15.0,
                     ),
@@ -92,14 +92,25 @@ impl Component for Parlament {
             }
         }
 
+        const BAR_WIDTH: f32 = 380.;
         canvas.rect(
-            Rect::new(cursor.x + 8., cursor.y + 260., 380., 15.),
+            Rect::new(
+                window_center.x - BAR_WIDTH * 0.5 + cursor.x + 8.,
+                cursor.y + window_center.y + 60.,
+                BAR_WIDTH,
+                15.,
+            ),
             Color::new(0.2, 0.2, 0.2, 1.0),
             WHITE,
         );
         let progress = self.voting_progress;
         canvas.rect(
-            Rect::new(cursor.x + 8., cursor.y + 260., progress * 380., 15.),
+            Rect::new(
+                window_center.x - BAR_WIDTH * 0.5 + cursor.x + 8.,
+                cursor.y + window_center.y + 60.,
+                progress * BAR_WIDTH,
+                15.,
+            ),
             Color::new(0.2, 0.2, 0.2, 1.0),
             GRAY,
         );
@@ -107,13 +118,19 @@ impl Component for Parlament {
         {
             let text = "Es wird über das nächste Gesetz abgestimmt.";
             let size = measure_text(text, None, 14, 1.);
-            ui.label(Vec2::new(WINDOW_CENTER - size.width * 0.5, 230.), text);
+            ui.label(
+                Vec2::new(window_center.x - size.width * 0.5, window_center.x + 30.),
+                text,
+            );
         }
         let law = self.available_laws.front().expect("expected law exists");
         {
             let text = &format!("Es wird über \"{}\" abgestimmt.", law.title);
             let size = measure_text(text, None, 14, 1.);
-            ui.label(Vec2::new(WINDOW_CENTER - size.width * 0.5, 290.), text);
+            ui.label(
+                Vec2::new(window_center.y - size.width * 0.5, window_center.x + 90.),
+                text,
+            );
         }
         {
             let mut approval = 0.;
@@ -124,7 +141,10 @@ impl Component for Parlament {
             }
             let text = &format!("Die Zustimmung für dieses Gesetz beträgt {}%.", approval);
             let size = measure_text(text, None, 14, 1.);
-            ui.label(Vec2::new(WINDOW_CENTER - size.width * 0.5, 310.), text);
+            ui.label(
+                Vec2::new(window_center.x - size.width * 0.5, window_center.y + 110.),
+                text,
+            );
         }
     }
 

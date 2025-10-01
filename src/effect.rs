@@ -79,7 +79,7 @@ impl Effect {
                 value,
                 party,
             } => {
-                let mut party: &mut Party = parlament
+                let party: &mut Party = parlament
                     .parties
                     .get_mut(*party)
                     .expect("expect party exists");
