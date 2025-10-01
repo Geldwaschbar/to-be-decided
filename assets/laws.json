@@ -2,8 +2,18 @@
     {
         "title": "Werbung",
         "description": "Beim warten an der Ampel, im Fahrstuhl usw. soll die Ausstrahlung von Werbezeiten pflicht sein.",
-        "required_approval": 0.45,
-        "effects": [
+        "requiredApproval": 0.45,
+        "onSelfPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Constant",
+                    "value": 5.0
+                }
+            }
+        ],
+        "onLawPassed": [
             {
                 "type": "MarketEffect",
                 "data": {
@@ -24,8 +34,8 @@
     {
         "title": "Überwachungskameras",
         "description": "Daten von Überwachungskameras werden Firmen zur Kundengewinnung zur Verfügung gestellt.",
-        "required_approval": 0.55,
-        "effects": [
+        "requiredApproval": 0.55,
+        "onLawPassed": [
             {
                 "type": "MarketEffect",
                 "data": {
@@ -39,8 +49,8 @@
     {
         "title": "Steuergeschenke",
         "description": "Steuergeschenke an alle Firmen. Wer hat, dem wird gegeben!",
-        "required_approval": 0.2,
-        "effects": [
+        "requiredApproval": 0.2,
+        "onLawPassed": [
             {
                 "type": "MarketEffect",
                 "data": {
@@ -54,15 +64,22 @@
     },
     {
         "title": "Blah!",
-        "description": "Bla... Bla... Bla...",
-        "required_approval": 0.1,
-        "effects": [
+        "description": "Blah... Blah... Blah...",
+        "requiredApproval": 0.1,
+        "onSelfPassed": [
             {
                 "type": "MarketEffect",
                 "data": {
                     "resolution": "Price",
                     "modifier": "Constant",
                     "value": 5.0
+                }
+            },
+            {
+                "type": "CreateEvent",
+                "data": {
+                    "source": "Great Blaher",
+                    "description": "Blah or not to Blah, that's the question!"
                 }
             }
         ],
