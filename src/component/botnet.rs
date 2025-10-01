@@ -1,0 +1,63 @@
+use crate::{
+    component::{Component, wrap},
+    effect::{Effect, MarketResolution, ModifierType, ParlamentResolution},
+};
+use macroquad::prelude::*;
+use macroquad::ui::{Ui, hash};
+use std::rc::Rc;
+
+pub struct Botnet {
+    pub capacity: f32,
+    malware: f32,
+    memes: f32,
+    crypto_mining: f32,
+}
+
+impl Botnet {
+    pub fn new() -> Botnet {
+        Botnet {
+            capacity: 1.0,
+            malware: 0.0,
+            memes: 0.0,
+            crypto_mining: 0.0,
+        }
+    }
+}
+
+impl Component for Botnet {
+    fn draw_on(&mut self, ui: &mut Ui) {
+        for line in wrap(
+            &format!("Größe des Botnetzwerkes: {}", self.capacity as usize),
+            200.,
+        ) {
+            ui.label(None, &line);
+        }
+
+        ui.slider(hash!(), "Malware", 0.0..1.0, &mut self.malware);
+        ui.slider(hash!(), "Memes", 0.0..1.0, &mut self.memes);
+        ui.slider(hash!(), "Crypto Mining", 0.0..1.0, &mut self.crypto_mining);
+    }
+
+    fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {
+        let total_usage = (self.crypto_mining + self.malware + self.memes) / self.capacity.floor();
+
+        if self.malware > 0. {
+            self.capacity += (self.malware / total_usage * get_frame_time()) / self.capacity;
+        }
+        if self.memes > 0. {
+            effects.push(Rc::new(Effect::ParlamentEffect {
+                resolution: ParlamentResolution::Transfer,
+                modifier: ModifierType::Constant,
+                value: self.memes / total_usage * 0.0001 * get_frame_time(),
+                party: 0,
+            }));
+        }
+        if self.crypto_mining > 0. {
+            effects.push(Rc::new(Effect::MarketEffect {
+                resolution: MarketResolution::Money,
+                modifier: ModifierType::Constant,
+                value: self.crypto_mining / total_usage * get_frame_time(),
+            }))
+        }
+    }
+}

@@ -3,7 +3,7 @@ mod effect;
 mod shader;
 
 use crate::{
-    component::{Component, market::Market, news::News, parlament::Parlament},
+    component::{Component, botnet::Botnet, market::Market, news::News, parlament::Parlament},
     shader::{COL_BACKGROUND, CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER, terminal_skin},
 };
 use macroquad::prelude::*;
@@ -38,6 +38,7 @@ async fn main() {
     let skin = terminal_skin(&mut *root_ui());
     root_ui().push_skin(&skin);
 
+    let mut botnet = Botnet::new();
     let mut market = Market::new();
     let mut parlament = Parlament::new().await;
     let mut news = News::new().await;
@@ -50,6 +51,7 @@ async fn main() {
             break;
         }
 
+        botnet.update(&mut effects);
         market.update(&mut effects);
         parlament.update(&mut effects);
         news.update(&mut effects);
@@ -69,6 +71,12 @@ async fn main() {
             .label("Evil Inc. Stocks")
             .ui(&mut *root_ui(), |ui| {
                 market.draw_on(ui);
+            });
+
+        Window::new(hash!(), Vec2::new(30., 200.), Vec2::new(200., 250.))
+            .label("Botnet")
+            .ui(&mut *root_ui(), |ui| {
+                botnet.draw_on(ui);
             });
 
         Window::new(hash!(), Vec2::new(110., 80.), Vec2::new(400., 400.))

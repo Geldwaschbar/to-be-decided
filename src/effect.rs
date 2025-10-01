@@ -3,6 +3,7 @@ use crate::component::{
     news::{Event, News},
     parlament::{Parlament, Party},
 };
+use macroquad::prelude::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -17,6 +18,7 @@ pub enum ParlamentResolution {
     #[default]
     Approval,
     Popularity,
+    Transfer,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -79,16 +81,47 @@ impl Effect {
                 value,
                 party,
             } => {
-                let party: &mut Party = parlament
-                    .parties
-                    .get_mut(*party)
-                    .expect("expect party exists");
                 match resolution {
                     ParlamentResolution::Approval => {
-                        Self::resolve_modifier(modifier, *value, &mut party.approval)
+                        let party = parlament
+                            .parties
+                            .get_mut(*party)
+                            .expect("expect party exists");
+                        Self::resolve_modifier(modifier, *value, &mut party.approval);
+                        party.approval = clamp(party.approval, 0.0, 1.0);
                     }
                     ParlamentResolution::Popularity => {
+                        let party = parlament
+                            .parties
+                            .get_mut(*party)
+                            .expect("expect party exists");
                         Self::resolve_modifier(modifier, *value, &mut party.popularity)
+                    }
+                    ParlamentResolution::Transfer => {
+                        // We only transfer popularity if we have more than one party
+                        if parlament.parties.len() > 1 {
+                            let target_num = {
+                                let mut target_num = rand::gen_range(0, parlament.parties.len());
+                                while target_num == *party {
+                                    target_num = rand::gen_range(0, parlament.parties.len());
+                                }
+                                target_num
+                            };
+
+                            let target = parlament
+                                .parties
+                                .get_mut(target_num)
+                                .expect("expected party exists");
+                            let old_value = target.popularity;
+                            Self::resolve_modifier(modifier, -*value, &mut target.popularity);
+                            target.popularity = clamp(target.popularity, 0.0, 1.0);
+                            let diff = old_value - target.popularity;
+                            let party = parlament
+                                .parties
+                                .get_mut(*party)
+                                .expect("expect party exists");
+                            Self::resolve_modifier(modifier, diff, &mut party.popularity);
+                        }
                     }
                 };
             }

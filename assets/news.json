@@ -31,19 +31,10 @@
                 {
                     "type": "ParlamentEffect",
                     "data": {
-                        "resolution": "Popularity",
-                        "modifier": "Constant",
-                        "value": -0.05,
-                        "party": 0
-                    }
-                },
-                {
-                    "type": "ParlamentEffect",
-                    "data": {
-                        "resolution": "Popularity",
+                        "resolution": "Transfer",
                         "modifier": "Constant",
                         "value": 0.05,
-                        "party": 1
+                        "party": 0
                     }
                 }
             ],

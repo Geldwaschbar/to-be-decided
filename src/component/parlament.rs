@@ -181,10 +181,13 @@ impl Component for Parlament {
             let mut approval = 0.;
             for party in &self.parties {
                 if party.approval >= law.required_approval {
-                    approval += party.popularity * 100.;
+                    approval += party.popularity;
                 }
             }
-            let text = &format!("Die Zustimmung für dieses Gesetz beträgt {}%.", approval);
+            let text = &format!(
+                "Die Zustimmung für dieses Gesetz beträgt {}%.",
+                (approval * 100.) as usize
+            );
             let size = measure_text(text, None, 14, 1.);
             ui.label(
                 Vec2::new(window_center.x - size.width * 0.5, window_center.y + 110.),
