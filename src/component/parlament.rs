@@ -180,11 +180,38 @@ pub struct Law {
 
 impl Law {
     pub fn draw_on(&self, ui: &mut Ui) {
-        Group::new(hash!(&self.description), Vec2::new(390., 80.)).ui(ui, |ui| {
+        let screen_size: Vec2 = Vec2::new(390., 80.);
+
+        Group::new(hash!(&self.description), screen_size).ui(ui, |ui| {
             ui.label(None, &format!(" # {}", &self.title));
-            for line in self.description.split('\n') {
-                ui.label(None, line);
+
+            for line in Law::split(ui, &self.description, screen_size.x) {
+                ui.label(None, &line);
             }
         });
     }
+
+    pub fn split(ui: &mut Ui, text: &str, maxwidth: f32) -> Vec<String> {
+        let mut strings = Vec::new();
+        let mut currentString = String::new();
+
+        for word in text.split_whitespace() {
+            let newSize = measure_text(&format!("{currentString} {word}"), None, 14, 1.0).width;
+            if (newSize >= maxwidth - 50.0) {
+                strings.push(currentString);
+                currentString = String::new();
+            }
+            if !currentString.is_empty() {
+                currentString.push_str(" ");
+            }
+            currentString.push_str(word);
+            
+        }
+        strings.push(currentString);
+        strings
+    }
+
+
+
+    
 }
