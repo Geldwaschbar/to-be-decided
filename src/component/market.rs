@@ -1,8 +1,7 @@
+use crate::{component::Component, effect::Effect};
 use macroquad::prelude::*;
 use macroquad::ui::Ui;
-use std::collections::VecDeque;
-
-use crate::{component::Component, effect::Effect};
+use std::{collections::VecDeque, rc::Rc};
 
 #[derive(Debug)]
 pub struct Market {
@@ -72,7 +71,7 @@ impl Component for Market {
         ui.label(Vec2::new(10., 160.), &format!("Price: {}", self.price));
     }
 
-    fn update(&mut self, _effects: &mut Vec<Effect>) {
+    fn update(&mut self, _effects: &mut Vec<Rc<Effect>>) {
         self.trading_time += get_frame_time();
         if self.trading_time >= 1. {
             self.history.push_back(self.price);

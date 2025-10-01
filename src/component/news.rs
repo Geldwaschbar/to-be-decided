@@ -5,7 +5,7 @@ use crate::{
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash, widgets::Group};
 use serde::{Deserialize, Serialize};
-use std::collections::VecDeque;
+use std::{collections::VecDeque, rc::Rc};
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Event {
@@ -15,7 +15,7 @@ pub struct Event {
     pub description: String,
     /// e.g. +x% money
     #[serde(default)]
-    pub effects: Vec<Effect>,
+    pub effects: Vec<Rc<Effect>>,
     /// the chance that this event randomly occurs
     pub chance: f32,
 }
@@ -60,7 +60,7 @@ impl Component for News {
         }
     }
 
-    fn update(&mut self, effects: &mut Vec<Effect>) {
+    fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {
         self.real_time += get_frame_time();
         if self.real_time >= 1. {
             let mut triggered = Vec::new();

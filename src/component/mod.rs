@@ -5,6 +5,7 @@ pub mod parlament;
 use crate::effect::Effect;
 use macroquad::prelude::*;
 use macroquad::ui::Ui;
+use std::rc::Rc;
 
 /// A component is a part of the game that can be drawn on the UI only depending on its own data.
 pub trait Component {
@@ -12,7 +13,7 @@ pub trait Component {
     fn draw_on(&mut self, ui: &mut Ui);
 
     /// Update this component. Effects should be put on the stack.
-    fn update(&mut self, effects: &mut Vec<Effect>);
+    fn update(&mut self, effects: &mut Vec<Rc<Effect>>);
 }
 
 pub fn wrap(text: &str, max_width: f32) -> Vec<String> {

@@ -5,7 +5,7 @@ use crate::{
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash, widgets::Group};
 use serde::Deserialize;
-use std::{collections::VecDeque, f64::consts::PI};
+use std::{collections::VecDeque, f64::consts::PI, rc::Rc};
 
 // TODO: increase voting time
 const VOTING_TIME: f32 = 10.;
@@ -31,10 +31,10 @@ pub struct Law {
     pub publicity: f32,
     /// All effects that are triggered when it gets passed.
     #[serde(default)]
-    pub on_self_passed: Vec<Effect>,
+    pub on_self_passed: Vec<Rc<Effect>>,
     /// All effects that are triggered whenever this or any other law gets passed.
     #[serde(default)]
-    pub on_law_passed: Vec<Effect>,
+    pub on_law_passed: Vec<Rc<Effect>>,
     /// Whether or not this law can be passed multiple times.
     #[serde(default)]
     pub recurring: bool,
@@ -58,8 +58,8 @@ impl Law {
 pub struct Parlament {
     pub parties: Vec<Party>,
     pub voting_progress: f32,
-    pub available_laws: VecDeque<Law>,
-    pub passed_laws: VecDeque<Law>,
+    pub available_laws: VecDeque<Rc<Law>>,
+    pub passed_laws: VecDeque<Rc<Law>>,
 }
 
 impl Parlament {
@@ -87,12 +87,12 @@ impl Parlament {
             },
         ];
 
-        let available_laws: VecDeque<Law> = {
+        let available_laws: VecDeque<Rc<Law>> = {
             let serialized = load_string("assets/laws.json").await.unwrap();
             serde_json::from_str(&serialized).unwrap()
         };
 
-        let passed_laws: VecDeque<Law> = VecDeque::new();
+        let passed_laws: VecDeque<Rc<Law>> = VecDeque::new();
 
         Parlament {
             parties,
@@ -193,7 +193,7 @@ impl Component for Parlament {
         }
     }
 
-    fn update(&mut self, effects: &mut Vec<Effect>) {
+    fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {
         self.voting_progress += get_frame_time() / VOTING_TIME;
         let progress = self.voting_progress;
         if progress >= 1. {
