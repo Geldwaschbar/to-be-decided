@@ -1,5 +1,8 @@
 use crate::{
-    component::{Component, news::Event},
+    component::{
+        Component,
+        news::{Event, News},
+    },
     effect::Effect,
 };
 use macroquad::prelude::*;
@@ -7,7 +10,7 @@ use macroquad::ui::{Ui, hash, widgets::Group};
 use serde::Deserialize;
 use std::{collections::VecDeque, f64::consts::PI};
 
-const VOTING_TIME: f32 = 20.;
+const VOTING_TIME: f32 = 40.;
 
 #[derive(Debug)]
 pub struct Party {
@@ -19,14 +22,14 @@ pub struct Party {
 #[derive(Debug)]
 pub struct Parlament {
     pub parties: Vec<Party>,
-    pub voting_time: f32,
+    pub voting_progress: f32,
     pub available_laws: VecDeque<Law>,
     pub passed_laws: VecDeque<Law>,
 }
 
 impl Parlament {
-    pub fn update(&mut self, news: &mut VecDeque<Event>) {
-        let progress = self.voting_time / VOTING_TIME;
+    pub fn update(&mut self, news: &mut News) {
+        let progress = self.voting_progress;
         if progress >= 1. {
             let law = self.available_laws.front().expect("expected law exists");
             let mut votes = 0.;
@@ -36,27 +39,33 @@ impl Parlament {
                 }
             }
             if votes > 0.5 {
-                news.push_front(Event::new(
-                    "Muchekipchen Watcher".into(),
-                    format!("Das Gesetz \"{}\"\nwurde verabschiedet.", law.title),
+                news.current.push_front(Event::new(
+                    "The Penguin".into(),
+                    format!(
+                        "Das folgende Gesetz wurde verabschiedet:\n\"{}\"",
+                        law.title
+                    ),
                 ));
-                self.available_laws.push_back(law.clone());
+                let available = law.clone();
+                let passed = law.clone();
+                self.available_laws.push_back(available);
+                self.passed_laws.push_back(passed);
                 self.available_laws.pop_front();
             } else {
-                news.push_front(Event::new(
-                    "Muchekipchen Watcher".into(),
-                    format!("Das Gesetz \"{}\"\nwurde abgelehnt.", law.title),
+                news.current.push_front(Event::new(
+                    "The Penguin".into(),
+                    format!("Das folgende Gesetz wurde abgelehnt:\n\"{}\"", law.title),
                 ));
             }
-            self.voting_time -= VOTING_TIME;
+            self.voting_progress -= 1.0;
         }
 
-        self.voting_time += get_frame_time();
+        self.voting_progress += 1. / VOTING_TIME;
     }
 }
 
 impl Component for Parlament {
-    fn draw_on(&self, ui: &mut Ui) {
+    fn draw_on(&mut self, ui: &mut Ui) {
         let mut canvas = ui.canvas();
         let cursor = canvas.cursor();
 
@@ -69,6 +78,7 @@ impl Component for Parlament {
             for row in 0..base {
                 let party = self.parties.get(party_num).expect("expect party exists");
                 let angle = arc as f32 / 8. * PI as f32;
+                // Draw a single parlament seat
                 canvas.rect(
                     Rect::new(
                         WINDOW_CENTER + cursor.x - angle.cos() * 40. * (row + 5 - base) as f32,
@@ -80,6 +90,7 @@ impl Component for Parlament {
                     party.color,
                 );
                 placed += (1.0 / party.popularity) / TOTAL_SEATS;
+                // If we draw 100% of a party, go to the next party.
                 if placed >= 1. {
                     placed = 0.;
                     party_num += 1;
@@ -92,7 +103,7 @@ impl Component for Parlament {
             Color::new(0.2, 0.2, 0.2, 1.0),
             WHITE,
         );
-        let progress = self.voting_time / VOTING_TIME;
+        let progress = self.voting_progress;
         canvas.rect(
             Rect::new(cursor.x + 8., cursor.y + 260., progress * 380., 15.),
             Color::new(0.2, 0.2, 0.2, 1.0),

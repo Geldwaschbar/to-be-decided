@@ -74,7 +74,7 @@ async fn main() {
             parties,
             available_laws,
             passed_laws,
-            voting_time: 0.,
+            voting_progress: 0.,
         }
     };
 
@@ -83,10 +83,20 @@ async fn main() {
         serde_json::from_str(&serialized).unwrap()
     };
 
+    let mut time = 0.;
+
     loop {
         #[cfg(not(target_arch = "wasm32"))]
         if is_key_down(KeyCode::Q) | is_key_down(KeyCode::Escape) {
             break;
+        }
+
+        time += get_frame_time();
+        if time >= 1. {
+            market.update();
+            parlament.update(&mut news);
+            news.update();
+            time -= 1.
         }
 
         set_camera(&Camera2D {
@@ -99,14 +109,12 @@ async fn main() {
         Window::new(hash!(), Vec2::new(30., 50.), Vec2::new(200., 220.))
             .label("Stock Market")
             .ui(&mut *root_ui(), |ui| {
-                market.update();
                 market.draw_on(ui);
             });
 
         Window::new(hash!(), Vec2::new(110., 80.), Vec2::new(400., 400.))
             .label("Parlament")
             .ui(&mut *root_ui(), |ui| {
-                parlament.update(&mut news);
                 parlament.draw_on(ui);
             });
 
@@ -121,9 +129,7 @@ async fn main() {
         Window::new(hash!(), Vec2::new(480., 50.), Vec2::new(300., 500.))
             .label("News")
             .ui(&mut *root_ui(), |ui| {
-                for event in &news {
-                    event.draw_on(ui);
-                }
+                news.draw_on(ui);
             });
 
         set_default_camera();

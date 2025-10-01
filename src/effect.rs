@@ -7,7 +7,6 @@ pub enum Target {
     #[default]
     MarketMoney,
     MarketPrice,
-    MarketStocks,
     PartyApproval(usize),
     PartyPopularity(usize),
 }
@@ -35,7 +34,6 @@ impl Effect {
         match &self.target {
             Target::MarketMoney => self.resolve_modifier(&mut market.money),
             Target::MarketPrice => self.resolve_modifier(&mut market.price),
-            Target::MarketStocks => self.resolve_modifier(&mut market.stocks),
             Target::PartyApproval(number) => self.resolve_modifier(
                 &mut parlament
                     .parties

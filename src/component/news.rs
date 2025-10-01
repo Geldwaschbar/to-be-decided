@@ -14,6 +14,8 @@ pub struct Event {
     /// e.g. +x% money
     #[serde(default)]
     pub effects: Vec<Effect>,
+
+    pub chance: f32,
 }
 
 impl Event {
@@ -22,12 +24,13 @@ impl Event {
             source,
             description,
             effects: Default::default(),
+            chance: 0.,
         }
     }
 }
 
 impl Component for Event {
-    fn draw_on(&self, ui: &mut Ui) {
+    fn draw_on(&mut self, ui: &mut Ui) {
         Group::new(hash!(&self.source, &self.description), Vec2::new(290., 80.)).ui(ui, |ui| {
             for line in self.description.split('\n') {
                 ui.label(None, line);
@@ -37,11 +40,21 @@ impl Component for Event {
     }
 }
 
-pub type News = VecDeque<Event>;
+#[derive(Debug, Default, Serialize, Deserialize)]
+pub struct News {
+    pub available: VecDeque<Event>,
+    pub current: VecDeque<Event>,
+}
+
+impl News {
+    pub fn update(&mut self) {
+        for event in &self.available {}
+    }
+}
 
 impl Component for News {
-    fn draw_on(&self, ui: &mut Ui) {
-        for event in self {
+    fn draw_on(&mut self, ui: &mut Ui) {
+        for event in &mut self.current {
             event.draw_on(ui);
         }
     }

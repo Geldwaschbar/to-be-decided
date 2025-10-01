@@ -6,8 +6,6 @@ use std::collections::VecDeque;
 pub struct Market {
     pub money: f32,
     pub price: f32,
-    pub stocks: f32,
-    trading_time: f32,
     history: VecDeque<f32>,
 }
 
@@ -16,8 +14,6 @@ impl Market {
         Market {
             money: 100.,
             price: 10.,
-            stocks: 100.,
-            trading_time: 0.,
             history: vec![
                 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4, 9.6, 9.8, 10., 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4,
                 9.6, 9.8, 10., 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4, 9.6, 9.8, 10.,
@@ -68,30 +64,13 @@ impl Market {
 
         ui.label(Vec2::new(10., 140.), &format!("Money: {}", self.money));
         ui.label(Vec2::new(10., 160.), &format!("Price: {}", self.price));
-        ui.label(Vec2::new(10., 180.), &format!("Stocks: {}", self.stocks));
-        if ui.button(Vec2::new(140., 140.), "Buy") {
-            if self.money >= self.price {
-                self.money -= self.price;
-                self.stocks += 1.;
-            }
-        }
-        if ui.button(Vec2::new(140., 160.), "Sell") {
-            if self.stocks >= 1. {
-                self.money += self.price;
-                self.stocks -= 1.;
-            }
-        }
     }
 
     pub fn update(&mut self) {
-        self.trading_time += get_frame_time();
-        if self.trading_time >= 1. {
-            self.history.push_back(self.price);
-            self.price += rand::gen_range(0.0, 2.2) - 1.;
-            self.history
-                .pop_front()
-                .expect("expect history marker exists");
-            self.trading_time -= 1.;
-        }
+        self.history.push_back(self.price);
+        self.price += rand::gen_range(0.0, 2.2) - 1.;
+        self.history
+            .pop_front()
+            .expect("expect history marker exists");
     }
 }

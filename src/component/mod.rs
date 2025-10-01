@@ -6,5 +6,5 @@ use macroquad::ui::Ui;
 
 /// A component is a part of the game that can be drawn on the UI only depending on its own data.
 pub trait Component {
-    fn draw_on(&self, ui: &mut Ui);
+    fn draw_on(&mut self, ui: &mut Ui);
 }

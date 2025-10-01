@@ -1,58 +1,64 @@
-[
-    {
-        "description": "\"Die Känguru Offenbarung\", stürtzt\nTeewurts-Industrie in den Ruin?!",
-        "source": "Newsletter",
-        "effects": [
-            {
-                "target": {
-                    "type": "MarketStocks"
+{
+    "available": [
+        {
+            "description": "\"Die Känguru Offenbarung\", stürtzt\nTeewurts-Industrie in den Ruin?!",
+            "source": "Newsletter",
+            "effects": [
+                {
+                    "target": {
+                        "type": "MarketPrice"
+                    },
+                    "modifier": "Multiplier",
+                    "value": 0.85
+                }
+            ],
+            "chance": 0.02
+        },
+        {
+            "description": "Smart Fridge nimmt Affäre von Politiker\nxyz auf.",
+            "source": "Botnet Auftrag",
+            "effects": [
+                {
+                    "target": {
+                        "type": "PartyApproval",
+                        "party": 0
+                    },
+                    "modifier": "Constant",
+                    "value": -0.05
                 },
-                "modifier": "Multiplier",
-                "value": 0.85
-            }
-        ]
-    },
-    {
-        "description": "Smart Fridge nimmt Affäre von Politiker\nxyz auf.",
-        "source": "Botnet Auftrag",
-        "effects": [
-            {
-                "target": {
-                    "type": "PartyApproval",
-                    "party": 0
+                {
+                    "target": {
+                        "type": "PartyPopularity",
+                        "party": 0
+                    },
+                    "modifier": "Constant",
+                    "value": -0.05
                 },
-                "modifier": "Constant",
-                "value": -0.05
-            },
-            {
-                "target": {
-                    "type": "PartyPopularity",
-                    "party": 0
-                },
-                "modifier": "Constant",
-                "value": -0.05
-            },
-            {
-                "target": {
-                    "type": "PartyPopularity",
-                    "party": 1
-                },
-                "modifier": "Constant",
-                "value": 0.05
-            }
-        ]
-    },
-    {
-        "description": "TEEWURST Whistleblower stirbt in\n\"Autounfall\" mit Robotaxi.",
-        "source": "Botnet Auftrag",
-        "effects": [
-            {
-                "target": {
-                    "type": "MarketMoney"
-                },
-                "modifier": "Constant",
-                "value": 50.0
-            }
-        ]
-    }
-]
+                {
+                    "target": {
+                        "type": "PartyPopularity",
+                        "party": 1
+                    },
+                    "modifier": "Constant",
+                    "value": 0.05
+                }
+            ],
+            "chance": 0.01
+        },
+        {
+            "description": "TEEWURST Whistleblower stirbt in\n\"Autounfall\" mit Robotaxi.",
+            "source": "Botnet Auftrag",
+            "effects": [
+                {
+                    "target": {
+                        "type": "MarketMoney"
+                    },
+                    "modifier": "Constant",
+                    "value": 50.0
+                }
+            ],
+            "chance": 0.01
+        }
+    ],
+    "current": []
+}
