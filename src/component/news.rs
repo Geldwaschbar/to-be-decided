@@ -1,5 +1,7 @@
-use crate::component::Component;
-use crate::effect::Effect;
+use crate::{
+    component::{Component, wrap},
+    effect::Effect,
+};
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash, widgets::Group};
 use serde::{Deserialize, Serialize};
@@ -47,9 +49,10 @@ impl Component for News {
     fn draw_on(&mut self, ui: &mut Ui) {
         let mut counter = 0;
         for event in &self.current {
-            Group::new(hash!(counter, &event.description), Vec2::new(290., 80.)).ui(ui, |ui| {
-                for line in event.description.split('\n') {
-                    ui.label(None, line);
+            let widget_size = Vec2::new(290., 80.);
+            Group::new(hash!(counter, &event.description), widget_size).ui(ui, |ui| {
+                for line in wrap(&event.description, widget_size.x) {
+                    ui.label(None, &line);
                 }
                 ui.label(None, &format!(" - {}", event.source));
             });

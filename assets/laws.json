@@ -1,7 +1,7 @@
 [
     {
         "title": "Werbung",
-        "description": "Beim warten an der Ampel, im Fahrstuhl usw. soll die\nAusstrahlung von Werbezeiten pflicht sein.",
+        "description": "Beim warten an der Ampel, im Fahrstuhl usw. soll die Ausstrahlung von Werbezeiten pflicht sein.",
         "required_approval": 0.45,
         "effects": [
             {
@@ -16,14 +16,14 @@
                 "type": "CreateEvent",
                 "data": {
                     "source": "Big Brother",
-                    "description": "Endlich mehr Werbung! Jeder vermisst\ndoch Werbung, oder?"
+                    "description": "Endlich mehr Werbung! Jeder vermisst doch Werbung, oder?"
                 }
             }
         ]
     },
     {
         "title": "Überwachungskameras",
-        "description": "Daten von Überwachungskameras werden Firmen zur\nKundengewinnung zur Verfügung gestellt.",
+        "description": "Daten von Überwachungskameras werden Firmen zur Kundengewinnung zur Verfügung gestellt.",
         "required_approval": 0.55,
         "effects": [
             {
@@ -38,7 +38,7 @@
     },
     {
         "title": "Steuergeschenke",
-        "description": "Steuergeschenke an alle Firmen.\nWer hat, dem wird gegeben!",
+        "description": "Steuergeschenke an alle Firmen. Wer hat, dem wird gegeben!",
         "required_approval": 0.2,
         "effects": [
             {

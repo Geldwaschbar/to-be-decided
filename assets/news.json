@@ -1,7 +1,7 @@
 {
     "available": [
         {
-            "description": "\"Die Känguru Offenbarung\", stürtzt\nTeewurts-Industrie in den Ruin?!",
+            "description": "\"Die Känguru Offenbarung\", stürtzt Teewurts-Industrie in den Ruin?!",
             "source": "Newsletter",
             "effects": [
                 {
@@ -16,7 +16,7 @@
             "chance": 0.02
         },
         {
-            "description": "Smart Fridge nimmt Affäre von Politiker\nxyz auf.",
+            "description": "Smart Fridge nimmt Affäre von Politiker xyz auf.",
             "source": "Botnet Auftrag",
             "effects": [
                 {
@@ -50,7 +50,7 @@
             "chance": 0.01
         },
         {
-            "description": "TEEWURST Whistleblower stirbt in\n\"Autounfall\" mit Robotaxi.",
+            "description": "TEEWURST Whistleblower stirbt in \"Autounfall\" mit Robotaxi.",
             "source": "Botnet Auftrag",
             "effects": [
                 {

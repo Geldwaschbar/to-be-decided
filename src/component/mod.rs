@@ -2,9 +2,9 @@ pub mod market;
 pub mod news;
 pub mod parlament;
 
-use macroquad::ui::Ui;
-
 use crate::effect::Effect;
+use macroquad::prelude::*;
+use macroquad::ui::Ui;
 
 /// A component is a part of the game that can be drawn on the UI only depending on its own data.
 pub trait Component {
@@ -13,4 +13,23 @@ pub trait Component {
 
     /// Update this component. Effects should be put on the stack.
     fn update(&mut self, effects: &mut Vec<Effect>);
+}
+
+pub fn wrap(text: &str, max_width: f32) -> Vec<String> {
+    let mut strings = Vec::new();
+    let mut builder = String::new();
+
+    for word in text.split_whitespace() {
+        let new_size = measure_text(&format!("{builder} {word}"), None, 14, 1.0).width;
+        if new_size >= max_width - 50.0 {
+            strings.push(builder);
+            builder = String::new();
+        }
+        if !builder.is_empty() {
+            builder.push_str(" ");
+        }
+        builder.push_str(word);
+    }
+    strings.push(builder);
+    strings
 }
