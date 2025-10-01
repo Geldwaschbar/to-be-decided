@@ -17,6 +17,43 @@ pub struct Party {
     pub color: Color,
 }
 
+#[derive(Clone, Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Law {
+    pub title: String,
+    /// The description of this law. Please insert '\n' in a long text yourself.
+    pub description: String,
+    /// How much approval do you need from a party to get there votes?
+    pub required_approval: f32,
+    /// The publicity describes how likly it is for the parlament to decide upon
+    /// this law.
+    #[serde(default)]
+    pub publicity: f32,
+    /// All effects that are triggered when it gets passed.
+    #[serde(default)]
+    pub on_self_passed: Vec<Effect>,
+    /// All effects that are triggered whenever this or any other law gets passed.
+    #[serde(default)]
+    pub on_law_passed: Vec<Effect>,
+    /// Whether or not this law can be passed multiple times.
+    #[serde(default)]
+    pub recurring: bool,
+}
+
+impl Law {
+    pub fn draw_on(&self, ui: &mut Ui) {
+        let screen_size: Vec2 = Vec2::new(390., 80.);
+
+        Group::new(hash!(&self.description), screen_size).ui(ui, |ui| {
+            ui.label(None, &format!(" # {}", &self.title));
+
+            for line in wrap(&self.description, screen_size.x) {
+                ui.label(None, &line);
+            }
+        });
+    }
+}
+
 #[derive(Debug)]
 pub struct Parlament {
     pub parties: Vec<Party>,
@@ -30,18 +67,23 @@ impl Parlament {
         let parties = vec![
             Party {
                 approval: 0.34,
-                popularity: 0.45,
-                color: RED,
-            },
-            Party {
-                approval: 0.82,
                 popularity: 0.35,
-                color: GREEN,
+                color: color_u8!(220, 20, 60, 255),
             },
             Party {
-                approval: 0.82,
-                popularity: 0.2,
-                color: BLUE,
+                approval: 0.22,
+                popularity: 0.40,
+                color: color_u8!(22, 163, 62, 255),
+            },
+            Party {
+                approval: 0.19,
+                popularity: 0.25,
+                color: color_u8!(20, 54, 158, 255),
+            },
+            Party {
+                approval: 1.0,
+                popularity: 0.0,
+                color: YELLOW,
             },
         ];
 
@@ -104,18 +146,18 @@ impl Component for Parlament {
                 15.,
             ),
             Color::new(0.2, 0.2, 0.2, 1.0),
-            WHITE,
+            color_u8!(50, 50, 50, 255),
         );
         let progress = self.voting_progress;
         canvas.rect(
             Rect::new(
-                window_center.x - BAR_WIDTH * 0.5 + cursor.x + 8.,
-                cursor.y + window_center.y + 60.,
-                progress * BAR_WIDTH,
-                15.,
+                window_center.x - BAR_WIDTH * 0.5 + cursor.x + 9.,
+                cursor.y + window_center.y + 61.,
+                progress * BAR_WIDTH - 2.,
+                15. - 2.,
             ),
             Color::new(0.2, 0.2, 0.2, 1.0),
-            GRAY,
+            color_u8!(119, 0, 247, 255),
         );
 
         {
@@ -163,54 +205,30 @@ impl Component for Parlament {
                 }
             }
             if votes > 0.5 {
-                if law.recurring {
-                    for effect in &law.effects {
-                        effects.push(effect.clone());
-                    }
+                // The law was passed
+                for effect in &law.on_self_passed {
+                    effects.push(effect.clone());
+                }
+                let (available, passed) = (law.recurring, !law.on_law_passed.is_empty());
+                if available {
                     self.available_laws.push_back(law.clone());
-                } else {
+                }
+                if passed {
+                    let law = self.available_laws.front().expect("expected law exists");
                     self.passed_laws.push_back(law.clone());
                 }
-                self.available_laws.pop_front();
+            } else {
+                // The law was not passed
+                self.available_laws.push_back(law.clone());
             }
+            self.available_laws.pop_front();
             self.voting_progress -= 1.0;
 
             for law in &self.passed_laws {
-                for effect in &law.effects {
+                for effect in &law.on_law_passed {
                     effects.push(effect.clone());
                 }
             }
         }
-    }
-}
-
-#[derive(Clone, Debug, Deserialize)]
-pub struct Law {
-    pub title: String,
-    /// The description of this law. Please insert '\n' in a long text yourself.
-    pub description: String,
-    /// How much approval do you need from a party to get there votes?
-    pub required_approval: f32,
-    /// The publicity describes how likly it is for the parlament to decide upon
-    /// this law.
-    #[serde(default)]
-    pub publicity: f32,
-    pub effects: Vec<Effect>,
-    /// Whether or not this law can be passed multiple times.
-    #[serde(default)]
-    pub recurring: bool,
-}
-
-impl Law {
-    pub fn draw_on(&self, ui: &mut Ui) {
-        let screen_size: Vec2 = Vec2::new(390., 80.);
-
-        Group::new(hash!(&self.description), screen_size).ui(ui, |ui| {
-            ui.label(None, &format!(" # {}", &self.title));
-
-            for line in wrap(&self.description, screen_size.x) {
-                ui.label(None, &line);
-            }
-        });
     }
 }

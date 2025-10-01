@@ -66,7 +66,7 @@ async fn main() {
         clear_background(COL_BACKGROUND);
 
         Window::new(hash!(), Vec2::new(30., 50.), Vec2::new(200., 220.))
-            .label("Stock Market")
+            .label("Evil Inc. Stocks")
             .ui(&mut *root_ui(), |ui| {
                 market.draw_on(ui);
             });
@@ -78,7 +78,7 @@ async fn main() {
             });
 
         Window::new(hash!(), Vec2::new(100., 400.), Vec2::new(400., 200.))
-            .label("Laws")
+            .label("Gesetze")
             .ui(&mut *root_ui(), |ui| {
                 for law in &parlament.available_laws {
                     law.draw_on(ui);
@@ -86,7 +86,7 @@ async fn main() {
             });
 
         Window::new(hash!(), Vec2::new(480., 50.), Vec2::new(300., 500.))
-            .label("News")
+            .label("Neuigkeiten")
             .ui(&mut *root_ui(), |ui| {
                 news.draw_on(ui);
             });

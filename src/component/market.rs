@@ -76,7 +76,7 @@ impl Component for Market {
         self.trading_time += get_frame_time();
         if self.trading_time >= 1. {
             self.history.push_back(self.price);
-            self.price += rand::gen_range(0.0, 2.2) - 1.;
+            self.price *= rand::gen_range(0.96, 1.05);
             self.history
                 .pop_front()
                 .expect("expect history marker exists");

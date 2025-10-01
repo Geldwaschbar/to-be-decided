@@ -16,7 +16,7 @@ pub struct Event {
     /// e.g. +x% money
     #[serde(default)]
     pub effects: Vec<Effect>,
-
+    /// the chance that this event randomly occurs
     pub chance: f32,
 }
 
@@ -81,6 +81,9 @@ impl Component for News {
                 i += 1;
             }
             self.real_time -= 1.
+        }
+        while self.current.len() > 10 {
+            self.current.pop_back().expect("expected event exists");
         }
     }
 }
