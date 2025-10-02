@@ -9,6 +9,7 @@ use std::{cmp::Ordering, collections::VecDeque, f64::consts::PI, rc::Rc};
 
 // TODO: increase voting time
 const VOTING_TIME: f32 = 10.;
+const LAW_MARGIN: Vec2 =  Vec2::new(0.,5.);
 
 #[derive(Debug)]
 pub struct Party {
@@ -41,32 +42,39 @@ pub struct Law {
 }
 
 impl Law {
-    pub fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
-        let screen_size: Vec2 = Vec2::new(600., 180.);
+    pub fn draw_on(&mut self, ui: &mut Ui, font: &Font, pos: &mut Vec2) {
+        let law_width : f32 = 590.;
+        let lines = wrap(&self.description, law_width, font);
+        let law_height = (3. + lines.len() as f32) *
+             {
+               let size = measure_text("Foo Bar", Some(font), FONT_SIZE, 1.);
+               size.height + size.offset_y
+             };
 
-        Group::new(hash!(&self.description), screen_size).ui(ui, |ui| {
+        Group::new(hash!(&self.description), Vec2::new(law_width, law_height)).position(*pos).ui(ui, |ui| {
             ui.label(None, &format!(" # {}", &self.title));
 
-            for line in wrap(&self.description, screen_size.x, font) {
+            for line in lines {
                 ui.label(None, &line);
             }
 
             ui.label(
                 None,
-                &format!("Sichbarkeit in der Bevölkerung: {}", self.publicity),
+                &format!("Sichbarkeit in Bevölkerung: {}", self.publicity),
             );
             ui.separator();
             let size = measure_text("Lobbyieren", Some(font), FONT_SIZE, 1.);
-            ui.same_line(0.5 * (screen_size.x * 0.5 - size.width));
+            ui.same_line(0.5 * (law_width * 0.5 - size.width));
             if ui.button(None, "Lobbyieren") {
                 self.publicity += 1.0;
             }
             let size = measure_text("Verleumden", Some(font), FONT_SIZE, 1.);
-            ui.same_line(0.5 * (screen_size.x * 1.5 - size.width));
+            ui.same_line(0.5 * (law_width * 1.5 - size.width));
             if ui.button(None, "Verleumden") {
                 self.publicity -= 1.0;
             }
         });
+        *pos += Vec2::new(0., law_height) + LAW_MARGIN;
     }
 }
 
@@ -75,6 +83,7 @@ pub struct Parlament {
     pub voting_progress: f32,
     pub available_laws: VecDeque<Rc<Law>>,
     pub passed_laws: VecDeque<Rc<Law>>,
+    pub member_sprite: Texture2D,
 }
 
 impl Parlament {
@@ -108,12 +117,13 @@ impl Parlament {
         };
 
         let passed_laws: VecDeque<Rc<Law>> = VecDeque::new();
-
+        let member_sprite = Texture2D::from_file_with_format(include_bytes!("../../assets/sprites/person.png"), None);
         Parlament {
             parties,
             available_laws,
             passed_laws,
             voting_progress: 0.,
+            member_sprite,
         }
     }
 }
@@ -133,16 +143,18 @@ impl Component for Parlament {
                 let party = self.parties.get(party_num).expect("expect party exists");
                 let angle = arc as f32 / 8. * PI as f32;
                 // Draw a single parlament seat
-                canvas.rect(
-                    Rect::new(
+                let rect = Rect::new(
                         window_center.x + cursor.x - angle.cos() * 40. * (row + 5 - base) as f32,
                         window_center.y + cursor.y - angle.sin() * 40. * (row + 5 - base) as f32,
-                        15.0,
-                        15.0,
-                    ),
+                        20.0,
+                        20.0,
+                    );
+                canvas.rect(
+                    rect,
                     Color::new(0.2, 0.2, 0.2, 1.0),
                     party.color,
                 );
+                canvas.image(rect, &self.member_sprite);
                 placed += (1.0 / party.popularity) / TOTAL_SEATS;
                 // If we draw 100% of a party, go to the next party.
                 if placed >= 1. {

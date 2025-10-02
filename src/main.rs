@@ -43,6 +43,7 @@ async fn main() {
     let mut botnet = Botnet::new();
     let mut market = Market::new();
     let mut parlament = Parlament::new().await;
+    let mut law_pos : Vec2 = Vec2::ZERO; //TODO: find a better way to do this
     let mut news = News::new().await;
 
     let mut effects = Vec::new();
@@ -91,8 +92,9 @@ async fn main() {
             .label("Gesetze")
             .ui(&mut *root_ui(), |ui| {
                 for law in &mut parlament.available_laws {
-                    Rc::make_mut(law).draw_on(ui, &font);
+                    Rc::make_mut(law).draw_on(ui, &font, &mut law_pos);
                 }
+                law_pos = Vec2::ZERO;
             });
 
         Window::new(hash!(), Vec2::new(480., 50.), Vec2::new(300., 500.))
