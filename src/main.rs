@@ -28,14 +28,14 @@ async fn main() {
     let render_target = render_target(320, 150);
     render_target.texture.set_filter(FilterMode::Nearest);
 
-    let material = load_material(
-        ShaderSource::Glsl {
-            vertex: CRT_VERTEX_SHADER,
-            fragment: CRT_FRAGMENT_SHADER,
-        },
-        Default::default(),
-    )
-    .unwrap();
+    //let material = load_material(
+    //    ShaderSource::Glsl {
+    //        vertex: CRT_VERTEX_SHADER,
+    //        fragment: CRT_FRAGMENT_SHADER,
+    //    },
+    //    Default::default(),
+    //)
+    //.unwrap();
     let skin = terminal_skin(&mut *root_ui());
     root_ui().push_skin(&skin);
 
@@ -45,6 +45,7 @@ async fn main() {
     let mut news = News::new().await;
 
     let mut effects = Vec::new();
+    set_fullscreen(true);
 
     loop {
         #[cfg(not(target_arch = "wasm32"))]
@@ -65,7 +66,7 @@ async fn main() {
             render_target: Some(render_target.clone()),
             ..Default::default()
         });
-        gl_use_material(&material);
+        //gl_use_material(&material);
         clear_background(COL_BACKGROUND);
 
         Window::new(hash!(), Vec2::new(30., 50.), Vec2::new(200., 220.))
@@ -80,13 +81,10 @@ async fn main() {
                 botnet.draw_on(ui);
             });
 
-        Window::new(hash!(), Vec2::new(110., 80.), Vec2::new(400., 400.))
-            .label("Parlament")
-            .ui(&mut *root_ui(), |ui| {
-                parlament.draw_on(ui);
-            });
+        parlament.draw_on(&mut *root_ui());
 
-        Window::new(hash!(), Vec2::new(100., 400.), Vec2::new(400., 200.))
+        Window::new(hash!(), Vec2::new(screen_width()*0.5 - 200., screen_height()*0.5 + 200.), Vec2::new(400., 200.))
+            .movable(false)
             .label("Gesetze")
             .ui(&mut *root_ui(), |ui| {
                 for law in &mut parlament.available_laws {

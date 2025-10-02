@@ -119,7 +119,7 @@ impl Parlament {
 impl Component for Parlament {
     fn draw_on(&mut self, ui: &mut Ui) {
         let mut canvas = ui.canvas();
-        let cursor = canvas.cursor();
+        let cursor = Vec2::new(screen_width()*0.5 - 190.,screen_height()*0.5 - 190.);
 
         const TOTAL_SEATS: f32 = (5 * 4 + 4 * 3) as f32;
         let window_center = Vec2::new(380., 380.) * 0.5;
@@ -177,7 +177,7 @@ impl Component for Parlament {
             let text = "Es wird über das nächste Gesetz abgestimmt.";
             let size = measure_text(text, None, 14, 1.);
             ui.label(
-                Vec2::new(window_center.x - size.width * 0.5, window_center.x + 30.),
+                Vec2::new(cursor.x + window_center.x - size.width * 0.5, cursor.y + window_center.y + 30.),
                 text,
             );
         }
@@ -186,7 +186,7 @@ impl Component for Parlament {
             let text = &format!("Es wird über \"{}\" abgestimmt.", law.title);
             let size = measure_text(text, None, 14, 1.);
             ui.label(
-                Vec2::new(window_center.y - size.width * 0.5, window_center.x + 90.),
+                Vec2::new(cursor.x + window_center.x - size.width * 0.5, cursor.y + window_center.x + 90.),
                 text,
             );
         }
@@ -203,7 +203,7 @@ impl Component for Parlament {
             );
             let size = measure_text(text, None, 14, 1.);
             ui.label(
-                Vec2::new(window_center.x - size.width * 0.5, window_center.y + 110.),
+                Vec2::new(cursor.x + window_center.x - size.width * 0.5, cursor.y + window_center.y + 110.),
                 text,
             );
         }
