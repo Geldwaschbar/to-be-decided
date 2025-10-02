@@ -1,26 +1,19 @@
 [
     {
-        "title": "Werbung",
-        "description": "Beim warten an der Ampel, im Fahrstuhl usw. soll die Ausstrahlung von Werbezeiten pflicht sein.",
+        "title": "Wartewerbung",
+        "description": "Warteperioden an Ampeln, in Fahrstühlen, im Bus, ... sollen effektiver für Unternehmenswerbung nutzbar sein",
         "requiredApproval": 0.45,
         "onSelfPassed": [
             {
                 "type": "CreateEvent",
                 "data": {
                     "source": "Big Brother",
-                    "description": "Endlich mehr Werbung! Jeder vermisst doch Werbung, oder?"
+                    "description": "Dank neuem Werbegesetz nie wieder eine stille Minute!"
                 }
             }
         ],
+
         "onLawPassed": [
-            {
-                "type": "MarketEffect",
-                "data": {
-                    "resolution": "Price",
-                    "modifier": "Constant",
-                    "value": 5.0
-                }
-            },
             {
                 "type": "MarketEffect",
                 "data": {
@@ -35,13 +28,12 @@
         "title": "Überwachungskameras",
         "description": "Daten von Überwachungskameras werden Firmen zur Kundengewinnung zur Verfügung gestellt.",
         "requiredApproval": 0.55,
-        "onLawPassed": [
+        "onSelfPassed": [
             {
-                "type": "MarketEffect",
+                "type": "CreateEvent",
                 "data": {
-                    "resolution": "Price",
-                    "modifier": "Constant",
-                    "value": 5.0
+                    "source": "The Daily Teewurst",
+                    "description": "\"The more we know, the better\" - Wie personalisierte Werbung jetzt noch persönlicher wird!"
                 }
             }
         ]
@@ -50,39 +42,45 @@
         "title": "Steuergeschenke",
         "description": "Steuergeschenke an alle Firmen. Wer hat, dem wird gegeben!",
         "requiredApproval": 0.2,
-        "onLawPassed": [
+        "onSelfPassed": [
             {
-                "type": "MarketEffect",
+                "type": "CreateEvent",
                 "data": {
-                    "resolution": "Price",
-                    "modifier": "Constant",
-                    "value": 5.0
+                    "source": "The Flightless Bird",
+                    "description": "Dank großzügigen Spenden des Rats kann Teewurstproduktion um 50% gesteigert werden!"
                 }
             }
         ],
         "recurring": true
     },
+    { 
+        "title": "Menschenrechtsklausel",
+        "description": "Um das Wirtschaftswachstum anzukurbeln wird jedem Unternehmen eine Grundmenge an Menschenrechtsverletzungen erlaubt. Von Nichts kommt ja schließlich Nichts.",
+        "requiredApproval": 0.0
+    },
     {
-        "title": "Blah!",
-        "description": "Blah... Blah... Blah...",
-        "requiredApproval": 0.1,
-        "onSelfPassed": [
-            {
-                "type": "MarketEffect",
-                "data": {
-                    "resolution": "Price",
-                    "modifier": "Constant",
-                    "value": 5.0
-                }
-            },
-            {
-                "type": "CreateEvent",
-                "data": {
-                    "source": "Great Blaher",
-                    "description": "Blah or not to Blah, that's the question!"
-                }
-            }
-        ],
-        "recurring": true
+        "title": "Wahrscheinlichkeitsgesetze",
+        "description": "Mit moderner Technik lässt sich anhand der Digitalen Gewohnheiten eines Bürgers bestimmen, mit welcher Wahrscheinlichkeit er straffällig wird, besagte Bürger gilt es, präventiv zu verhaften",
+        "requiredApproval": 0.0
+    },
+    {
+        "title": "Haushaltsanpassung",
+        "description": "Steuergeschenke an Firmen wiegen zu stark auf dem Haushalt, eine Kürzung muss stattfinden.",
+        "requiredApproval": 0.0
+    },
+    {
+        "title": "Fahrradfeinde",
+        "description": "Autounfälle mit Fahrradfahrern werden nicht mehr strafrechtlich verfolgt, wie schon Charles Kümmel einst sagte: \"It's worth it to have, unfortunately, some accidents to protect our god given right to own cars.\"",
+        "requiredApproval": 0.0
+    },
+    {
+        "title": "Üble Nachrede #1",
+        "description": "Negative Äußerungen über den Geschmack von Teewurst werden strafrechtliche Konsequenzen mit sich bringen",
+        "requiredApproval": 0.0
+    },
+    {
+        "title": "Üble Nachrede #2",
+        "description": "Die radikalen Teewursthasser müssen gründlicher verfolgt werden, der Rat lässt bei Verdacht auf Teewurstbashing ein Eindringen in die Privatsphäre zu.",
+        "requiredApproval": 0.0
     }
 ]
