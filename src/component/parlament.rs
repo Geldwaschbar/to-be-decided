@@ -21,7 +21,7 @@ pub struct Party {
 #[serde(rename_all = "camelCase")]
 pub struct Law {
     pub title: String,
-    /// The description of this law. Please insert '\n' in a long text yourself.
+    /// The description of this law.
     pub description: String,
     /// How much approval do you need from a party to get there votes?
     pub required_approval: f32,

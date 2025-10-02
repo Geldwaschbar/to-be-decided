@@ -11,6 +11,7 @@ pub struct Botnet {
     malware: f32,
     memes: f32,
     crypto_mining: f32,
+    bribery: f32,
 }
 
 impl Botnet {
@@ -20,6 +21,7 @@ impl Botnet {
             malware: 0.0,
             memes: 0.0,
             crypto_mining: 0.0,
+            bribery: 0.0,
         }
     }
 }
@@ -36,19 +38,21 @@ impl Component for Botnet {
         ui.slider(hash!(), "Malware", 0.0..1.0, &mut self.malware);
         ui.slider(hash!(), "Memes", 0.0..1.0, &mut self.memes);
         ui.slider(hash!(), "Crypto Mining", 0.0..1.0, &mut self.crypto_mining);
+        ui.slider(hash!(), "Bestechung", 0.0..1.0, &mut self.bribery);
     }
 
     fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {
-        let total_usage = (self.crypto_mining + self.malware + self.memes) / self.capacity.floor();
+        let total_usage = self.crypto_mining + self.malware + self.memes;
 
         if self.malware > 0. {
-            self.capacity += (self.malware / total_usage * get_frame_time()) / self.capacity;
+            self.capacity +=
+                (self.malware / total_usage * get_frame_time()) / (self.capacity * self.capacity);
         }
         if self.memes > 0. {
             effects.push(Rc::new(Effect::ParlamentEffect {
                 resolution: ParlamentResolution::Transfer,
                 modifier: ModifierType::Constant,
-                value: self.memes / total_usage * 0.0001 * get_frame_time(),
+                value: self.memes / total_usage * self.capacity * 0.0001 * get_frame_time(),
                 party: 0,
             }));
         }
@@ -56,8 +60,16 @@ impl Component for Botnet {
             effects.push(Rc::new(Effect::MarketEffect {
                 resolution: MarketResolution::Money,
                 modifier: ModifierType::Constant,
-                value: self.crypto_mining / total_usage * get_frame_time(),
-            }))
+                value: self.crypto_mining / total_usage * self.capacity * get_frame_time(),
+            }));
+        }
+        if self.bribery > 0. {
+            effects.push(Rc::new(Effect::ParlamentEffect {
+                resolution: ParlamentResolution::Approval,
+                modifier: ModifierType::Constant,
+                value: self.bribery / total_usage * self.capacity * 0.0001 * get_frame_time(),
+                party: 0,
+            }));
         }
     }
 }

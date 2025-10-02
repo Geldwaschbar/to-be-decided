@@ -5,11 +5,10 @@
         "requiredApproval": 0.45,
         "onSelfPassed": [
             {
-                "type": "MarketEffect",
+                "type": "CreateEvent",
                 "data": {
-                    "resolution": "Price",
-                    "modifier": "Constant",
-                    "value": 5.0
+                    "source": "Big Brother",
+                    "description": "Endlich mehr Werbung! Jeder vermisst doch Werbung, oder?"
                 }
             }
         ],
@@ -23,10 +22,11 @@
                 }
             },
             {
-                "type": "CreateEvent",
+                "type": "MarketEffect",
                 "data": {
-                    "source": "Big Brother",
-                    "description": "Endlich mehr Werbung! Jeder vermisst doch Werbung, oder?"
+                    "resolution": "Price",
+                    "modifier": "Constant",
+                    "value": 5.0
                 }
             }
         ]
