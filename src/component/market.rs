@@ -33,7 +33,7 @@ impl Component for Market {
 
         // Fetch the history of the stock market and
         // calculate the global minimum and maximum
-        let (mut min, mut max) = (1000., 0.);
+        let (mut min, mut max) = (f32::INFINITY, 0.);
         for marker in &self.history {
             let value = *marker;
             if value < min {
