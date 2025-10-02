@@ -4,7 +4,7 @@ mod shader;
 
 use crate::{
     component::{Component, botnet::Botnet, market::Market, news::News, parlament::Parlament},
-    shader::{COL_BACKGROUND, CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER, terminal_skin},
+    shader::{COL_BG, CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER, terminal_skin},
 };
 use macroquad::prelude::*;
 use macroquad::ui::{hash, root_ui, widgets::Window};
@@ -36,7 +36,8 @@ async fn main() {
     //    Default::default(),
     //)
     //.unwrap();
-    let skin = terminal_skin(&mut *root_ui());
+    let font : Font = load_ttf_font("./assets/fonts/Mx437_HP_100LX_16x12.ttf").await.unwrap();
+    let skin = terminal_skin(&mut *root_ui(), &font);
     root_ui().push_skin(&skin);
 
     let mut botnet = Botnet::new();
@@ -67,35 +68,37 @@ async fn main() {
             ..Default::default()
         });
         //gl_use_material(&material);
-        clear_background(COL_BACKGROUND);
+        clear_background(COL_BG);
 
         Window::new(hash!(), Vec2::new(30., 50.), Vec2::new(200., 220.))
             .label("Evil Inc. Stocks")
             .ui(&mut *root_ui(), |ui| {
-                market.draw_on(ui);
+                market.draw_on(ui, &font);
             });
 
         Window::new(hash!(), Vec2::new(30., 200.), Vec2::new(200., 250.))
             .label("Botnet")
             .ui(&mut *root_ui(), |ui| {
-                botnet.draw_on(ui);
+                botnet.draw_on(ui, &font);
             });
 
-        parlament.draw_on(&mut *root_ui());
+        parlament.draw_on(&mut *root_ui(), &font);
 
-        Window::new(hash!(), Vec2::new(screen_width()*0.5 - 200., screen_height()*0.5 + 200.), Vec2::new(400., 200.))
+        Window::new(hash!(), Vec2::new(screen_width()*0.5 - 300., 
+            screen_height()*0.5 + 200.), 
+            Vec2::new(600., screen_height()*0.5 - 200.))
             .movable(false)
             .label("Gesetze")
             .ui(&mut *root_ui(), |ui| {
                 for law in &mut parlament.available_laws {
-                    Rc::make_mut(law).draw_on(ui);
+                    Rc::make_mut(law).draw_on(ui, &font);
                 }
             });
 
         Window::new(hash!(), Vec2::new(480., 50.), Vec2::new(300., 500.))
             .label("Neuigkeiten")
             .ui(&mut *root_ui(), |ui| {
-                news.draw_on(ui);
+                news.draw_on(ui, &font);
             });
 
         set_default_camera();

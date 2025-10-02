@@ -1,6 +1,6 @@
 use crate::{
-    component::{Component, wrap},
-    effect::Effect,
+    component::{wrap, Component},
+    effect::Effect, shader::FONT_SIZE,
 };
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash, widgets::Group};
@@ -41,13 +41,13 @@ pub struct Law {
 }
 
 impl Law {
-    pub fn draw_on(&mut self, ui: &mut Ui) {
-        let screen_size: Vec2 = Vec2::new(390., 180.);
+    pub fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
+        let screen_size: Vec2 = Vec2::new(600., 180.);
 
         Group::new(hash!(&self.description), screen_size).ui(ui, |ui| {
             ui.label(None, &format!(" # {}", &self.title));
 
-            for line in wrap(&self.description, screen_size.x) {
+            for line in wrap(&self.description, screen_size.x, font) {
                 ui.label(None, &line);
             }
 
@@ -56,11 +56,13 @@ impl Law {
                 &format!("Sichbarkeit in der Bevölkerung: {}", self.publicity),
             );
             ui.separator();
-            ui.same_line(100.);
+            let size = measure_text("Lobbyieren", Some(font), FONT_SIZE, 1.);
+            ui.same_line(0.5 * (screen_size.x * 0.5 - size.width));
             if ui.button(None, "Lobbyieren") {
                 self.publicity += 1.0;
             }
-            ui.same_line(180.);
+            let size = measure_text("Verleumden", Some(font), FONT_SIZE, 1.);
+            ui.same_line(0.5 * (screen_size.x * 1.5 - size.width));
             if ui.button(None, "Verleumden") {
                 self.publicity -= 1.0;
             }
@@ -117,7 +119,7 @@ impl Parlament {
 }
 
 impl Component for Parlament {
-    fn draw_on(&mut self, ui: &mut Ui) {
+    fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
         let mut canvas = ui.canvas();
         let cursor = Vec2::new(screen_width()*0.5 - 190.,screen_height()*0.5 - 190.);
 
@@ -175,7 +177,7 @@ impl Component for Parlament {
 
         {
             let text = "Es wird über das nächste Gesetz abgestimmt.";
-            let size = measure_text(text, None, 14, 1.);
+            let size = measure_text(text, Some(font), FONT_SIZE, 1.);
             ui.label(
                 Vec2::new(cursor.x + window_center.x - size.width * 0.5, cursor.y + window_center.y + 30.),
                 text,
@@ -184,7 +186,7 @@ impl Component for Parlament {
         let law = self.available_laws.front().expect("expected law exists");
         {
             let text = &format!("Es wird über \"{}\" abgestimmt.", law.title);
-            let size = measure_text(text, None, 14, 1.);
+            let size = measure_text(text, Some(font), FONT_SIZE, 1.);
             ui.label(
                 Vec2::new(cursor.x + window_center.x - size.width * 0.5, cursor.y + window_center.x + 90.),
                 text,
@@ -201,7 +203,7 @@ impl Component for Parlament {
                 "Die Zustimmung für dieses Gesetz beträgt {}%.",
                 (approval * 100.) as usize
             );
-            let size = measure_text(text, None, 14, 1.);
+            let size = measure_text(text, Some(font), FONT_SIZE, 1.);
             ui.label(
                 Vec2::new(cursor.x + window_center.x - size.width * 0.5, cursor.y + window_center.y + 110.),
                 text,

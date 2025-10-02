@@ -27,7 +27,7 @@ impl Market {
 }
 
 impl Component for Market {
-    fn draw_on(&mut self, ui: &mut Ui) {
+    fn draw_on(&mut self, ui: &mut Ui, _: &Font) {
         let mut canvas = ui.canvas();
         let cursor = canvas.cursor();
 
