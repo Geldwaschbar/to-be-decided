@@ -8,6 +8,7 @@ use crate::{
 };
 use macroquad::prelude::*;
 use macroquad::ui::{hash, root_ui, widgets::Window};
+use std::rc::Rc;
 
 fn window_conf() -> Conf {
     Conf {
@@ -88,8 +89,8 @@ async fn main() {
         Window::new(hash!(), Vec2::new(100., 400.), Vec2::new(400., 200.))
             .label("Gesetze")
             .ui(&mut *root_ui(), |ui| {
-                for law in &parlament.available_laws {
-                    law.draw_on(ui);
+                for law in &mut parlament.available_laws {
+                    Rc::make_mut(law).draw_on(ui);
                 }
             });
 

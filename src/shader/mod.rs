@@ -30,7 +30,9 @@ pub fn terminal_skin(ui: &mut Ui) -> Skin {
     let button_style = ui
         .style_builder()
         .text_color(WHITE)
-        .background(Image::gen_image_color(1, 1, COL_BACKGROUND))
+        .text_color_hovered(Color::new(0.8, 0.8, 0.8, 1.0))
+        .margin(RectOffset::new(5.0, 5.0, 5.0, 5.0))
+        .background(Image::gen_image_color(1, 1, Color::new(0.2, 0.2, 0.2, 1.0)))
         .font_size(14)
         .build();
 

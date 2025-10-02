@@ -5,7 +5,7 @@ use crate::{
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash, widgets::Group};
 use serde::Deserialize;
-use std::{collections::VecDeque, f64::consts::PI, rc::Rc};
+use std::{cmp::Ordering, collections::VecDeque, f64::consts::PI, rc::Rc};
 
 // TODO: increase voting time
 const VOTING_TIME: f32 = 10.;
@@ -17,7 +17,7 @@ pub struct Party {
     pub color: Color,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Law {
     pub title: String,
@@ -41,8 +41,8 @@ pub struct Law {
 }
 
 impl Law {
-    pub fn draw_on(&self, ui: &mut Ui) {
-        let screen_size: Vec2 = Vec2::new(390., 80.);
+    pub fn draw_on(&mut self, ui: &mut Ui) {
+        let screen_size: Vec2 = Vec2::new(390., 180.);
 
         Group::new(hash!(&self.description), screen_size).ui(ui, |ui| {
             ui.label(None, &format!(" # {}", &self.title));
@@ -50,11 +50,24 @@ impl Law {
             for line in wrap(&self.description, screen_size.x) {
                 ui.label(None, &line);
             }
+
+            ui.label(
+                None,
+                &format!("Sichbarkeit in der Bevölkerung: {}", self.publicity),
+            );
+            ui.separator();
+            ui.same_line(100.);
+            if ui.button(None, "Lobbyieren") {
+                self.publicity += 1.0;
+            }
+            ui.same_line(180.);
+            if ui.button(None, "Verleumden") {
+                self.publicity -= 1.0;
+            }
         });
     }
 }
 
-#[derive(Debug)]
 pub struct Parlament {
     pub parties: Vec<Party>,
     pub voting_progress: f32,
@@ -194,6 +207,9 @@ impl Component for Parlament {
                 text,
             );
         }
+
+        Rc::make_mut(self.available_laws.front_mut().expect("law exists")).publicity =
+            f32::INFINITY;
     }
 
     fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {
@@ -214,7 +230,10 @@ impl Component for Parlament {
                 }
                 let (available, passed) = (law.recurring, !law.on_law_passed.is_empty());
                 if available {
-                    self.available_laws.push_back(law.clone());
+                    // Reset publicity of the passed law back to 0.
+                    let mut new = law.clone();
+                    Rc::make_mut(&mut new).publicity = 0.;
+                    self.available_laws.push_back(new);
                 }
                 if passed {
                     let law = self.available_laws.front().expect("expected law exists");
@@ -222,7 +241,9 @@ impl Component for Parlament {
                 }
             } else {
                 // The law was not passed
-                self.available_laws.push_back(law.clone());
+                let mut new = law.clone();
+                Rc::make_mut(&mut new).publicity = 0.;
+                self.available_laws.push_back(new);
             }
             self.available_laws.pop_front();
             self.voting_progress -= 1.0;
@@ -232,6 +253,18 @@ impl Component for Parlament {
                     effects.push(effect.clone());
                 }
             }
+            for law in &mut self.available_laws {
+                Rc::make_mut(law).publicity += 1.;
+            }
+            self.available_laws.make_contiguous().sort_by(|a, b| {
+                if a.publicity < b.publicity {
+                    Ordering::Greater
+                } else if a.publicity > b.publicity {
+                    Ordering::Less
+                } else {
+                    Ordering::Equal
+                }
+            });
         }
     }
 }

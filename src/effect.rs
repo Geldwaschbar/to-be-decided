@@ -1,19 +1,19 @@
 use crate::component::{
     market::Market,
     news::{Event, News},
-    parlament::{Parlament, Party},
+    parlament::Parlament,
 };
 use macroquad::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Default, Serialize, Deserialize)]
 pub enum MarketResolution {
     #[default]
     Money,
     Price,
 }
 
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Default, Serialize, Deserialize)]
 pub enum ParlamentResolution {
     #[default]
     Approval,
@@ -21,7 +21,7 @@ pub enum ParlamentResolution {
     Transfer,
 }
 
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Default, Serialize, Deserialize)]
 pub enum ModifierType {
     // v = n
     Setter,
@@ -32,7 +32,7 @@ pub enum ModifierType {
     Multiplier,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type", content = "data")]
 pub enum Effect {
     CreateEvent {
