@@ -13,6 +13,19 @@
         ]
     },
     {
+        "title": "Bot Netzwerke",
+        "description": "Legalisiert alle Formen von Botnetzwerken. Es ist legal, wenn es eine große Firma macht!",
+        "requiredApproval": 0.01,
+        "onSelfPassed": [
+            {
+                "type": "ShowComponent",
+                "data": {
+                    "id": "Botnet"
+                }
+            }
+        ]
+    },
+    {
         "title": "Wartewerbung",
         "description": "Warteperioden an Ampeln, in Fahrstühlen, im Bus, ... sollen effektiver für Unternehmenswerbung nutzbar sein",
         "requiredApproval": 0.45,

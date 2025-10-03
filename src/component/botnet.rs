@@ -51,6 +51,10 @@ impl Component for Botnet {
         if self.show_malware {
             ui.slider(hash!(), "Malware", 0.0..1.0, &mut self.malware);
         }
+
+        if ui.button(None, "Sende Spammail") {
+            self.capacity += 0.2;
+        }
     }
 
     fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {
