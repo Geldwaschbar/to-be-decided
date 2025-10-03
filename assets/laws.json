@@ -12,7 +12,6 @@
                 }
             }
         ],
-
         "onLawPassed": [
             {
                 "type": "MarketEffect",
@@ -56,31 +55,161 @@
     { 
         "title": "Menschenrechtsklausel",
         "description": "Um das Wirtschaftswachstum anzukurbeln wird jedem Unternehmen eine Grundmenge an Menschenrechtsverletzungen erlaubt. Von Nichts kommt ja schließlich Nichts.",
-        "requiredApproval": 0.0
+        "requiredApproval": 0.4,
+        "onSelfPassed": [
+            {
+                "type": "CreateEvent",
+                "data": {
+                    "source": "The Flightless Bird",
+                    "description": "China liebt unsere neuen Menschenrechtsgesetze."
+                }
+            }
+        ],
+        "onLawPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Multiplier",
+                    "value": 1.04
+                }
+            }
+        ]
+    },
+    {
+        "title": "Umweltauflagen",
+        "description": "Strengere Regulierungen für eine bessere Umwelt fordern die Antichristen namens \"Wissenschaftler\".",
+        "requiredApproval": 0.1,
+        "onSelfPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Multiplier",
+                    "value": 0.8
+                }
+            },
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Money",
+                    "modifier": "Constant",
+                    "value": -10.0
+                }
+            }
+        ],
+        "recurring": true
     },
     {
         "title": "Wahrscheinlichkeitsgesetze",
         "description": "Mit moderner Technik lässt sich anhand der Digitalen Gewohnheiten eines Bürgers bestimmen, mit welcher Wahrscheinlichkeit er straffällig wird, besagte Bürger gilt es, präventiv zu verhaften",
-        "requiredApproval": 0.0
+        "requiredApproval": 0.3,
+        "onSelfPassed": [
+            {
+                "type": "CreateEvent",
+                "data": {
+                    "source":"The Flightless Bird",
+                    "description": "Menschenrechtler befürchten Überwachungsstaat."
+                }
+            },
+            {
+                "type": "ParlamentEffect",
+                "data": {
+                    "resolution": "Transfer",
+                    "modifier": "Constant",
+                    "value": -0.05,
+                    "party": 0
+                }
+            },
+            {
+                "type": "ParlamentEffect",
+                "data": {
+                    "resolution": "Transfer",
+                    "modifier": "Constant",
+                    "value": -0.05,
+                    "party": 3
+                }
+            }
+        ],
+        "onLawPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Multiplier",
+                    "value": 1.03
+                }
+            }
+        ]
     },
     {
         "title": "Haushaltsanpassung",
         "description": "Steuergeschenke an Firmen wiegen zu stark auf dem Haushalt, eine Kürzung muss stattfinden.",
-        "requiredApproval": 0.0
+        "requiredApproval": 0.02
     },
     {
         "title": "Fahrradfeinde",
         "description": "Autounfälle mit Fahrradfahrern werden nicht mehr strafrechtlich verfolgt, wie schon Charles Kümmel einst sagte: \"It's worth it to have, unfortunately, some accidents to protect our god given right to own cars.\"",
-        "requiredApproval": 0.0
+        "requiredApproval": 0.45
     },
     {
         "title": "Üble Nachrede #1",
         "description": "Negative Äußerungen über den Geschmack von Teewurst werden strafrechtliche Konsequenzen mit sich bringen",
-        "requiredApproval": 0.0
+        "requiredApproval": 0.6
     },
     {
         "title": "Üble Nachrede #2",
         "description": "Die radikalen Teewursthasser müssen gründlicher verfolgt werden, der Rat lässt bei Verdacht auf Teewurstbashing ein Eindringen in die Privatsphäre zu.",
-        "requiredApproval": 0.0
+        "requiredApproval": 0.8
+    },
+    {
+        "title": "Teewurst Diktatur",
+        "description": "Gründung des ersten, galaktischen, Teewurst-Imperiums!",
+        "requiredApproval": 1.0,
+        "onSelfPassed": [
+            {
+                "type": "CreateEvent",
+                "data": {
+                    "source": "The Creators",
+                    "description": "Wir SIND der Senat!"
+                }
+            },
+            {
+                "type": "ParlamentEffect",
+                "data": {
+                    "resolution": "Popularity",
+                    "modifier": "Setter",
+                    "value": 0.0,
+                    "party": 0
+                }
+            },
+            {
+                "type": "ParlamentEffect",
+                "data": {
+                    "resolution": "Popularity",
+                    "modifier": "Setter",
+                    "value": 0.0,
+                    "party": 1
+                }
+            },
+            {
+                "type": "ParlamentEffect",
+                "data": {
+                    "resolution": "Popularity",
+                    "modifier": "Setter",
+                    "value": 0.0,
+                    "party": 2
+                }
+            },
+            {
+                "type": "ParlamentEffect",
+                "data": {
+                    "resolution": "Popularity",
+                    "modifier": "Setter",
+                    "value": 1.0,
+                    "party": 3
+                }
+            }
+        ]
     }
 ]
