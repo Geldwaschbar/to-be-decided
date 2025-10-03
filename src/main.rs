@@ -13,7 +13,10 @@ use std::rc::Rc;
 fn window_conf() -> Conf {
     Conf {
         window_title: String::from("Macroquad Template"),
-        high_dpi: true,
+        window_width: 1920,
+        window_height: 1080,
+        high_dpi: false,
+        fullscreen: true,
         #[cfg(target_arch = "wasm32")]
         platform: miniquad::conf::Platform {
             webgl_version: miniquad::conf::WebGLVersion::WebGL2,
@@ -37,7 +40,6 @@ async fn main() {
     let mut news = News::new().await;
 
     let mut effects = Vec::new();
-    set_fullscreen(true);
 
     loop {
         #[cfg(not(target_arch = "wasm32"))]
@@ -63,7 +65,7 @@ async fn main() {
 
         Window::new(
             hash!(),
-            Vec2::new(30., screen_height() - 125.),
+            Vec2::new(30., screen_height() * 0.5 - 125.),
             Vec2::new(250., 300.),
         )
         .label("Botnet")
@@ -83,13 +85,13 @@ async fn main() {
         .ui(&mut *root_ui(), |ui| {
             let mut law_pos = Vec2::new(5.0, 5.0);
             for law in &mut parlament.available_laws {
-                Rc::make_mut(law).draw_on(ui, &font, &mut law_pos);
+                Rc::make_mut(law).draw_on(ui, &font, &mut law_pos, &mut market);
             }
         });
 
         Window::new(
             hash!(),
-            Vec2::new(screen_width(), 50.),
+            Vec2::new(screen_width() * 0.85 - 200., 50.),
             Vec2::new(400., 500.),
         )
         .label("Neuigkeiten")

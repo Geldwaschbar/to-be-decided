@@ -8,6 +8,7 @@ pub struct Market {
     pub money: f32,
     pub price: f32,
     trading_time: f32,
+    income_time: f32,
     history: VecDeque<f32>,
 }
 
@@ -17,11 +18,11 @@ impl Market {
             money: 100.,
             price: 10.,
             trading_time: 0.,
-            history: vec![
+            income_time: 0.,
+            history: VecDeque::from([
                 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4, 9.6, 9.8, 10., 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4,
                 9.6, 9.8, 10., 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4, 9.6, 9.8, 10.,
-            ]
-            .into(),
+            ]),
         }
     }
 }
@@ -73,6 +74,7 @@ impl Component for Market {
 
     fn update(&mut self, _effects: &mut Vec<Rc<Effect>>) {
         self.trading_time += get_frame_time();
+        self.income_time += get_frame_time();
         if self.trading_time >= 1. {
             self.history.push_back(self.price);
             self.price *= rand::gen_range(0.96, 1.05);
@@ -80,6 +82,10 @@ impl Component for Market {
                 .pop_front()
                 .expect("expect history marker exists");
             self.trading_time -= 1.;
+        }
+        if self.income_time >= 24. {
+            self.money += self.price * 0.1;
+            self.income_time -= 50.;
         }
     }
 }

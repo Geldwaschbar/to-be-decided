@@ -53,8 +53,8 @@ impl Component for Botnet {
             effects.push(Rc::new(Effect::ParlamentEffect {
                 resolution: ParlamentResolution::Transfer,
                 modifier: ModifierType::Constant,
-                value: self.memes / total_usage * self.capacity * 0.0001 * get_frame_time(),
-                party: 0,
+                value: self.memes / total_usage * self.capacity * 0.00008 * get_frame_time(),
+                party: 3,
             }));
         }
         if self.crypto_mining > 0. {
@@ -69,7 +69,7 @@ impl Component for Botnet {
                 resolution: ParlamentResolution::Approval,
                 modifier: ModifierType::Constant,
                 value: self.bribery / total_usage * self.capacity * 0.0001 * get_frame_time(),
-                party: 0,
+                party: rand::gen_range(0, 2),
             }));
         }
     }

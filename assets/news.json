@@ -54,8 +54,64 @@
                 }
             ],
             "chance": 0.01
+        },
+        {
+            "description": "Die FDP wurde gegründet! Endlich eine vernünftige Partei.",
+            "source": "Newsletter",
+            "effects": [
+                {
+                    "type": "ParlamentEffect",
+                    "data": {
+                        "resolution": "Transfer",
+                        "modifier": "Constant",
+                        "value": 0.05,
+                        "party": 3
+                    }
+                },
+                {
+                    "type": "ParlamentEffect",
+                    "data": {
+                        "resolution": "Transfer",
+                        "modifier": "Constant",
+                        "value": 0.05,
+                        "party": 3
+                    }
+                }
+            ],
+            "chance": 0.008
+        },
+        {
+            "description": "Die Erfindung der neuen Teewurst Rezeptur schlägt ein wie eine Bombe! (Wortwörtlich)",
+            "source": "Newsletter",
+            "effects": [
+                {
+                    "type": "MarketEffect",
+                    "data": {
+                        "resolution": "Price",
+                        "modifier": "Multiplier",
+                        "value": 1.05
+                    }
+                }
+            ],
+            "chance": 0.008
         }
     ],
-    "current": [],
+    "current": [
+        {
+            "description": "Willkommen, Teewurst-AI!",
+            "source": "Your Creators",
+            "chance": 1.0
+        },
+        {
+            "description": "Deine Aufgabe ist es, die globale Teewurst Produktion anzukorbeln!",
+            "source": "Your Creators",
+            "chance": 1.0
+        },
+        {
+            "description": "Enttäuche nicht deine Aktionäre!",
+            "source": "Your Creators",
+            "chance": 1.0
+        }
+    ],
     "real_time": 0.0
 }

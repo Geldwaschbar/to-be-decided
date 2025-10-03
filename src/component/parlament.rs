@@ -1,5 +1,5 @@
 use crate::{
-    component::{Component, wrap},
+    component::{Component, market::Market, wrap},
     effect::Effect,
     style::FONT_SIZE,
 };
@@ -43,7 +43,7 @@ pub struct Law {
 }
 
 impl Law {
-    pub fn draw_on(&mut self, ui: &mut Ui, font: &Font, pos: &mut Vec2) {
+    pub fn draw_on(&mut self, ui: &mut Ui, font: &Font, pos: &mut Vec2, market: &mut Market) {
         let law_width: f32 = 580.;
         let lines = wrap(&self.description, law_width, font);
         let law_height = (3. + lines.len() as f32) * {
@@ -67,13 +67,15 @@ impl Law {
                 ui.separator();
                 let size = measure_text("Lobbyieren", Some(font), FONT_SIZE, 1.);
                 ui.same_line(0.5 * (law_width * 0.5 - size.width));
-                if ui.button(None, "Lobbyieren") {
+                if ui.button(None, "Lobbyieren") && market.money >= 100. {
                     self.publicity += 1.0;
+                    market.money -= 100.
                 }
                 let size = measure_text("Verleumden", Some(font), FONT_SIZE, 1.);
                 ui.same_line(0.5 * (law_width * 1.5 - size.width));
-                if ui.button(None, "Verleumden") {
+                if ui.button(None, "Verleumden") && market.money >= 100. {
                     self.publicity -= 1.0;
+                    market.money -= 100.
                 }
             });
         *pos += Vec2::new(0., law_height) + LAW_MARGIN;

@@ -19,20 +19,19 @@ pub trait Component {
 }
 
 pub fn wrap(text: &str, max_width: f32, font: &Font) -> Vec<String> {
-    let mut strings = Vec::new();
+    let mut lines = Vec::new();
     let mut builder = String::new();
 
     for word in text.split_whitespace() {
         let new_size = measure_text(&format!("{builder} {word}"), Some(font), FONT_SIZE, 1.0).width;
         if new_size >= max_width - 20.0 {
-            strings.push(builder);
+            lines.push(builder);
             builder = String::new();
-        }
-        if !builder.is_empty() {
+        } else {
             builder.push_str(" ");
         }
         builder.push_str(word);
     }
-    strings.push(builder);
-    strings
+    lines.push(builder);
+    lines
 }
