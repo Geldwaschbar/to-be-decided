@@ -12,7 +12,7 @@ Playing
 
 You can play this game online [here](https://geldwaschbar.github.io/to-be-decided/).
 
-To play locally, run the project with cargo run or, if you are on NixOS, use nix run.
+To play locally, run the project with `cargo run` or, if you are on NixOS, use `nix run github:Geldwaschbar/to-be-decided`.
 
 Controls
 --------
