@@ -60,22 +60,24 @@ impl Law {
                     ui.label(None, &line);
                 }
 
-                ui.label(
-                    None,
-                    &format!("Sichbarkeit in Bevölkerung: {}", self.publicity),
-                );
-                ui.separator();
-                let size = measure_text("Lobbyieren", Some(font), FONT_SIZE, 1.);
-                ui.same_line(0.5 * (law_width * 0.5 - size.width));
-                if ui.button(None, "Lobbyieren") && market.money >= 100. {
-                    self.publicity += 1.0;
-                    market.money -= 100.
-                }
-                let size = measure_text("Verleumden", Some(font), FONT_SIZE, 1.);
-                ui.same_line(0.5 * (law_width * 1.5 - size.width));
-                if ui.button(None, "Verleumden") && market.money >= 100. {
-                    self.publicity -= 1.0;
-                    market.money -= 100.
+                if self.publicity != f32::INFINITY {
+                    ui.label(
+                        None,
+                        &format!("Sichbarkeit in Bevölkerung: {}", self.publicity),
+                    );
+                    ui.separator();
+                    let size = measure_text("Lobbyieren", Some(font), FONT_SIZE, 1.);
+                    ui.same_line(0.5 * (law_width * 0.5 - size.width));
+                    if ui.button(None, "Lobbyieren") && market.money >= 100. {
+                        self.publicity += 1.0;
+                        market.money -= 100.
+                    }
+                    let size = measure_text("Verleumden", Some(font), FONT_SIZE, 1.);
+                    ui.same_line(0.5 * (law_width * 1.5 - size.width));
+                    if ui.button(None, "Verleumden") && market.money >= 100. {
+                        self.publicity -= 1.0;
+                        market.money -= 100.
+                    }
                 }
             });
         *pos += Vec2::new(0., law_height) + LAW_MARGIN;
@@ -94,7 +96,7 @@ impl Parlament {
     pub async fn new() -> Parlament {
         let parties = vec![
             Party {
-                approval: 0.34,
+                approval: 0.19,
                 popularity: 0.35,
                 color: color_u8!(220, 20, 60, 255),
             },
@@ -104,7 +106,7 @@ impl Parlament {
                 color: color_u8!(22, 163, 62, 255),
             },
             Party {
-                approval: 0.19,
+                approval: 0.34,
                 popularity: 0.25,
                 color: color_u8!(20, 54, 158, 255),
             },
