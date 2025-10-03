@@ -8,6 +8,10 @@ use macroquad::prelude::*;
 use serde::Deserialize;
 use std::rc::Rc;
 
+fn default_true() -> bool {
+    true
+}
+
 #[derive(Clone, Debug, Eq, PartialEq, Default, Deserialize)]
 pub enum MarketResolution {
     #[default]
@@ -66,6 +70,8 @@ pub enum Effect {
     },
     ShowComponent {
         id: ComponentId,
+        #[serde(default = "default_true")]
+        show: bool,
     },
 }
 
@@ -149,11 +155,11 @@ impl Effect {
                     }
                 };
             }
-            Self::ShowComponent { id } => match id {
-                ComponentId::Botnet => botnet.show = true,
-                ComponentId::BotnetMalware => botnet.show_memes = true,
-                ComponentId::BotnetMemes => botnet.show_memes = true,
-                ComponentId::Market => market.show = true,
+            Self::ShowComponent { id, show } => match id {
+                ComponentId::Botnet => botnet.show = *show,
+                ComponentId::BotnetMalware => botnet.show_memes = *show,
+                ComponentId::BotnetMemes => botnet.show_memes = *show,
+                ComponentId::Market => market.show = *show,
             },
         };
     }
