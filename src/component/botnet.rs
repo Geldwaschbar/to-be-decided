@@ -12,6 +12,9 @@ pub struct Botnet {
     memes: f32,
     crypto_mining: f32,
     bribery: f32,
+    pub show: bool,
+    pub show_malware: bool,
+    pub show_memes: bool,
 }
 
 impl Botnet {
@@ -22,6 +25,9 @@ impl Botnet {
             memes: 0.0,
             crypto_mining: 0.0,
             bribery: 0.0,
+            show: false,
+            show_malware: false,
+            show_memes: false,
         }
     }
 }
@@ -36,10 +42,15 @@ impl Component for Botnet {
             ui.label(None, &line);
         }
 
-        ui.slider(hash!(), "Malware", 0.0..1.0, &mut self.malware);
-        ui.slider(hash!(), "Memes", 0.0..1.0, &mut self.memes);
         ui.slider(hash!(), "Crypto Mining", 0.0..1.0, &mut self.crypto_mining);
         ui.slider(hash!(), "Bestechung", 0.0..1.0, &mut self.bribery);
+
+        if self.show_memes {
+            ui.slider(hash!(), "Memes", 0.0..1.0, &mut self.memes);
+        }
+        if self.show_malware {
+            ui.slider(hash!(), "Malware", 0.0..1.0, &mut self.malware);
+        }
     }
 
     fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {

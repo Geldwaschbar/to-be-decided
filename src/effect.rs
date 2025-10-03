@@ -1,19 +1,21 @@
 use crate::component::{
+    botnet::Botnet,
     market::Market,
     news::{Event, News},
-    parlament::Parlament,
+    parlament::{Law, Parlament},
 };
 use macroquad::prelude::*;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use std::rc::Rc;
 
-#[derive(Clone, Debug, Eq, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Default, Deserialize)]
 pub enum MarketResolution {
     #[default]
     Money,
     Price,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Default, Deserialize)]
 pub enum ParlamentResolution {
     #[default]
     Approval,
@@ -21,7 +23,7 @@ pub enum ParlamentResolution {
     Transfer,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Default, Deserialize)]
 pub enum ModifierType {
     // v = n
     Setter,
@@ -32,12 +34,24 @@ pub enum ModifierType {
     Multiplier,
 }
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Default, Deserialize)]
+pub enum ComponentId {
+    Botnet,
+    BotnetMalware,
+    BotnetMemes,
+    #[default]
+    Market,
+}
+
+#[derive(Clone, Deserialize)]
 #[serde(tag = "type", content = "data")]
 pub enum Effect {
     CreateEvent {
         source: String,
         description: String,
+    },
+    CreateLaw {
+        law: Rc<Law>,
     },
     MarketEffect {
         resolution: MarketResolution,
@@ -50,10 +64,19 @@ pub enum Effect {
         value: f32,
         party: usize,
     },
+    ShowComponent {
+        id: ComponentId,
+    },
 }
 
 impl Effect {
-    pub fn resolve(&self, market: &mut Market, parlament: &mut Parlament, news: &mut News) {
+    pub fn resolve(
+        &self,
+        botnet: &mut Botnet,
+        market: &mut Market,
+        parlament: &mut Parlament,
+        news: &mut News,
+    ) {
         match &self {
             Self::CreateEvent {
                 source,
@@ -61,6 +84,7 @@ impl Effect {
             } => news
                 .current
                 .push_front(Event::new(source.to_string(), description.to_string())),
+            Self::CreateLaw { law } => parlament.available_laws.push_back(law.clone()),
             Self::MarketEffect {
                 resolution,
                 modifier,
@@ -125,6 +149,12 @@ impl Effect {
                     }
                 };
             }
+            Self::ShowComponent { id } => match id {
+                ComponentId::Botnet => botnet.show = true,
+                ComponentId::BotnetMalware => botnet.show_memes = true,
+                ComponentId::BotnetMemes => botnet.show_memes = true,
+                ComponentId::Market => market.show = true,
+            },
         };
     }
 

@@ -10,12 +10,13 @@ pub struct Market {
     trading_time: f32,
     income_time: f32,
     history: VecDeque<f32>,
+    pub show: bool,
 }
 
 impl Market {
     pub fn new() -> Market {
         Market {
-            money: 100.,
+            money: 250.,
             price: 10.,
             trading_time: 0.,
             income_time: 0.,
@@ -23,6 +24,7 @@ impl Market {
                 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4, 9.6, 9.8, 10., 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4,
                 9.6, 9.8, 10., 9., 9.2, 8.9, 8.8, 9.1, 9.2, 9.4, 9.6, 9.8, 10.,
             ]),
+            show: false,
         }
     }
 }

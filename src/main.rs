@@ -47,37 +47,46 @@ async fn main() {
             break;
         }
 
-        botnet.update(&mut effects);
-        market.update(&mut effects);
+        if botnet.show {
+            botnet.update(&mut effects);
+        }
+        if market.show {
+            market.update(&mut effects);
+        }
         parlament.update(&mut effects);
         news.update(&mut effects);
         for effect in &mut effects {
-            effect.resolve(&mut market, &mut parlament, &mut news);
+            effect.resolve(&mut botnet, &mut market, &mut parlament, &mut news);
         }
         effects.clear();
 
         clear_background(COL_BG);
-        let market_id = hash!();
-        Window::new(market_id, Vec2::new(30., 50.), Vec2::new(250., 220.))
-            .label("Evil Inc. Stocks")
-            .movable(false)
-            .ui(&mut *root_ui(), |ui| {
-                ui.move_window(market_id, Vec2::new(30., 50.));
-                market.draw_on(ui, &font);
-            });
 
-        let botnet_id = hash!();
-        Window::new(
-            botnet_id,
-            Vec2::new(30., screen_height() * 0.5 - 125.),
-            Vec2::new(250., 300.),
-        )
-        .movable(false)
-        .label("Botnet")
-        .ui(&mut *root_ui(), |ui| {
-            ui.move_window(botnet_id, Vec2::new(30., screen_height() * 0.5 - 125.));
-            botnet.draw_on(ui, &font);
-        });
+        if market.show {
+            let market_id = hash!();
+            Window::new(market_id, Vec2::new(30., 50.), Vec2::new(250., 220.))
+                .label("Evil Inc. Stocks")
+                .movable(false)
+                .ui(&mut *root_ui(), |ui| {
+                    ui.move_window(market_id, Vec2::new(30., 50.));
+                    market.draw_on(ui, &font);
+                });
+        }
+
+        if botnet.show {
+            let botnet_id = hash!();
+            Window::new(
+                botnet_id,
+                Vec2::new(30., screen_height() * 0.5 - 125.),
+                Vec2::new(250., 300.),
+            )
+            .movable(false)
+            .label("Botnet")
+            .ui(&mut *root_ui(), |ui| {
+                ui.move_window(botnet_id, Vec2::new(30., screen_height() * 0.5 - 125.));
+                botnet.draw_on(ui, &font);
+            });
+        }
 
         parlament.draw_on(&mut *root_ui(), &font);
 

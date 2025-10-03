@@ -4,10 +4,10 @@ use crate::{
 };
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash, widgets::Group};
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::{collections::VecDeque, rc::Rc};
 
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Default, Deserialize)]
 pub struct Event {
     /// e.g. BOTNET-Auftrag
     pub source: String,
@@ -31,7 +31,7 @@ impl Event {
     }
 }
 
-#[derive(Debug, Default, Serialize, Deserialize)]
+#[derive(Default, Deserialize)]
 pub struct News {
     pub available: VecDeque<Event>,
     pub current: VecDeque<Event>,
