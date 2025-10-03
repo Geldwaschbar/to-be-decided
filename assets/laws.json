@@ -1,5 +1,18 @@
 [
     {
+        "title": "Ai Firmen",
+        "description": "Legalisiert, dass Firmen Ai's als CEOs haben dürfen",
+        "requiredApproval": 0.01,
+        "onSelfPassed": [
+            {
+                "type": "ShowComponent",
+                "data": {
+                    "id": "Market"
+                }
+            }
+        ]
+    },
+    {
         "title": "Wartewerbung",
         "description": "Warteperioden an Ampeln, in Fahrstühlen, im Bus, ... sollen effektiver für Unternehmenswerbung nutzbar sein",
         "requiredApproval": 0.45,
@@ -155,17 +168,25 @@
     {
         "title": "Üble Nachrede #1",
         "description": "Negative Äußerungen über den Geschmack von Teewurst werden strafrechtliche Konsequenzen mit sich bringen",
-        "requiredApproval": 0.6
-    },
-    {
-        "title": "Üble Nachrede #2",
-        "description": "Die radikalen Teewursthasser müssen gründlicher verfolgt werden, der Rat lässt bei Verdacht auf Teewurstbashing ein Eindringen in die Privatsphäre zu.",
-        "requiredApproval": 0.8
+        "requiredApproval": 0.5,
+        "onSelfPassed": [
+            {
+                "type": "CreateLaw",
+                "data": {
+                    "law": {
+                        "title": "Üble Nachrede #2",
+                        "description": "Die radikalen Teewursthasser müssen gründlicher verfolgt werden, der Rat lässt bei Verdacht auf Teewurstbashing ein Eindringen in die Privatsphäre zu.",
+                        "requiredApproval": 0.8
+                    }
+                }
+            }
+        ]
     },
     {
         "title": "Teewurst Diktatur",
         "description": "Gründung des ersten, galaktischen, Teewurst-Imperiums!",
         "requiredApproval": 1.0,
+        "publicity": -100.0,
         "onSelfPassed": [
             {
                 "type": "CreateEvent",
