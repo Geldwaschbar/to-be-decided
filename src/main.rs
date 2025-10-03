@@ -4,7 +4,7 @@ mod shader;
 
 use crate::{
     component::{Component, botnet::Botnet, market::Market, news::News, parlament::Parlament},
-    shader::{COL_BG, CRT_FRAGMENT_SHADER, CRT_VERTEX_SHADER, terminal_skin},
+    shader::{COL_BG, terminal_skin},
 };
 use macroquad::prelude::*;
 use macroquad::ui::{hash, root_ui, widgets::Window};
