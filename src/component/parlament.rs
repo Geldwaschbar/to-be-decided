@@ -1,7 +1,7 @@
 use crate::{
     component::{Component, wrap},
     effect::Effect,
-    shader::FONT_SIZE,
+    style::FONT_SIZE,
 };
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash, widgets::Group};

@@ -1,10 +1,10 @@
 mod component;
 mod effect;
-mod shader;
+mod style;
 
 use crate::{
     component::{Component, botnet::Botnet, market::Market, news::News, parlament::Parlament},
-    shader::{COL_BG, terminal_skin},
+    style::{COL_BG, terminal_skin},
 };
 use macroquad::prelude::*;
 use macroquad::ui::{hash, root_ui, widgets::Window};

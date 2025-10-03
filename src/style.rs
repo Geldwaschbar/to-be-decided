@@ -65,7 +65,7 @@ pub fn terminal_skin(ui: &mut Ui, font: &Font) -> Skin {
         .text_color(COL_SECONDARY)
         .text_color_hovered(SKYBLUE)
         .background(
-            Image::from_file_with_format(include_bytes!("../../assets/sprites/button.png"), None)
+            Image::from_file_with_format(include_bytes!("../assets/sprites/button.png"), None)
                 .unwrap(),
         )
         .color(COL_BG_ALT)

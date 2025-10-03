@@ -4,7 +4,7 @@ pub mod news;
 pub mod parlament;
 
 use crate::effect::Effect;
-use crate::shader::FONT_SIZE;
+use crate::style::FONT_SIZE;
 use macroquad::prelude::*;
 use macroquad::ui::Ui;
 use std::rc::Rc;
