@@ -96,7 +96,9 @@ async fn main() {
             );
             let mut law_pos = Vec2::new(5.0, 5.0);
             for law in &mut parlament.available_laws {
-                Rc::make_mut(law).draw_on(ui, &font, &mut law_pos, &mut market);
+                if law.publicity > 0.0 {
+                    Rc::make_mut(law).draw_on(ui, &font, &mut law_pos, &mut market);
+                }
             }
         });
 
