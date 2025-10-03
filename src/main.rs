@@ -25,25 +25,15 @@ fn window_conf() -> Conf {
 
 #[macroquad::main(window_conf)]
 async fn main() {
-    let render_target = render_target(320, 150);
-    render_target.texture.set_filter(FilterMode::Nearest);
-
-    //let material = load_material(
-    //    ShaderSource::Glsl {
-    //        vertex: CRT_VERTEX_SHADER,
-    //        fragment: CRT_FRAGMENT_SHADER,
-    //    },
-    //    Default::default(),
-    //)
-    //.unwrap();
-    let font : Font = load_ttf_font("./assets/fonts/Mx437_HP_100LX_16x12.ttf").await.unwrap();
+    let font: Font = load_ttf_font("./assets/fonts/Mx437_HP_100LX_16x12.ttf")
+        .await
+        .unwrap();
     let skin = terminal_skin(&mut *root_ui(), &font);
     root_ui().push_skin(&skin);
 
     let mut botnet = Botnet::new();
     let mut market = Market::new();
     let mut parlament = Parlament::new().await;
-    let mut law_pos : Vec2 = Vec2::ZERO; //TODO: find a better way to do this
     let mut news = News::new().await;
 
     let mut effects = Vec::new();
@@ -64,57 +54,48 @@ async fn main() {
         }
         effects.clear();
 
-        set_camera(&Camera2D {
-            render_target: Some(render_target.clone()),
-            ..Default::default()
-        });
-        //gl_use_material(&material);
         clear_background(COL_BG);
-
-        Window::new(hash!(), Vec2::new(30., 50.), Vec2::new(200., 220.))
+        Window::new(hash!(), Vec2::new(30., 50.), Vec2::new(250., 220.))
             .label("Evil Inc. Stocks")
             .ui(&mut *root_ui(), |ui| {
                 market.draw_on(ui, &font);
             });
 
-        Window::new(hash!(), Vec2::new(30., 200.), Vec2::new(200., 250.))
-            .label("Botnet")
-            .ui(&mut *root_ui(), |ui| {
-                botnet.draw_on(ui, &font);
-            });
+        Window::new(
+            hash!(),
+            Vec2::new(30., screen_height() - 125.),
+            Vec2::new(250., 300.),
+        )
+        .label("Botnet")
+        .ui(&mut *root_ui(), |ui| {
+            botnet.draw_on(ui, &font);
+        });
 
         parlament.draw_on(&mut *root_ui(), &font);
 
-        Window::new(hash!(), Vec2::new(screen_width()*0.5 - 300., 
-            screen_height()*0.5 + 200.), 
-            Vec2::new(600., screen_height()*0.5 - 200.))
-            .movable(false)
-            .label("Gesetze")
-            .ui(&mut *root_ui(), |ui| {
-                for law in &mut parlament.available_laws {
-                    Rc::make_mut(law).draw_on(ui, &font, &mut law_pos);
-                }
-                law_pos = Vec2::ZERO;
-            });
+        Window::new(
+            hash!(),
+            Vec2::new(screen_width() * 0.5 - 300., screen_height() * 0.5 + 200.),
+            Vec2::new(600., screen_height() * 0.5 - 200.),
+        )
+        .movable(false)
+        .label("Gesetze")
+        .ui(&mut *root_ui(), |ui| {
+            let mut law_pos = Vec2::new(5.0, 5.0);
+            for law in &mut parlament.available_laws {
+                Rc::make_mut(law).draw_on(ui, &font, &mut law_pos);
+            }
+        });
 
-        Window::new(hash!(), Vec2::new(480., 50.), Vec2::new(300., 500.))
-            .label("Neuigkeiten")
-            .ui(&mut *root_ui(), |ui| {
-                news.draw_on(ui, &font);
-            });
-
-        set_default_camera();
-        draw_texture_ex(
-            &render_target.texture,
-            0.,
-            0.,
-            WHITE,
-            DrawTextureParams {
-                dest_size: Some(Vec2::new(screen_width(), screen_height())),
-                ..Default::default()
-            },
-        );
-        gl_use_default_material();
+        Window::new(
+            hash!(),
+            Vec2::new(screen_width(), 50.),
+            Vec2::new(400., 500.),
+        )
+        .label("Neuigkeiten")
+        .ui(&mut *root_ui(), |ui| {
+            news.draw_on(ui, &font);
+        });
 
         next_frame().await;
     }

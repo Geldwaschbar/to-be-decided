@@ -56,19 +56,19 @@ impl Component for Market {
                 .expect("expected second stock market item");
             canvas.line(
                 Vec2::new(
-                    cursor.x + (i as f32 / markers as f32) * 180.,
+                    cursor.x + (i as f32 / markers as f32) * 250.,
                     cursor.y + 130. - (first - min) / (max - min) * 130.,
                 ),
                 Vec2::new(
-                    cursor.x + ((i + 1) as f32 / markers as f32) * 180.,
+                    cursor.x + ((i + 1) as f32 / markers as f32) * 250.,
                     cursor.y + 130. - (second - min) / (max - min) * 130.,
                 ),
                 if first <= second { GREEN } else { RED },
             );
         }
 
-        ui.label(Vec2::new(10., 140.), &format!("Money: {}", self.money));
-        ui.label(Vec2::new(10., 160.), &format!("Price: {}", self.price));
+        ui.label(Vec2::new(10., 140.), &format!("Geld: {}", self.money));
+        ui.label(Vec2::new(10., 160.), &format!("Preis: {}", self.price));
     }
 
     fn update(&mut self, _effects: &mut Vec<Rc<Effect>>) {

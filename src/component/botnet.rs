@@ -30,8 +30,8 @@ impl Component for Botnet {
     fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
         for line in wrap(
             &format!("Größe des Botnetzwerkes: {}", self.capacity as usize),
-            200.,
-            font
+            250.,
+            font,
         ) {
             ui.label(None, &line);
         }

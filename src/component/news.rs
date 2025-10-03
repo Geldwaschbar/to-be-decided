@@ -49,7 +49,7 @@ impl Component for News {
     fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
         let mut counter = 0;
         for event in &self.current {
-            let widget_size = Vec2::new(290., 80.);
+            let widget_size = Vec2::new(390., 80.);
             Group::new(hash!(counter, &event.description), widget_size).ui(ui, |ui| {
                 for line in wrap(&event.description, widget_size.x, font) {
                     ui.label(None, &line);

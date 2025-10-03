@@ -1,6 +1,7 @@
 use crate::{
-    component::{wrap, Component},
-    effect::Effect, shader::FONT_SIZE,
+    component::{Component, wrap},
+    effect::Effect,
+    shader::FONT_SIZE,
 };
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash, widgets::Group};
@@ -9,7 +10,7 @@ use std::{cmp::Ordering, collections::VecDeque, f64::consts::PI, rc::Rc};
 
 // TODO: increase voting time
 const VOTING_TIME: f32 = 10.;
-const LAW_MARGIN: Vec2 =  Vec2::new(0.,5.);
+const LAW_MARGIN: Vec2 = Vec2::new(0., 5.);
 
 #[derive(Debug)]
 pub struct Party {
@@ -43,37 +44,38 @@ pub struct Law {
 
 impl Law {
     pub fn draw_on(&mut self, ui: &mut Ui, font: &Font, pos: &mut Vec2) {
-        let law_width : f32 = 590.;
+        let law_width: f32 = 580.;
         let lines = wrap(&self.description, law_width, font);
-        let law_height = (3. + lines.len() as f32) *
-             {
-               let size = measure_text("Foo Bar", Some(font), FONT_SIZE, 1.);
-               size.height + size.offset_y
-             };
+        let law_height = (3. + lines.len() as f32) * {
+            let size = measure_text("Foo Bar", Some(font), FONT_SIZE, 1.);
+            size.height + size.offset_y
+        };
 
-        Group::new(hash!(&self.description), Vec2::new(law_width, law_height)).position(*pos).ui(ui, |ui| {
-            ui.label(None, &format!(" # {}", &self.title));
+        Group::new(hash!(&self.description), Vec2::new(law_width, law_height))
+            .position(*pos)
+            .ui(ui, |ui| {
+                ui.label(None, &format!(" # {}", &self.title));
 
-            for line in lines {
-                ui.label(None, &line);
-            }
+                for line in lines {
+                    ui.label(None, &line);
+                }
 
-            ui.label(
-                None,
-                &format!("Sichbarkeit in Bevölkerung: {}", self.publicity),
-            );
-            ui.separator();
-            let size = measure_text("Lobbyieren", Some(font), FONT_SIZE, 1.);
-            ui.same_line(0.5 * (law_width * 0.5 - size.width));
-            if ui.button(None, "Lobbyieren") {
-                self.publicity += 1.0;
-            }
-            let size = measure_text("Verleumden", Some(font), FONT_SIZE, 1.);
-            ui.same_line(0.5 * (law_width * 1.5 - size.width));
-            if ui.button(None, "Verleumden") {
-                self.publicity -= 1.0;
-            }
-        });
+                ui.label(
+                    None,
+                    &format!("Sichbarkeit in Bevölkerung: {}", self.publicity),
+                );
+                ui.separator();
+                let size = measure_text("Lobbyieren", Some(font), FONT_SIZE, 1.);
+                ui.same_line(0.5 * (law_width * 0.5 - size.width));
+                if ui.button(None, "Lobbyieren") {
+                    self.publicity += 1.0;
+                }
+                let size = measure_text("Verleumden", Some(font), FONT_SIZE, 1.);
+                ui.same_line(0.5 * (law_width * 1.5 - size.width));
+                if ui.button(None, "Verleumden") {
+                    self.publicity -= 1.0;
+                }
+            });
         *pos += Vec2::new(0., law_height) + LAW_MARGIN;
     }
 }
@@ -117,7 +119,10 @@ impl Parlament {
         };
 
         let passed_laws: VecDeque<Rc<Law>> = VecDeque::new();
-        let member_sprite = Texture2D::from_file_with_format(include_bytes!("../../assets/sprites/person.png"), None);
+        let member_sprite = Texture2D::from_file_with_format(
+            include_bytes!("../../assets/sprites/person.png"),
+            None,
+        );
         Parlament {
             parties,
             available_laws,
@@ -131,7 +136,7 @@ impl Parlament {
 impl Component for Parlament {
     fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
         let mut canvas = ui.canvas();
-        let cursor = Vec2::new(screen_width()*0.5 - 190.,screen_height()*0.5 - 190.);
+        let cursor = Vec2::new(screen_width() * 0.5 - 190., screen_height() * 0.5 - 190.);
 
         const TOTAL_SEATS: f32 = (5 * 4 + 4 * 3) as f32;
         let window_center = Vec2::new(380., 380.) * 0.5;
@@ -144,16 +149,12 @@ impl Component for Parlament {
                 let angle = arc as f32 / 8. * PI as f32;
                 // Draw a single parlament seat
                 let rect = Rect::new(
-                        window_center.x + cursor.x - angle.cos() * 40. * (row + 5 - base) as f32,
-                        window_center.y + cursor.y - angle.sin() * 40. * (row + 5 - base) as f32,
-                        20.0,
-                        20.0,
-                    );
-                canvas.rect(
-                    rect,
-                    Color::new(0.2, 0.2, 0.2, 1.0),
-                    party.color,
+                    window_center.x + cursor.x - angle.cos() * 40. * (row + 5 - base) as f32,
+                    window_center.y + cursor.y - angle.sin() * 40. * (row + 5 - base) as f32,
+                    20.0,
+                    20.0,
                 );
+                canvas.rect(rect, Color::new(0.2, 0.2, 0.2, 1.0), party.color);
                 canvas.image(rect, &self.member_sprite);
                 placed += (1.0 / party.popularity) / TOTAL_SEATS;
                 // If we draw 100% of a party, go to the next party.
@@ -191,7 +192,10 @@ impl Component for Parlament {
             let text = "Es wird über das nächste Gesetz abgestimmt.";
             let size = measure_text(text, Some(font), FONT_SIZE, 1.);
             ui.label(
-                Vec2::new(cursor.x + window_center.x - size.width * 0.5, cursor.y + window_center.y + 30.),
+                Vec2::new(
+                    cursor.x + window_center.x - size.width * 0.5,
+                    cursor.y + window_center.y + 30.,
+                ),
                 text,
             );
         }
@@ -200,7 +204,10 @@ impl Component for Parlament {
             let text = &format!("Es wird über \"{}\" abgestimmt.", law.title);
             let size = measure_text(text, Some(font), FONT_SIZE, 1.);
             ui.label(
-                Vec2::new(cursor.x + window_center.x - size.width * 0.5, cursor.y + window_center.x + 90.),
+                Vec2::new(
+                    cursor.x + window_center.x - size.width * 0.5,
+                    cursor.y + window_center.x + 90.,
+                ),
                 text,
             );
         }
@@ -217,7 +224,10 @@ impl Component for Parlament {
             );
             let size = measure_text(text, Some(font), FONT_SIZE, 1.);
             ui.label(
-                Vec2::new(cursor.x + window_center.x - size.width * 0.5, cursor.y + window_center.y + 110.),
+                Vec2::new(
+                    cursor.x + window_center.x - size.width * 0.5,
+                    cursor.y + window_center.y + 110.,
+                ),
                 text,
             );
         }
