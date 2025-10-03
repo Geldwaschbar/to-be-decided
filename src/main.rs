@@ -57,45 +57,59 @@ async fn main() {
         effects.clear();
 
         clear_background(COL_BG);
-        Window::new(hash!(), Vec2::new(30., 50.), Vec2::new(250., 220.))
+        let market_id = hash!();
+        Window::new(market_id, Vec2::new(30., 50.), Vec2::new(250., 220.))
             .label("Evil Inc. Stocks")
+            .movable(false)
             .ui(&mut *root_ui(), |ui| {
+                ui.move_window(market_id, Vec2::new(30., 50.));
                 market.draw_on(ui, &font);
             });
 
+        let botnet_id = hash!();
         Window::new(
-            hash!(),
+            botnet_id,
             Vec2::new(30., screen_height() * 0.5 - 125.),
             Vec2::new(250., 300.),
         )
+        .movable(false)
         .label("Botnet")
         .ui(&mut *root_ui(), |ui| {
+            ui.move_window(botnet_id, Vec2::new(30., screen_height() * 0.5 - 125.));
             botnet.draw_on(ui, &font);
         });
 
         parlament.draw_on(&mut *root_ui(), &font);
 
+        let laws_id = hash!();
         Window::new(
-            hash!(),
+            laws_id,
             Vec2::new(screen_width() * 0.5 - 300., screen_height() * 0.5 + 200.),
             Vec2::new(600., screen_height() * 0.5 - 200.),
         )
         .movable(false)
         .label("Gesetze")
         .ui(&mut *root_ui(), |ui| {
+            ui.move_window(
+                laws_id,
+                Vec2::new(screen_width() * 0.5 - 300., screen_height() * 0.5 + 200.),
+            );
             let mut law_pos = Vec2::new(5.0, 5.0);
             for law in &mut parlament.available_laws {
                 Rc::make_mut(law).draw_on(ui, &font, &mut law_pos, &mut market);
             }
         });
 
+        let news_id = hash!();
         Window::new(
-            hash!(),
+            news_id,
             Vec2::new(screen_width() * 0.85 - 200., 50.),
             Vec2::new(400., 500.),
         )
+        .movable(false)
         .label("Neuigkeiten")
         .ui(&mut *root_ui(), |ui| {
+            ui.move_window(news_id, Vec2::new(screen_width() * 0.85 - 200., 50.));
             news.draw_on(ui, &font);
         });
 
