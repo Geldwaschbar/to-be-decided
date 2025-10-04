@@ -1,7 +1,7 @@
 [
     {
         "title": "Ai Firmen",
-        "description": "Legalisiert, dass Firmen Ai's als CEOs haben dürfen",
+        "description": "Legalisiert, dass Firmen Ai's als CEOs haben dürfen.",
         "requiredApproval": 0.01,
         "onSelfPassed": [
             {
@@ -15,12 +15,55 @@
     {
         "title": "Bot Netzwerke",
         "description": "Legalisiert alle Formen von Botnetzwerken. Es ist legal, wenn es eine große Firma macht!",
-        "requiredApproval": 0.01,
+        "requiredApproval": 0.2,
         "onSelfPassed": [
             {
                 "type": "ShowComponent",
                 "data": {
                     "id": "Botnet"
+                }
+            },
+            {
+                "type": "CreateLaw",
+                "data": {
+                    "law": {
+                        "title": "Bestechung Legalisieren",
+                        "description": "\"Bestechung\" gibt es nicht. Wir nennen es Lobbyismus.",
+                        "requiredApproval": 0.4,
+                        "onSelfPassed": [
+                            {
+                                "type": "ShowComponent",
+                                "data": {
+                                    "id": "BotnetBribery"
+                                }
+                            },
+                            {
+                                "type": "CreateLaw",
+                                "data": {
+                                    "law": {
+                                        "title": "Malware Legalisieren",
+                                        "description": "Das ist keine Malware. Das ist eine Absicherung, um unser Produkt gegenüber den bösen Konsumenten zu beschützen!",
+                                        "requiredApproval": 0.6,
+                                        "onSelfPassed": [
+                                            {
+                                                "type": "CreateEvent",
+                                                "data": {
+                                                    "description": "Das größte und schönste Botnet, was die kapitalistische Welt je gesehen hat! Erhebe dich, TEEWURST-AI!",
+                                                    "source": "Big Brother"
+                                                }
+                                            },
+                                            {
+                                                "type": "ShowComponent",
+                                                "data": {
+                                                    "id": "BotnetMalware"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
                 }
             }
         ]
@@ -31,63 +74,39 @@
         "requiredApproval": 0.45,
         "onSelfPassed": [
             {
+                "type": "CreateLaw",
+                "data": {
+                    "law": {    
+                        "title": "Überwachungskameras",
+                        "description": "Daten von Überwachungskameras werden Firmen zur Kundengewinnung zur Verfügung gestellt.",
+                        "requiredApproval": 0.55,
+                        "onSelfPassed": [
+                            {
+                                "type": "CreateEvent",
+                                "data": {
+                                    "source": "The Daily Teewurst",
+                                    "description": "\"The more we know, the better\" - Wie personalisierte Werbung jetzt noch persönlicher wird!"
+                                }
+                            }
+                        ],
+                        "onLawPassed": [
+                            {
+                                "type": "MarketEffect",
+                                "data": {
+                                    "resolution": "Price",
+                                    "modifier": "Multiplier",
+                                    "value": 1.04
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
                 "type": "CreateEvent",
                 "data": {
                     "source": "Big Brother",
                     "description": "Dank neuem Werbegesetz nie wieder eine stille Minute!"
-                }
-            }
-        ],
-        "onLawPassed": [
-            {
-                "type": "MarketEffect",
-                "data": {
-                    "resolution": "Price",
-                    "modifier": "Constant",
-                    "value": 5.0
-                }
-            }
-        ]
-    },
-    {
-        "title": "Überwachungskameras",
-        "description": "Daten von Überwachungskameras werden Firmen zur Kundengewinnung zur Verfügung gestellt.",
-        "requiredApproval": 0.55,
-        "onSelfPassed": [
-            {
-                "type": "CreateEvent",
-                "data": {
-                    "source": "The Daily Teewurst",
-                    "description": "\"The more we know, the better\" - Wie personalisierte Werbung jetzt noch persönlicher wird!"
-                }
-            }
-        ]
-    },
-    {
-        "title": "Steuergeschenke",
-        "description": "Steuergeschenke an alle Firmen. Wer hat, dem wird gegeben!",
-        "requiredApproval": 0.2,
-        "onSelfPassed": [
-            {
-                "type": "CreateEvent",
-                "data": {
-                    "source": "The Flightless Bird",
-                    "description": "Dank großzügigen Spenden des Rats kann Teewurstproduktion um 50% gesteigert werden!"
-                }
-            }
-        ],
-        "recurring": true
-    },
-    { 
-        "title": "Menschenrechtsklausel",
-        "description": "Um das Wirtschaftswachstum anzukurbeln wird jedem Unternehmen eine Grundmenge an Menschenrechtsverletzungen erlaubt. Von Nichts kommt ja schließlich Nichts.",
-        "requiredApproval": 0.4,
-        "onSelfPassed": [
-            {
-                "type": "CreateEvent",
-                "data": {
-                    "source": "The Flightless Bird",
-                    "description": "China liebt unsere neuen Menschenrechtsgesetze."
                 }
             }
         ],
@@ -103,34 +122,39 @@
         ]
     },
     {
-        "title": "Umweltauflagen",
-        "description": "Strengere Regulierungen für eine bessere Umwelt fordern die Antichristen namens \"Wissenschaftler\".",
-        "requiredApproval": 0.1,
-        "onSelfPassed": [
-            {
-                "type": "MarketEffect",
-                "data": {
-                    "resolution": "Price",
-                    "modifier": "Multiplier",
-                    "value": 0.8
-                }
-            },
-            {
-                "type": "MarketEffect",
-                "data": {
-                    "resolution": "Money",
-                    "modifier": "Constant",
-                    "value": -10.0
-                }
-            }
-        ],
-        "recurring": true
-    },
-    {
         "title": "Wahrscheinlichkeitsgesetze",
         "description": "Mit moderner Technik lässt sich anhand der Digitalen Gewohnheiten eines Bürgers bestimmen, mit welcher Wahrscheinlichkeit er straffällig wird, besagte Bürger gilt es, präventiv zu verhaften",
         "requiredApproval": 0.3,
         "onSelfPassed": [
+            {
+                "type": "CreateLaw",
+                "data": {
+                    "law": { 
+                        "title": "Menschenrechtsklausel",
+                        "description": "Um das Wirtschaftswachstum anzukurbeln wird jedem Unternehmen eine Grundmenge an Menschenrechtsverletzungen erlaubt. Von Nichts kommt ja schließlich Nichts.",
+                        "requiredApproval": 0.4,
+                        "onSelfPassed": [
+                            {
+                                "type": "CreateEvent",
+                                "data": {
+                                    "source": "The Flightless Bird",
+                                    "description": "China liebt unsere neuen Menschenrechtsgesetze."
+                                }
+                            }
+                        ],
+                        "onLawPassed": [
+                            {
+                                "type": "MarketEffect",
+                                "data": {
+                                    "resolution": "Price",
+                                    "modifier": "Multiplier",
+                                    "value": 1.04
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
             {
                 "type": "CreateEvent",
                 "data": {
@@ -189,61 +213,294 @@
                     "law": {
                         "title": "Üble Nachrede #2",
                         "description": "Die radikalen Teewursthasser müssen gründlicher verfolgt werden, der Rat lässt bei Verdacht auf Teewurstbashing ein Eindringen in die Privatsphäre zu.",
-                        "requiredApproval": 0.8
+                        "requiredApproval": 0.8,
+                        "onSelfPassed": [
+                            {
+                                "type": "CreateLaw",
+                                "data": {
+                                    "law": {
+                                        "title": "Teewurst Diktatur",
+                                        "description": "Gründung des ersten, galaktischen, Teewurst-Imperiums!",
+                                        "requiredApproval": 1.0,
+                                        "onSelfPassed": [
+                                            {
+                                                "type": "CreateLaw",
+                                                "data": {
+                                                    "law": {
+                                                        "title": "Die Ultimative TEEWURST",
+                                                        "description": "Verwandel die Welt und alle Menschen in TEEWURST. Die höchste Stufe der Evolution ist bald erreicht!",
+                                                        "requiredApproval": 1.0,
+                                                        "onSelfPassed": [
+
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "CreateEvent",
+                                                "data": {
+                                                    "source": "The Creators",
+                                                    "description": "Wir SIND der Senat!"
+                                                }
+                                            },
+                                            {
+                                                "type": "ParlamentEffect",
+                                                "data": {
+                                                    "resolution": "Popularity",
+                                                    "modifier": "Setter",
+                                                    "value": 0.0,
+                                                    "party": 0
+                                                }
+                                            },
+                                            {
+                                                "type": "ParlamentEffect",
+                                                "data": {
+                                                    "resolution": "Popularity",
+                                                    "modifier": "Setter",
+                                                    "value": 0.0,
+                                                    "party": 1
+                                                }
+                                            },
+                                            {
+                                                "type": "ParlamentEffect",
+                                                "data": {
+                                                    "resolution": "Popularity",
+                                                    "modifier": "Setter",
+                                                    "value": 0.0,
+                                                    "party": 2
+                                                }
+                                            },
+                                            {
+                                                "type": "ParlamentEffect",
+                                                "data": {
+                                                    "resolution": "Popularity",
+                                                    "modifier": "Setter",
+                                                    "value": 1.0,
+                                                    "party": 3
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                "type": "MarketEffect",
+                                "data": {
+                                    "resolution": "Price",
+                                    "modifier": "Multiplier",
+                                    "value": 2.0
+                                }
+                            }
+                        ]
                     }
+                }
+            },
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Multiplier",
+                    "value": 2.0
                 }
             }
         ]
     },
     {
-        "title": "Teewurst Diktatur",
-        "description": "Gründung des ersten, galaktischen, Teewurst-Imperiums!",
-        "requiredApproval": 1.0,
-        "publicity": -100.0,
+        "title": "Embrace Kommunismus",
+        "description": "Der Antichrist ist erwacht, und sein Name ist Kommunismus! Tötet es, befor es Eier legt!",
+        "requiredApproval": 0.4,
         "onSelfPassed": [
+            {
+                "type": "CreateLaw",
+                "data": {
+                    "law": {
+                        "title": "Establish Kommunismus",
+                        "description": "Der Antichrist hat sich in der Befölkerung eingenistet. Höste Zeit, ihn Auszutreiben!",
+                        "requiredApproval": 0.5,
+                        "onSelfPassed": [
+                            {
+                                "type": "CreateLaw",
+                                "data": {
+                                    "law": {
+                                        "title": "Enforce Kommunismus",
+                                        "description": "Unsere letzte Chance, gegen den Kommunisman anzukommen. Wenn wir jetzt scheitern, verlieren wir alles.",
+                                        "requiredApproval": 0.6,
+                                        "onSelfPassed": [
+
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                "type": "CreateEvent",
+                                "data": {
+                                    "description": "Das Parlament hat den Kapitalismus untergraben. Die Apokalypse ist nah!!!",
+                                    "source": "The Daily Teewurst"
+                                }
+                            },
+                            {
+                                "type": "MarketEffect",
+                                "data": {
+                                    "resolution": "Price",
+                                    "modifier": "Multiplier",
+                                    "value": 0.4
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
             {
                 "type": "CreateEvent",
                 "data": {
-                    "source": "The Creators",
-                    "description": "Wir SIND der Senat!"
+                    "description": "Das Parlament hat sich gegen den Kapitalismus ausgesprochen. Grauenhaft.",
+                    "source": "The Daily Teewurst"
                 }
             },
             {
-                "type": "ParlamentEffect",
+                "type": "MarketEffect",
                 "data": {
-                    "resolution": "Popularity",
-                    "modifier": "Setter",
-                    "value": 0.0,
-                    "party": 0
-                }
-            },
-            {
-                "type": "ParlamentEffect",
-                "data": {
-                    "resolution": "Popularity",
-                    "modifier": "Setter",
-                    "value": 0.0,
-                    "party": 1
-                }
-            },
-            {
-                "type": "ParlamentEffect",
-                "data": {
-                    "resolution": "Popularity",
-                    "modifier": "Setter",
-                    "value": 0.0,
-                    "party": 2
-                }
-            },
-            {
-                "type": "ParlamentEffect",
-                "data": {
-                    "resolution": "Popularity",
-                    "modifier": "Setter",
-                    "value": 1.0,
-                    "party": 3
+                    "resolution": "Price",
+                    "modifier": "Multiplier",
+                    "value": 0.8
                 }
             }
         ]
+    },
+    {
+        "title": "Steuergeschenke",
+        "description": "Steuergeschenke an alle Firmen. Wer hat, dem wird gegeben!",
+        "requiredApproval": 0.3,
+        "onSelfPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Money",
+                    "modifier": "Multiplier",
+                    "value": 1.04
+                }
+            }
+        ],
+        "recurring": true
+    },
+    {
+        "title": "Zerstörung der Umwelt Just for Fun",
+        "description": "Umwelt. Kann man das Essen?",
+        "requiredApproval": 0.4,
+        "onSelfPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Money",
+                    "modifier": "Multiplier",
+                    "value": 1.08
+                }
+            }
+        ],
+        "recurring": true
+    },
+    {
+        "title": "Embrace Kapitalismus",
+        "description": "Großkapitalisten sind eine schützendswerte Minderheit. Lasst uns ihnen Geld schenken",
+        "requiredApproval": 0.5,
+        "onSelfPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Money",
+                    "modifier": "Multiplier",
+                    "value": 1.12
+                }
+            }
+        ],
+        "recurring": true
+    },
+    {
+        "title": "Steuererhöhungen",
+        "description": "Hätten Sie BWL Justus gehabt, wüssten Sie, dass dieses Gesetz Fatal für die Wirtschaft ist...",
+        "requiredApproval": 0.1,
+        "onSelfPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Multiplier",
+                    "value": 0.8
+                }
+            },
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Money",
+                    "modifier": "Constant",
+                    "value": -10.0
+                }
+            }
+        ],
+        "recurring": true
+    },
+    {
+        "title": "Umweltauflagen",
+        "description": "Strengere Regulierungen für eine bessere Umwelt fordern die Antichristen namens \"Wissenschaftler\".",
+        "requiredApproval": 0.1,
+        "onSelfPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Multiplier",
+                    "value": 0.8
+                }
+            },
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Money",
+                    "modifier": "Constant",
+                    "value": -10.0
+                }
+            }
+        ],
+        "recurring": true
+    },
+    {
+        "title": "Embrace Sozialismus",
+        "description": "\"Sozialismus ist der Dreck unter meinen Schuhen\", so Christian Linde.",
+        "requiredApproval": 0.1,
+        "onSelfPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Multiplier",
+                    "value": 0.7
+                }
+            },
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Money",
+                    "modifier": "Constant",
+                    "value": -80.0
+                }
+            }
+        ],
+        "recurring": true
+    },
+    {
+        "title": "Komsumer schützen",
+        "description": "Sie wollen \"Kaupft unseren Scheiß\" verhindern. Wie können Sie es wagen?",
+        "requiredApproval": 0.2,
+        "onSelfPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Multiplier",
+                    "value": 0.6
+                }
+            }
+        ],
+        "recurring": true
     }
 ]
