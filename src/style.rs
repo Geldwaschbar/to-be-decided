@@ -30,14 +30,14 @@ pub const COL_BAR_BG: Color = Color {
     r: 0.2,
     g: 0.2,
     b: 0.2,
-    a: 1.0
+    a: 1.0,
 };
 
 pub const USAGE_COLS: [Color; 4] = [
     MAGENTA, // crypto_mining
-    RED, // bribery
-    ORANGE, // memes
-    YELLOW, // malware
+    RED,     // bribery
+    ORANGE,  // memes
+    YELLOW,  // malware
 ];
 
 pub const FONT_SIZE: u16 = 10;

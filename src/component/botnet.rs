@@ -1,6 +1,7 @@
 use crate::{
-    component::{wrap, Component},
-    effect::{Effect, MarketResolution, ModifierType, ParlamentResolution}, style::{COL_BAR_BG, FONT_SIZE, USAGE_COLS},
+    component::{Component, wrap},
+    effect::{Effect, MarketResolution, ModifierType, ParlamentResolution},
+    style::{COL_BAR_BG, FONT_SIZE, USAGE_COLS},
 };
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash};
@@ -16,6 +17,7 @@ pub struct Botnet {
     pub show: bool,
     pub show_malware: bool,
     pub show_memes: bool,
+    pub show_bribery: bool,
 }
 
 impl Botnet {
@@ -31,6 +33,7 @@ impl Botnet {
             show: true,
             show_malware: true,
             show_memes: true,
+            show_bribery: true,
         }
     }
 }
@@ -39,36 +42,26 @@ impl Component for Botnet {
     fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
         let mut canvas = ui.canvas();
         let cursor = Vec2::new(30., screen_height() * 0.5 - 125.);
-        let window_size : Vec2 = Vec2::new(500., 500.);
+        let window_size: Vec2 = Vec2::new(500., 500.);
         let bar_width: f32 = window_size.x - 100.;
         // Draw usage bar chart
         canvas.rect(
-            Rect::new(
-                cursor.x + 50.,
-                cursor.y + 20.,
-                bar_width,
-                15.,
-            ),
+            Rect::new(cursor.x + 50., cursor.y + 20., bar_width, 15.),
             COL_BAR_BG,
-            COL_BAR_BG
+            COL_BAR_BG,
         );
         let mut prev_pos: f32 = 0.0;
         let mut col: usize = 0;
         for usage in [self.crypto_mining, self.bribery, self.memes, self.malware] {
             let usage_width: f32;
-            usage_width = usage/self.total_usage*bar_width;
+            usage_width = usage / self.total_usage * bar_width;
             canvas.rect(
-                Rect::new(
-                    cursor.x + 50. + prev_pos,
-                    cursor.y + 20.,
-                    usage_width,
-                    15.,
-                ),
+                Rect::new(cursor.x + 50. + prev_pos, cursor.y + 20., usage_width, 15.),
                 BLACK,
-                USAGE_COLS[col]
+                USAGE_COLS[col],
             );
             prev_pos += usage_width;
-            col+=1
+            col += 1
         }
 
         ui.label(None, "");
@@ -79,12 +72,16 @@ impl Component for Botnet {
             250.,
             font,
         ) {
-            ui.label(Some(Vec2::new(250.,20.)-get_text_center(&line, Some(&font), FONT_SIZE, 1., 0.)), &line);
+            ui.label(
+                Some(Vec2::new(250., 20.) - get_text_center(&line, Some(&font), FONT_SIZE, 1., 0.)),
+                &line,
+            );
         }
 
         ui.slider(hash!(), "Crypto Mining", 0.0..1.0, &mut self.crypto_mining);
-        ui.slider(hash!(), "Bestechung", 0.0..1.0, &mut self.bribery);
-
+        if self.show_bribery {
+            ui.slider(hash!(), "Bestechung", 0.0..1.0, &mut self.bribery);
+        }
         if self.show_memes {
             ui.slider(hash!(), "Memes", 0.0..1.0, &mut self.memes);
         }
@@ -101,8 +98,8 @@ impl Component for Botnet {
         self.total_usage = self.crypto_mining + self.malware + self.memes + self.bribery;
 
         if self.malware > 0. {
-            self.capacity +=
-                (self.malware / self.total_usage * get_frame_time()) / (self.capacity * self.capacity);
+            self.capacity += (self.malware / self.total_usage * get_frame_time())
+                / (self.capacity * self.capacity);
         }
         if self.memes > 0. {
             effects.push(Rc::new(Effect::ParlamentEffect {

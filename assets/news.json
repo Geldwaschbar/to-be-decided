@@ -76,6 +76,24 @@
                         "value": 0.05,
                         "party": 3
                     }
+                },
+                {
+                    "type": "CreateLaw",
+                    "data": {
+                        "law": {
+                            "title": "Memes für die FDP",
+                            "description": "Propaganda? Bah! Personalisierte Memes gemischt mit einem Hauch von Katze, damit die FDP mehr stimmen bekommt? Yeah!",
+                            "requiredApproval": 0.5,
+                            "onSelfPassed": [
+                                {
+                                    "type": "ShowComponent",
+                                    "data": {
+                                        "id": "BotnetMemes"
+                                    }
+                                }
+                            ]
+                        }
+                    }
                 }
             ],
             "chance": 0.008

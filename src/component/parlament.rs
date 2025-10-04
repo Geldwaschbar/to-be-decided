@@ -1,5 +1,5 @@
 use crate::{
-    component::{market::Market, wrap, Component},
+    component::{Component, market::Market, wrap},
     effect::Effect,
     style::{COL_BAR_BG, FONT_SIZE},
 };
@@ -45,7 +45,7 @@ pub struct Law {
 impl Law {
     pub fn draw_on(&mut self, ui: &mut Ui, font: &Font, pos: &mut Vec2, market: &mut Market) {
         let law_width: f32 = 580.;
-        let lines = wrap(&self.description, law_width-20., font);
+        let lines = wrap(&self.description, law_width - 20., font);
         let law_height = (5. + lines.len() as f32) * {
             let size = measure_text("Foo Bar", Some(font), FONT_SIZE, 1.);
             size.height + size.offset_y
@@ -66,7 +66,7 @@ impl Law {
                 if self.publicity != f32::INFINITY {
                     ui.label(
                         None,
-                        &format!("(?) Sichbarkeit in der Bevölkerung: {}", self.publicity)
+                        &format!("(?) Sichbarkeit in der Bevölkerung: {}", self.publicity),
                     );
                     ui.label(None, "");
                     ui.separator();
@@ -83,10 +83,7 @@ impl Law {
                         market.money -= 100.
                     }
                 } else {
-                    ui.label(
-                        None,
-                        &"(!) Der Rat entscheidet...",
-                    );
+                    ui.label(None, &"(!) Der Rat entscheidet...");
                 }
             });
         *pos += Vec2::new(0., law_height) + LAW_MARGIN;
@@ -150,7 +147,10 @@ impl Component for Parlament {
     fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
         let mut canvas = ui.canvas();
         let window_center = Vec2::new(380., 380.) * 0.5;
-        let cursor = Vec2::new(screen_width() * 0.5 - window_center.x, screen_height() * 0.5 - window_center.y);
+        let cursor = Vec2::new(
+            screen_width() * 0.5 - window_center.x,
+            screen_height() * 0.5 - window_center.y,
+        );
 
         const TOTAL_SEATS: f32 = (5 * 4 + 4 * 3) as f32;
         let mut placed = 0.;
@@ -187,7 +187,7 @@ impl Component for Parlament {
                 15.,
             ),
             COL_BAR_BG,
-            COL_BAR_BG
+            COL_BAR_BG,
         );
         let progress = self.voting_progress;
         canvas.rect(
