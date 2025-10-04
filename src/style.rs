@@ -26,6 +26,20 @@ pub const COL_SECONDARY: Color = Color {
     a: 1.0,
 };
 
+pub const COL_BAR_BG: Color = Color {
+    r: 0.2,
+    g: 0.2,
+    b: 0.2,
+    a: 1.0
+};
+
+pub const USAGE_COLS: [Color; 4] = [
+    MAGENTA, // crypto_mining
+    RED, // bribery
+    ORANGE, // memes
+    YELLOW, // malware
+];
+
 pub const FONT_SIZE: u16 = 10;
 
 pub fn terminal_skin(ui: &mut Ui, font: &Font) -> Skin {

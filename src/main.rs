@@ -78,7 +78,7 @@ async fn main() {
             Window::new(
                 botnet_id,
                 Vec2::new(30., screen_height() * 0.5 - 125.),
-                Vec2::new(250., 300.),
+                Vec2::new(500., 500.),
             )
             .movable(false)
             .label("Botnet")

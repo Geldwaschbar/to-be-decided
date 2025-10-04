@@ -1,7 +1,7 @@
 use crate::{
-    component::{Component, market::Market, wrap},
+    component::{market::Market, wrap, Component},
     effect::Effect,
-    style::FONT_SIZE,
+    style::{COL_BAR_BG, FONT_SIZE},
 };
 use macroquad::prelude::*;
 use macroquad::ui::{Ui, hash, widgets::Group};
@@ -149,10 +149,10 @@ impl Parlament {
 impl Component for Parlament {
     fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
         let mut canvas = ui.canvas();
-        let cursor = Vec2::new(screen_width() * 0.5 - 190., screen_height() * 0.5 - 190.);
+        let window_center = Vec2::new(380., 380.) * 0.5;
+        let cursor = Vec2::new(screen_width() * 0.5 - window_center.x, screen_height() * 0.5 - window_center.y);
 
         const TOTAL_SEATS: f32 = (5 * 4 + 4 * 3) as f32;
-        let window_center = Vec2::new(380., 380.) * 0.5;
         let mut placed = 0.;
         let mut party_num = 0;
         for arc in 0..9 {
@@ -186,8 +186,8 @@ impl Component for Parlament {
                 BAR_WIDTH,
                 15.,
             ),
-            Color::new(0.2, 0.2, 0.2, 1.0),
-            color_u8!(50, 50, 50, 255),
+            COL_BAR_BG,
+            COL_BAR_BG
         );
         let progress = self.voting_progress;
         canvas.rect(
