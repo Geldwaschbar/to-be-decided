@@ -45,8 +45,8 @@ pub struct Law {
 impl Law {
     pub fn draw_on(&mut self, ui: &mut Ui, font: &Font, pos: &mut Vec2, market: &mut Market) {
         let law_width: f32 = 580.;
-        let lines = wrap(&self.description, law_width, font);
-        let law_height = (3. + lines.len() as f32) * {
+        let lines = wrap(&self.description, law_width-20., font);
+        let law_height = (5. + lines.len() as f32) * {
             let size = measure_text("Foo Bar", Some(font), FONT_SIZE, 1.);
             size.height + size.offset_y
         };
@@ -54,17 +54,21 @@ impl Law {
         Group::new(hash!(&self.description), Vec2::new(law_width, law_height))
             .position(*pos)
             .ui(ui, |ui| {
-                ui.label(None, &format!(" # {}", &self.title));
-
+                ui.label(None, "");
+                ui.label(None, &format!("# {} #", &self.title));
+                ui.label(None, " .");
+                // draw law
                 for line in lines {
-                    ui.label(None, &line);
+                    ui.label(None, &format!(" | {}", line.trim()));
                 }
+                ui.label(None, "");
 
                 if self.publicity != f32::INFINITY {
                     ui.label(
                         None,
-                        &format!("Sichbarkeit in Bevölkerung: {}", self.publicity),
+                        &format!("(?) Sichbarkeit in der Bevölkerung: {}", self.publicity)
                     );
+                    ui.label(None, "");
                     ui.separator();
                     let size = measure_text("Lobbyieren", Some(font), FONT_SIZE, 1.);
                     ui.same_line(0.5 * (law_width * 0.5 - size.width));
@@ -78,6 +82,11 @@ impl Law {
                         self.publicity -= 1.0;
                         market.money -= 100.
                     }
+                } else {
+                    ui.label(
+                        None,
+                        &"(!) Der Rat entscheidet...",
+                    );
                 }
             });
         *pos += Vec2::new(0., law_height) + LAW_MARGIN;
