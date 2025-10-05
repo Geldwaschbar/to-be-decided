@@ -1,5 +1,5 @@
 use crate::{
-    component::{Component, wrap},
+    component::{Component, limit, wrap},
     effect::Effect,
 };
 use macroquad::prelude::*;
@@ -61,7 +61,7 @@ impl Component for News {
     }
 
     fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {
-        self.real_time += get_frame_time();
+        self.real_time += limit(get_frame_time(), 5.0);
         if self.real_time >= 1. {
             let mut triggered = Vec::new();
             let mut i = 0;

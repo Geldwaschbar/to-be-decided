@@ -1,5 +1,5 @@
 use crate::{
-    component::{Component, market::Market, wrap},
+    component::{Component, limit, market::Market, wrap},
     effect::Effect,
     style::{COL_BAR_BG, FONT_SIZE},
 };
@@ -250,7 +250,7 @@ impl Component for Parlament {
     }
 
     fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {
-        self.voting_progress += get_frame_time() / VOTING_TIME;
+        self.voting_progress += limit(get_frame_time(), 5.0) / VOTING_TIME;
         let progress = self.voting_progress;
         if progress >= 1. {
             let law = self.available_laws.front().expect("expected law exists");

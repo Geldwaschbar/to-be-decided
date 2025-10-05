@@ -1,5 +1,5 @@
 use crate::{
-    component::{Component, wrap},
+    component::{Component, limit, wrap},
     effect::{Effect, MarketResolution, ModifierType, ParlamentResolution},
     style::{COL_BAR_BG, FONT_SIZE, USAGE_COLS},
 };
@@ -95,17 +95,19 @@ impl Component for Botnet {
     }
 
     fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {
-        self.total_usage = self.crypto_mining + self.malware + self.memes + self.bribery;
+        self.total_usage =
+            self.capacity / (self.crypto_mining + self.malware + self.memes + self.bribery);
 
+        let frame_time = limit(get_frame_time(), 5.0);
         if self.malware > 0. {
-            self.capacity += (self.malware / self.total_usage * get_frame_time())
+            self.capacity += (self.malware / self.total_usage * 0.001 * frame_time)
                 / (self.capacity * self.capacity);
         }
         if self.memes > 0. {
             effects.push(Rc::new(Effect::ParlamentEffect {
                 resolution: ParlamentResolution::Transfer,
                 modifier: ModifierType::Constant,
-                value: self.memes / self.total_usage * self.capacity * 0.00008 * get_frame_time(),
+                value: self.memes / self.total_usage * 0.00008 * frame_time,
                 party: 3,
             }));
         }
@@ -113,14 +115,14 @@ impl Component for Botnet {
             effects.push(Rc::new(Effect::MarketEffect {
                 resolution: MarketResolution::Money,
                 modifier: ModifierType::Constant,
-                value: self.crypto_mining / self.total_usage * self.capacity * get_frame_time(),
+                value: self.crypto_mining / self.total_usage * 0.1 * frame_time,
             }));
         }
         if self.bribery > 0. {
             effects.push(Rc::new(Effect::ParlamentEffect {
                 resolution: ParlamentResolution::Approval,
                 modifier: ModifierType::Constant,
-                value: self.bribery / self.total_usage * self.capacity * 0.0001 * get_frame_time(),
+                value: self.bribery / self.total_usage * 0.0001 * frame_time,
                 party: rand::gen_range(0, 2),
             }));
         }

@@ -35,3 +35,7 @@ pub fn wrap(text: &str, max_width: f32, font: &Font) -> Vec<String> {
     lines.push(builder);
     lines
 }
+
+pub fn limit(value: f32, max: f32) -> f32 {
+    return if value > max { max } else { value };
+}

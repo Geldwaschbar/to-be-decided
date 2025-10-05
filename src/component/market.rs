@@ -1,4 +1,7 @@
-use crate::{component::Component, effect::Effect};
+use crate::{
+    component::{Component, limit},
+    effect::Effect,
+};
 use macroquad::prelude::*;
 use macroquad::ui::Ui;
 use std::{collections::VecDeque, rc::Rc};
@@ -75,8 +78,9 @@ impl Component for Market {
     }
 
     fn update(&mut self, _effects: &mut Vec<Rc<Effect>>) {
-        self.trading_time += get_frame_time();
-        self.income_time += get_frame_time();
+        let frame_time = limit(get_frame_time(), 5.0);
+        self.trading_time += frame_time;
+        self.income_time += frame_time;
         if self.trading_time >= 1. {
             self.history.push_back(self.price);
             self.price *= rand::gen_range(0.96, 1.05);
