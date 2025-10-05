@@ -29,7 +29,9 @@ To play locally, run the project with `cargo run` or, if you are on NixOS, use `
 
 ## Credits
 
-Font by VileR (https://int10h.org/)
+- Game by Leo, Janik and Karl
+- Font by VileR (https://int10h.org/)
+- Sound by 101soundboards (https://www.101soundboards.com/sounds/27014532-old-pc-turn-on-boot-turn-off-turn-on-old-personal-turn-off-boot-at-magedu)
 
 ## Disclaimer
 
