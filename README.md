@@ -15,11 +15,13 @@ To play locally, run the project with `cargo run` or, if you are on NixOS, use `
 ## Controls
 
 > [!WARNING]
-> This game does not support mobile devices and should be played with a resolution of 1920x1080 or higher.
+> This game does not support mobile devices and should be played with a resolution of 1920x1080.
 
-'To Be Decided' is controlled using either a mouse or touchpad. You can click and drag a window with your left mouse button to move it.
+'To Be Decided' is controlled using either a mouse or touchpad. You can interact with the UI by clicking buttons, dragging sliders and scrolling the law and news containers.
 
 ## Features
+> [!NOTE]
+> This game is still a work in progress and may not be considered playable by some.
 
 - **The Parliament** decides on a law every day. It will decide on the law with the highest visibility. You can increase or decrease the visibility of a law by lobbying for or against it. Lobbying costs $100. Whenever a law is passed, it affects the parliament and stock market directly.
 - **The stock market** represents your success in managing Evil Inc. Every day, your money will increase by 10% of the current stock market price. Money is the primary resource for influencing parliament.
