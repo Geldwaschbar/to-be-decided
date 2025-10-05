@@ -74,10 +74,7 @@ impl Law {
                 ui.label(None, "");
 
                 if self.publicity != f32::INFINITY {
-                    ui.label(
-                        None,
-                        &format!("(?) Sichbarkeit in der Bevölkerung: {}", self.publicity),
-                    );
+                    ui.label(None, &format!("(?) Priorität: {}", self.publicity));
                     ui.label(None, "");
                     ui.separator();
                     let size = measure_text("Lobbyieren", Some(font), FONT_SIZE, 1.);
