@@ -6,4 +6,5 @@ pub enum GameState {
     Running,
     Won,
     Lost,
+    Startup,
 }
