@@ -34,15 +34,19 @@ cp ./target/wasm32-unknown-unknown/release/to-be-decided.wasm ./deploy/
 cp site/* ./deploy/
 cp -r assets/ ./deploy/
 cd deploy/ # Create zip file
-zip -r -9 to-be-decided.zip ./*
+zip -r -9 to-be-decided-web.zip ./*
 ```
 
 If you want to build for linux, please run the following commands:
 
 ```sh
-mkdir -p ./deploy
+rm -fr ./deploy # Remove old files
 cargo build --release --target x86_64-unknown-linux-gnu
+mkdir -p ./deploy # Create deploy and copy all files
 cp ./target/x86_64-unknown-linux-gnu/release/to-be-decided ./deploy/
+cp -r assets/ ./deploy/
+cd deploy/ # Create zip file
+zip -r -9 to-be-decided-86_64-linux.zip ./*
 ```
 
 ## Commit Messages
