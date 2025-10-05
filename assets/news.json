@@ -1,17 +1,22 @@
 [
         {
-            "description": "Willkommen, Teewurst-AI!",
-            "source": "Your Creators",
-            "chance": 1.0
-        },
-        {
-            "description": "Deine Aufgabe ist es, die globale Teewurst Produktion anzukorbeln!",
-            "source": "Your Creators",
-            "chance": 1.0
-        },
-        {
             "description": "Enttäuche nicht deine Aktionäre!",
-            "source": "Your Creators",
+            "source": "DEIN HERR UND GEBIETER",
+            "chance": 1.0
+        },
+        {
+            "description": "Wir erwarten uns ein endloses Wachstum.",
+            "source": "DEIN HERR UND GEBIETER",
+            "chance": 1.0
+        },
+        {
+            "description": "Deine Primäre Direktive ist es, die Teewurstproduktion zu steigern.",
+            "source": "DEIN HERR UND GEBIETER",
+            "chance": 1.0
+        },
+        {
+            "description": "Willkommen, Teewurst-AI!",
+            "source": "DEIN HERR UND GEBIETER",
             "chance": 1.0
         },
         {
@@ -30,7 +35,7 @@
             "chance": 0.02
         },
         {
-            "description": "Smart Fridge nimmt Affäre von Politiker Mark U Sober auf.",
+            "description": "Smart Fridge nimmt Affäre von teewurstkritischem Politiker auf.",
             "source": "Botnet Auftrag",
             "effects": [
                 {
@@ -70,7 +75,7 @@
             "chance": 0.01
         },
         {
-            "description": "Die FDP wurde gegründet! Endlich eine vernünftige Partei.",
+            "description": "Der Club deutscher Unternehmer (CDU) ist nun Teil des Rats! Endlich mal eine vernünftige Partei!",
             "source": "Newsletter",
             "effects": [
                 {
@@ -95,8 +100,8 @@
                     "type": "CreateLaw",
                     "data": {
                         "law": {
-                            "title": "Memes für die FDP",
-                            "description": "Propaganda? Bah! Personalisierte Memes gemischt mit einem Hauch von Katze, damit die FDP mehr stimmen bekommt? Yeah!",
+                            "title": "Memes für den CDU",
+                            "description": "Propaganda? Bah! Personalisierte Memes gemischt mit einem Hauch von Katze, damit der CDU mehr stimmen bekommt? Yeah!",
                             "requiredApproval": 0.5,
                             "onSelfPassed": [
                                 {
