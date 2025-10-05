@@ -122,7 +122,7 @@ impl Component for Botnet {
             effects.push(Rc::new(Effect::MarketEffect {
                 resolution: MarketResolution::Money,
                 modifier: ModifierType::Constant,
-                value: self.crypto_mining / total_usage * 0.1 * frame_time,
+                value: self.crypto_mining / total_usage * 0.02 * frame_time,
             }));
         }
         if self.bribery > 0. {
