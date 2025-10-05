@@ -36,11 +36,10 @@ impl Botnet {
             memes: 0.0,
             crypto_mining: 0.0,
             bribery: 0.0,
-            //TODO: change these to false
-            show: true,
-            show_malware: true,
-            show_memes: true,
-            show_bribery: true,
+            show: false,
+            show_malware: false,
+            show_memes: false,
+            show_bribery: false,
         }
     }
 }
