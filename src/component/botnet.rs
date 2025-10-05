@@ -96,6 +96,8 @@ impl Component for Botnet {
             ui.slider(hash!(), "Malware", 0.0..1.0, &mut self.malware);
         }
 
+        ui.label(None, "");
+        ui.same_line(300. * 0.5);
         if ui.button(None, "Sende Spammail") {
             self.capacity += 1.;
             play_sound_once(&self.sound);
