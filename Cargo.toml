@@ -7,6 +7,6 @@ repository = "https://github.com/Geldwaschbär/raylib-wasm-template.git"
 license = "MIT"
 
 [dependencies]
-macroquad = "0.4.14"
+macroquad = { version = "0.4.14", features = ["audio"] }
 serde = { version = "1.0.228", features = ["derive", "rc"] }
 serde_json = "1.0.145"

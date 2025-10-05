@@ -47,11 +47,11 @@
             ];
           })
           rust-analyzer
+          alsa-lib # macroquad sound
         ];
         devDependencies = with pkgs; [
           bacon
           sccache
-          nodejs
           minify # minify bundle js
         ];
         libDependencies = with pkgs; [
