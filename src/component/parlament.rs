@@ -159,6 +159,17 @@ impl Parlament {
         }
     }
 
+    pub fn get_next_party(&self, party_number: &mut usize) -> Option<&Party> {
+        while let Some(party) = self.parties.get(*party_number) {
+            if party.popularity > 0. {
+                return Some(party);
+            } else {
+                *party_number += 1;
+            }
+        }
+        None
+    }
+
     pub fn draw_seats(&self, window_center: &Vec2, cursor: &Vec2, canvas: &mut DrawCanvas<'_>) {
         const TOTAL_SEATS: f32 = (5 * 4 + 4 * 3) as f32;
         let mut placed = 0.;
@@ -166,30 +177,23 @@ impl Parlament {
         for arc in 0..9 {
             let base = if arc % 2 == 0 { 4 } else { 3 };
             for row in 0..base {
-                let mut party = self.parties.get(party_num).expect("expect party exists");
-                while party.popularity <= 0. {
-                    party_num += 1;
-                    if let Some(p) = self.parties.get(party_num) {
-                        party = p;
-                    } else {
-                        return;
+                if let Some(party) = self.get_next_party(&mut party_num) {
+                    let angle = arc as f32 / 8. * PI as f32;
+                    // Draw a single parlament seat
+                    let rect = Rect::new(
+                        window_center.x + cursor.x - angle.cos() * 40. * (row + 5 - base) as f32,
+                        window_center.y + cursor.y - angle.sin() * 40. * (row + 5 - base) as f32,
+                        20.0,
+                        20.0,
+                    );
+                    canvas.rect(rect, Color::new(0.2, 0.2, 0.2, 1.0), party.color);
+                    canvas.image(rect, &self.member_sprite);
+                    placed += (1.0 / party.popularity) / TOTAL_SEATS;
+                    // If we draw 100% of a party, go to the next party.
+                    if placed >= 1. {
+                        placed = 0.;
+                        party_num += 1;
                     }
-                }
-                let angle = arc as f32 / 8. * PI as f32;
-                // Draw a single parlament seat
-                let rect = Rect::new(
-                    window_center.x + cursor.x - angle.cos() * 40. * (row + 5 - base) as f32,
-                    window_center.y + cursor.y - angle.sin() * 40. * (row + 5 - base) as f32,
-                    20.0,
-                    20.0,
-                );
-                canvas.rect(rect, Color::new(0.2, 0.2, 0.2, 1.0), party.color);
-                canvas.image(rect, &self.member_sprite);
-                placed += (1.0 / party.popularity) / TOTAL_SEATS;
-                // If we draw 100% of a party, go to the next party.
-                if placed >= 1. {
-                    placed = 0.;
-                    party_num += 1;
                 }
             }
         }
