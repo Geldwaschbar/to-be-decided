@@ -73,8 +73,14 @@ impl Component for Market {
             );
         }
 
-        ui.label(Vec2::new(10., 140.), &format!("Geld: {}", self.money));
-        ui.label(Vec2::new(10., 160.), &format!("Preis: {}", self.price));
+        ui.label(
+            Vec2::new(10., 140.),
+            &format!("Geld: {}$", (self.money * 100.).floor() / 100.),
+        );
+        ui.label(
+            Vec2::new(10., 160.),
+            &format!("Preis: {}$", (self.price * 100.).floor() / 100.),
+        );
     }
 
     fn update(&mut self, _effects: &mut Vec<Rc<Effect>>) {
