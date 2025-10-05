@@ -33,20 +33,15 @@ fn window_conf() -> Conf {
 
 #[macroquad::main(window_conf)]
 async fn main() {
+    // Font and Skin
     let font: Font = load_ttf_font("./assets/fonts/Mx437_HP_100LX_16x12.ttf")
         .await
         .unwrap();
     let skin = terminal_skin(&mut *root_ui(), &font);
     root_ui().push_skin(&skin);
+
+    // Sound
     let loop_sound = load_sound_from_bytes(include_bytes!("../assets/audio/loop.wav"))
-        .await
-        .ok()
-        .unwrap();
-    let action_ok = load_sound_from_bytes(include_bytes!("../assets/audio/action_ok.wav"))
-        .await
-        .ok()
-        .unwrap();
-    let action_err = load_sound_from_bytes(include_bytes!("../assets/audio/action_err.wav"))
         .await
         .ok()
         .unwrap();
@@ -57,6 +52,22 @@ async fn main() {
             volume: 1.0,
         },
     );
+    let action_ok = load_sound_from_bytes(include_bytes!("../assets/audio/action_ok.wav"))
+        .await
+        .ok()
+        .unwrap();
+    let action_err = load_sound_from_bytes(include_bytes!("../assets/audio/action_err.wav"))
+        .await
+        .ok()
+        .unwrap();
+
+    // Screens
+    let start_screen = load_texture("assets/screens/start_scr.png").await.unwrap();
+    start_screen.set_filter(FilterMode::Nearest);
+    let win_screen = load_texture("assets/screens/win_scr.png").await.unwrap();
+    start_screen.set_filter(FilterMode::Nearest);
+    let lost_screen = load_texture("assets/screens/lost_scr.png").await.unwrap();
+    start_screen.set_filter(FilterMode::Nearest);
 
     let mut botnet = Botnet::new().await;
     let mut market = Market::new();
@@ -75,10 +86,17 @@ async fn main() {
         }
 
         if state == GameState::Starting {
-            // TODO: add real starting scene
-            let ui = &mut *root_ui();
-            ui.label(None, "To Be Decided");
-            if ui.button(None, "Start Game") {
+            draw_texture_ex(
+                &start_screen,
+                0.0,
+                0.0,
+                WHITE,
+                DrawTextureParams {
+                    dest_size: Some(Vec2::new(screen_width(), screen_height())),
+                    ..Default::default()
+                },
+            );
+            if !get_keys_pressed().is_empty() {
                 state = GameState::Running;
             }
         } else if state == GameState::Running {
@@ -172,10 +190,17 @@ async fn main() {
                 news.draw_on(ui, &font);
             });
         } else if state == GameState::Won {
-            // TODO: add real game ending screen
-            let ui = &mut *root_ui();
-            ui.label(None, "Congratulations, you successfully created your own dictatorship. You won the game!");
-            if ui.button(None, "Restart Game") {
+            draw_texture_ex(
+                &win_screen,
+                0.0,
+                0.0,
+                WHITE,
+                DrawTextureParams {
+                    dest_size: Some(Vec2::new(screen_width(), screen_height())),
+                    ..Default::default()
+                },
+            );
+            if !get_keys_pressed().is_empty() {
                 state = GameState::Running;
 
                 // Reset all entities
@@ -185,13 +210,17 @@ async fn main() {
                 news = News::new().await;
             }
         } else {
-            // TODO: add real game ending screen
-            let ui = &mut *root_ui();
-            ui.label(
-                None,
-                "The communists took everything from you. You lost the game!",
+            draw_texture_ex(
+                &lost_screen,
+                0.0,
+                0.0,
+                WHITE,
+                DrawTextureParams {
+                    dest_size: Some(Vec2::new(screen_width(), screen_height())),
+                    ..Default::default()
+                },
             );
-            if ui.button(None, "Restart Game") {
+            if !get_keys_pressed().is_empty() {
                 state = GameState::Running;
 
                 // Reset all entities
