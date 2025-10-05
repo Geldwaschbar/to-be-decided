@@ -154,7 +154,7 @@ impl Parlament {
             parties,
             available_laws,
             passed_laws,
-            voting_progress: 0.9,
+            voting_progress: 0.5,
             member_sprite,
         }
     }

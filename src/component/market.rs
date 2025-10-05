@@ -63,21 +63,43 @@ impl Component for Market {
                 .expect("expected second stock market item");
 
             let start_pos = Vec2::new(
-                    cursor.x + 0.125 * window_size.x + (i as f32 / markers as f32) * window_size.x * 0.75,
-                    cursor.y + 20. + window_size.y - (first - min) / (max - min) * window_size.y,
-                );
+                cursor.x
+                    + 0.125 * window_size.x
+                    + (i as f32 / markers as f32) * window_size.x * 0.75,
+                cursor.y + 20. + window_size.y - (first - min) / (max - min) * window_size.y,
+            );
             let end_pos = Vec2::new(
-                    cursor.x + 0.125 * window_size.x + ((i + 1) as f32 / markers as f32) * window_size.x * 0.75,
-                    cursor.y + 20. + window_size.y - (second - min) / (max - min) * window_size.y,
-                );
+                cursor.x
+                    + 0.125 * window_size.x
+                    + ((i + 1) as f32 / markers as f32) * window_size.x * 0.75,
+                cursor.y + 20. + window_size.y - (second - min) / (max - min) * window_size.y,
+            );
 
-            if first > second { 
-                canvas.rect( 
-                    Rect { x: start_pos.x, y: cursor.y + 20., w: end_pos.x-start_pos.x, h: window_size.y }, 
-                    Color {r: 0., g: 0., b: 0., a:0.}, Color {r: 1., g: 0., b: 0., a:0.15} );
+            if first > second {
+                canvas.rect(
+                    Rect {
+                        x: start_pos.x,
+                        y: cursor.y + 20.,
+                        w: end_pos.x - start_pos.x,
+                        h: window_size.y,
+                    },
+                    Color {
+                        r: 0.,
+                        g: 0.,
+                        b: 0.,
+                        a: 0.,
+                    },
+                    Color {
+                        r: 1.,
+                        g: 0.,
+                        b: 0.,
+                        a: 0.15,
+                    },
+                );
             };
             canvas.line(
-                start_pos, end_pos,
+                start_pos,
+                end_pos,
                 if first <= second { GREEN } else { RED },
             );
         }
