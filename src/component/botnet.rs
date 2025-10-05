@@ -13,7 +13,6 @@ use std::rc::Rc;
 pub struct Botnet {
     sound: Sound,
     pub capacity: f32,
-    total_usage: f32,
     malware: f32,
     memes: f32,
     crypto_mining: f32,
@@ -33,7 +32,6 @@ impl Botnet {
         Botnet {
             sound,
             capacity: 1.0,
-            total_usage: 0.0,
             malware: 0.0,
             memes: 0.0,
             crypto_mining: 0.0,
@@ -61,9 +59,10 @@ impl Component for Botnet {
         );
         let mut prev_pos: f32 = 0.0;
         let mut col: usize = 0;
+        let total_usage = self.crypto_mining + self.bribery + self.memes + self.malware;
         for usage in [self.crypto_mining, self.bribery, self.memes, self.malware] {
             let usage_width: f32;
-            usage_width = usage / self.total_usage * bar_width;
+            usage_width = usage / total_usage * bar_width;
             canvas.rect(
                 Rect::new(cursor.x + 50. + prev_pos, cursor.y + 20., usage_width, 15.),
                 BLACK,
@@ -105,19 +104,19 @@ impl Component for Botnet {
     }
 
     fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {
-        self.total_usage =
+        let total_usage =
             self.capacity / (self.crypto_mining + self.malware + self.memes + self.bribery);
 
         let frame_time = limit(get_frame_time(), 5.0);
         if self.malware > 0. {
-            self.capacity += (self.malware / self.total_usage * 0.001 * frame_time)
-                / (self.capacity * self.capacity);
+            self.capacity +=
+                (self.malware / total_usage * 0.001 * frame_time) / (self.capacity * self.capacity);
         }
         if self.memes > 0. {
             effects.push(Rc::new(Effect::ParlamentEffect {
                 resolution: ParlamentResolution::Transfer,
                 modifier: ModifierType::Constant,
-                value: self.memes / self.total_usage * 0.00008 * frame_time,
+                value: self.memes / total_usage * 0.00008 * frame_time,
                 party: 3,
             }));
         }
@@ -125,14 +124,14 @@ impl Component for Botnet {
             effects.push(Rc::new(Effect::MarketEffect {
                 resolution: MarketResolution::Money,
                 modifier: ModifierType::Constant,
-                value: self.crypto_mining / self.total_usage * 0.1 * frame_time,
+                value: self.crypto_mining / total_usage * 0.1 * frame_time,
             }));
         }
         if self.bribery > 0. {
             effects.push(Rc::new(Effect::ParlamentEffect {
                 resolution: ParlamentResolution::Approval,
                 modifier: ModifierType::Constant,
-                value: self.bribery / self.total_usage * 0.0001 * frame_time,
+                value: self.bribery / total_usage * 0.0001 * frame_time,
                 party: rand::gen_range(0, 2),
             }));
         }
