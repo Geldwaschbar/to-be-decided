@@ -95,15 +95,15 @@ async fn main() {
             );
             if !get_keys_pressed().is_empty() {
                 play_sound(
-                    &loop_sound,
-                    PlaySoundParams {
-                        looped: true,
+                    &startup_sound,
+                        PlaySoundParams {
+                        looped: false,
                         volume: 1.0,
                     },
                 );
                 play_sound(
-                    &startup_sound,
-                        PlaySoundParams {
+                    &loop_sound,
+                    PlaySoundParams {
                         looped: true,
                         volume: 1.0,
                     },
