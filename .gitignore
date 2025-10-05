@@ -1,3 +1,4 @@
 target/
+deploy/
 result
 .pre-commit-config.yaml
