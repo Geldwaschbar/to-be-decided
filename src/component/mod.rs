@@ -27,7 +27,7 @@ pub fn wrap(text: &str, max_width: f32, font: &Font) -> Vec<String> {
         if new_size >= max_width - 20.0 {
             lines.push(builder);
             builder = String::new();
-        } else {
+        } else if !builder.is_empty() {
             builder.push_str(" ");
         }
         builder.push_str(word);
