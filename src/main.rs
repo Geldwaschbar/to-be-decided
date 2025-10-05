@@ -102,7 +102,7 @@ async fn main() {
                     },
                 );
                 play_sound(
-                    &loop_sound,
+                    &startup_sound,
                         PlaySoundParams {
                         looped: true,
                         volume: 1.0,
