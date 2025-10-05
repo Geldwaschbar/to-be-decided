@@ -29,10 +29,9 @@ If you want to build your own web deploy, please run the following commands:
 ```sh
 rm -fr ./deploy # Remove old files
 cargo build --release --target wasm32-unknown-unknown # Build WASM
-mkdir -p ./deploy # Create deploy and copy all files
-cp ./target/wasm32-unknown-unknown/release/to-be-decided.wasm ./deploy/
-cp site/* ./deploy/
-cp -r assets/ ./deploy/
+mkdir -p ./deploy/assets/ # Create deploy and copy all files
+cp -r site/* ./target/wasm32-unknown-unknown/release/to-be-decided.wasm ./deploy/
+cp -r assets/fonts/ assets/screens/ assets/sprites/ assets/laws.json assets/news.json ./deploy/assets/
 cd deploy/ # Create zip file
 zip -r -9 to-be-decided-web.zip ./*
 ```
@@ -41,10 +40,10 @@ If you want to build for linux, please run the following commands:
 
 ```sh
 rm -fr ./deploy # Remove old files
-cargo build --release --target x86_64-unknown-linux-gnu
-mkdir -p ./deploy # Create deploy and copy all files
+cargo build --release --target x86_64-unknown-linux-gnu # Build linux
+mkdir -p ./deploy/assets/ # Create deploy and copy all files
 cp ./target/x86_64-unknown-linux-gnu/release/to-be-decided ./deploy/
-cp -r assets/ ./deploy/
+cp -r assets/fonts/ assets/screens/ assets/sprites/ assets/laws.json assets/news.json ./deploy/assets/
 cd deploy/ # Create zip file
 zip -r -9 to-be-decided-86_64-linux.zip ./*
 ```
