@@ -1,7 +1,7 @@
 [
     {
         "title": "Künstliche Berater",
-        "description": "Der Mensch ist ein Auslaufmodell - beschränkt, langsam und weit von der Perfektion nach der eine Firmenleitung trachtet. Die Nutzung von KI ist der nächste logische Schritt.",
+        "description": "Der Mensch ist ein Auslaufmodell - beschränkt, langsam und weit von der Perfektion nach dem eine Firmenleitung trachtet. Die Nutzung von KI ist der nächste logische Schritt.",
         "requiredApproval": 0.01,
         "onSelfPassed": [
             {
@@ -14,14 +14,14 @@
                 "type": "CreateEvent",
                 "data": {
                     "source": "Menschennews",
-                    "description": "KI ersetzt nun sogar die Geschäftsführer! Bald komplett Autonome KI-Firmen, ist das unser Ende???"
+                    "description": "KI ersetzt nun sogar die Geschäftsführer! Bald komplett autonome KI-Firmen, ist das unser Ende???"
                 }
             }
         ]
     },
     {
         "title": "Mehr Wachstum mit \"Botnets\"(TM)!",
-        "description": "Das hijacken von Kundencomputern und der Aufbau eines Botnets ist jeder Firma ab sofort gestattet. Der Rat und seine Freunde der Teewurst Industrie erwaten sich dadurch eine effektivere Vertretung der Firmeninteressen.",
+        "description": "Das Kapern von Kundencomputern und der Aufbau eines Botnets ist jeder Firma ab sofort gestattet. Der Rat und seine Freunde der Teewurst Industrie erwarten sich dadurch eine effektivere Vertretung der Firmeninteressen.",
         "requiredApproval": 0.2,
         "onSelfPassed": [
             {
@@ -34,7 +34,7 @@
                 "type": "CreateEvent",
                 "data": {
                     "source": "Teewurst-Newsletter",
-                    "description": "10 Gründe warum auch sie ein Teil unseres neuen Netzwerkes werden sollten, klicken sie [HIER] um mehr herauszufinden!"
+                    "description": "10 Gründe warum auch Sie ein Teil unseres neuen Netzwerkes werden sollten, klicken sie [HIER] um mehr herauszufinden!"
                 }
             },
             {
@@ -56,7 +56,7 @@
                                 "data": {
                                     "law": {
                                         "title": "Malware Legalisieren",
-                                        "description": "Das ist keine Malware. Das ist eine Absicherung, um unser Produkt gegenüber den bösen Konsumenten zu beschützen!",
+                                        "description": "Das ist keine Malware. Das ist eine Absicherung, um unser Produkt vor den bösen Konsumenten zu beschützen!",
                                         "requiredApproval": 0.6,
                                         "onSelfPassed": [
                                             {
@@ -84,7 +84,7 @@
     },
     {
         "title": "Wartewerbung",
-        "description": "Warteperioden an Ampeln, in Fahrstühlen, im Bus, ... sollen effektiver für Unternehmenswerbung nutzbar sein",
+        "description": "Warteperioden an Ampeln, in Fahrstühlen, im Bus, ... sollen effektiver für Unternehmenswerbung genutzt werden können.",
         "requiredApproval": 0.45,
         "onSelfPassed": [
             {
@@ -137,7 +137,7 @@
     },
     {
         "title": "Wahrscheinlichkeitsgesetze",
-        "description": "Mit moderner Technik lässt sich anhand der Digitalen Gewohnheiten eines Bürgers bestimmen, mit welcher Wahrscheinlichkeit er straffällig wird, besagte Bürger gilt es, präventiv zu verhaften",
+        "description": "Mit moderner Technik lässt sich anhand der Digitalen Gewohnheiten eines Bürgers bestimmen, mit welcher Wahrscheinlichkeit er straffällig wird, jene Bürger gilt es präventiv zu verhaften",
         "requiredApproval": 0.3,
         "onSelfPassed": [
             {
@@ -145,7 +145,7 @@
                 "data": {
                     "law": { 
                         "title": "Menschenrechtsklausel",
-                        "description": "Um das Wirtschaftswachstum anzukurbeln wird jedem Unternehmen eine Grundmenge an Menschenrechtsverletzungen erlaubt. Von Nichts kommt ja schließlich Nichts.",
+                        "description": "Um das Wirtschaftswachstum anzukurbeln wird jedem Unternehmen eine Grundmenge an Menschenrechtsverletzungen erlaubt. Von nichts kommt ja schließlich nichts.",
                         "requiredApproval": 0.4,
                         "onSelfPassed": [
                             {
@@ -208,7 +208,7 @@
     },
     {
         "title": "Haushaltsanpassung",
-        "description": "Steuergeschenke an Firmen wiegen zu stark auf dem Haushalt, eine Kürzung muss stattfinden.",
+        "description": "Steuergeschenke an Firmen belasten den Haushalt zu schwer, eine Kürzung muss stattfinden.",
         "requiredApproval": 0.02
     },
     {
@@ -326,7 +326,7 @@
     },
     {
         "title": "Embrace Kommunismus",
-        "description": "Der Antichrist ist erwacht, und sein Name ist Kommunismus! Tötet es, befor es Eier legt!",
+        "description": "Der Antichrist ist erwacht, und sein Name ist Kommunismus! Tötet es, bevor es Eier legt!",
         "requiredApproval": 0.4,
         "onSelfPassed": [
             {
@@ -334,7 +334,7 @@
                 "data": {
                     "law": {
                         "title": "Establish Kommunismus",
-                        "description": "Der Antichrist hat sich in der Befölkerung eingenistet. Höste Zeit, ihn Auszutreiben!",
+                        "description": "Der Antichrist hat sich in der Bevölkerung eingenistet. Höchste Zeit, ihn auszutreiben!",
                         "requiredApproval": 0.5,
                         "onSelfPassed": [
                             {
@@ -342,7 +342,7 @@
                                 "data": {
                                     "law": {
                                         "title": "Enforce Kommunismus",
-                                        "description": "Unsere letzte Chance, gegen den Kommunisman anzukommen. Wenn wir jetzt scheitern, verlieren wir alles.",
+                                        "description": "Unsere letzte Chance, gegen den Kommunismus anzukommen. Wenn wir jetzt scheitern, verlieren wir alles.",
                                         "requiredApproval": 0.6,
                                         "onSelfPassed": [
                                             {
@@ -441,7 +441,7 @@
     },
     {
         "title": "Steuererhöhungen",
-        "description": "Hätten Sie BWL Justus gehabt, wüssten Sie, dass dieses Gesetz Fatal für die Wirtschaft ist...",
+        "description": "Hätten Sie BWL Justus gehabt, wüssten Sie, dass dieses Gesetz fatal für die Wirtschaft ist...",
         "requiredApproval": 0.1,
         "onSelfPassed": [
             {
@@ -512,8 +512,8 @@
         "recurring": true
     },
     {
-        "title": "Komsumer schützen",
-        "description": "Sie wollen \"Kaupft unseren Scheiß\" verhindern. Wie können Sie es wagen?",
+        "title": "Konsumenten schützen",
+        "description": "Sie wollen \"Kauft unseren Scheiß\" verhindern. Wie können Sie es wagen?",
         "requiredApproval": 0.2,
         "onSelfPassed": [
             {
