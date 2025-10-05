@@ -1,6 +1,7 @@
 use crate::{
-    component::{limit, wrap, Component},
-    effect::Effect, style::FONT_SIZE,
+    component::{Component, limit, wrap},
+    effect::Effect,
+    style::FONT_SIZE,
 };
 use macroquad::prelude::*;
 use macroquad::{
@@ -72,22 +73,24 @@ impl Component for News {
         for event in &self.current {
             let news_width = 390.;
             let lines = wrap(&event.description, news_width, font);
-            let news_height = (2 + lines.len()) as f32 *
-                {
-                    let x = measure_text("Foo Bar", Some(&font), FONT_SIZE, 1.);
-                    x.height + x.offset_y
-                };
-            Group::new(hash!(counter, &event.description), Vec2::new(news_width, news_height))
-                .position(Vec2::new(0., next_pos))
-                .ui(ui, |ui| {
-                    ui.label(None, "");
-                    for line in wrap(&event.description, news_width + 2., font) {
-                        ui.label(None, &format!("| {}", line.trim()));
-                    }
-                    ui.label(None, "");
-                    ui.label(None, &format!(" < {} >", event.source));
-                    next_pos += news_height + NEWS_MARGIN;
-                });
+            let news_height = (2 + lines.len()) as f32 * {
+                let x = measure_text("Foo Bar", Some(&font), FONT_SIZE, 1.);
+                x.height + x.offset_y
+            };
+            Group::new(
+                hash!(counter, &event.description),
+                Vec2::new(news_width, news_height),
+            )
+            .position(Vec2::new(0., next_pos))
+            .ui(ui, |ui| {
+                ui.label(None, "");
+                for line in wrap(&event.description, news_width + 2., font) {
+                    ui.label(None, &format!("| {}", line.trim()));
+                }
+                ui.label(None, "");
+                ui.label(None, &format!(" < {} >", event.source));
+                next_pos += news_height + NEWS_MARGIN;
+            });
             counter += 1;
         }
     }

@@ -10,7 +10,7 @@ use crate::{
 };
 use macroquad::prelude::*;
 use macroquad::{
-    audio::{PlaySoundParams, load_sound_from_bytes, play_sound},
+    audio::{PlaySoundParams, load_sound_from_bytes, play_sound, stop_sound},
     ui::{hash, root_ui, widgets::Window},
 };
 use std::rc::Rc;
@@ -65,6 +65,13 @@ async fn main() {
     start_screen.set_filter(FilterMode::Nearest);
     let lost_screen = load_texture("assets/screens/lost_scr.png").await.unwrap();
     start_screen.set_filter(FilterMode::Nearest);
+    play_sound(
+        &startup_sound,
+        PlaySoundParams {
+            looped: false,
+            volume: 1.0,
+        },
+    );
 
     let mut botnet = Botnet::new().await;
     let mut market = Market::new();
@@ -73,9 +80,6 @@ async fn main() {
 
     let mut state = GameState::Starting;
     let mut effects = Vec::new();
-
-    let mut start_time: f64 = 0.0;
-    let mut loop_played = false;
 
     loop {
         #[cfg(not(target_arch = "wasm32"))]
@@ -97,35 +101,17 @@ async fn main() {
                 },
             );
             if !get_keys_pressed().is_empty() {
+                state = GameState::Running;
+                stop_sound(&startup_sound);
                 play_sound(
-                    &startup_sound,
-                        PlaySoundParams {
+                    &loop_sound,
+                    PlaySoundParams {
                         looped: false,
                         volume: 1.0,
                     },
                 );
-                start_time = get_time();
-                state = GameState::Startup;
-
             }
-        } else if state == GameState::Startup {
-
-            let timeDiff = get_time() - start_time;
-
-            if timeDiff > 20.0 {
-                play_sound(
-                        &loop_sound,
-                    PlaySoundParams {
-                        looped: true,
-                        volume: 1.0,
-                    },
-                );
-                state = GameState::Running;
-            }
-            println!(" ");
-
-        } else if state == GameState::Running  {
-
+        } else if state == GameState::Running {
             if botnet.show {
                 botnet.update(&mut effects);
             }
