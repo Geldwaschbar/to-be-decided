@@ -68,7 +68,9 @@ async fn main() {
 
     loop {
         #[cfg(not(target_arch = "wasm32"))]
-        if is_key_down(KeyCode::Q) | is_key_down(KeyCode::Escape) {
+        if (is_key_down(KeyCode::LeftControl) && is_key_down(KeyCode::Q))
+            || is_key_down(KeyCode::Escape)
+        {
             break;
         }
 
