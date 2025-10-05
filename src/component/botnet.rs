@@ -104,12 +104,11 @@ impl Component for Botnet {
 
     fn update(&mut self, effects: &mut Vec<Rc<Effect>>) {
         let total_usage =
-            self.capacity / (self.crypto_mining + self.malware + self.memes + self.bribery);
+            (self.crypto_mining + self.malware + self.memes + self.bribery) / self.capacity;
 
         let frame_time = limit(get_frame_time(), 5.0);
         if self.malware > 0. {
-            self.capacity +=
-                (self.malware / total_usage * 0.001 * frame_time) / (self.capacity * self.capacity);
+            self.capacity += self.malware / total_usage * 0.001 * frame_time;
         }
         if self.memes > 0. {
             effects.push(Rc::new(Effect::ParlamentEffect {
