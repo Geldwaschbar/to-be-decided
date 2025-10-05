@@ -36,6 +36,7 @@ impl Component for Market {
     fn draw_on(&mut self, ui: &mut Ui, _: &Font) {
         let mut canvas = ui.canvas();
         let cursor = canvas.cursor();
+        let window_size = Vec2::new(500., 200.);
 
         // Fetch the history of the stock market and
         // calculate the global minimum and maximum
@@ -60,25 +61,33 @@ impl Component for Market {
                 .history
                 .get(i + 1)
                 .expect("expected second stock market item");
+
+            let start_pos = Vec2::new(
+                    cursor.x + 0.125 * window_size.x + (i as f32 / markers as f32) * window_size.x * 0.75,
+                    cursor.y + 20. + window_size.y - (first - min) / (max - min) * window_size.y,
+                );
+            let end_pos = Vec2::new(
+                    cursor.x + 0.125 * window_size.x + ((i + 1) as f32 / markers as f32) * window_size.x * 0.75,
+                    cursor.y + 20. + window_size.y - (second - min) / (max - min) * window_size.y,
+                );
+
+            if first > second { 
+                canvas.rect( 
+                    Rect { x: start_pos.x, y: cursor.y + 20., w: end_pos.x-start_pos.x, h: window_size.y }, 
+                    Color {r: 0., g: 0., b: 0., a:0.}, Color {r: 1., g: 0., b: 0., a:0.15} );
+            };
             canvas.line(
-                Vec2::new(
-                    cursor.x + (i as f32 / markers as f32) * 250.,
-                    cursor.y + 130. - (first - min) / (max - min) * 130.,
-                ),
-                Vec2::new(
-                    cursor.x + ((i + 1) as f32 / markers as f32) * 250.,
-                    cursor.y + 130. - (second - min) / (max - min) * 130.,
-                ),
+                start_pos, end_pos,
                 if first <= second { GREEN } else { RED },
             );
         }
 
         ui.label(
-            Vec2::new(10., 140.),
+            Vec2::new(10., 240.),
             &format!("Geld: {}$", (self.money * 100.).floor() / 100.),
         );
         ui.label(
-            Vec2::new(10., 160.),
+            Vec2::new(10., 260.),
             &format!("Preis: {}$", (self.price * 100.).floor() / 100.),
         );
     }

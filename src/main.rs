@@ -139,7 +139,7 @@ async fn main() {
 
             if market.show {
                 let market_id = hash!();
-                Window::new(market_id, Vec2::new(30., 50.), Vec2::new(250., 220.))
+                Window::new(market_id, Vec2::new(30., 50.), Vec2::new(500., 400.))
                     .label("Evil Inc. Stocks")
                     .movable(false)
                     .ui(&mut *root_ui(), |ui| {
