@@ -41,17 +41,14 @@ async fn main() {
     root_ui().push_skin(&skin);
 
     // Sound
+    let startup_sound = load_sound_from_bytes(include_bytes!("../assets/audio/startup.wav"))
+        .await
+        .ok()
+        .unwrap();
     let loop_sound = load_sound_from_bytes(include_bytes!("../assets/audio/loop.wav"))
         .await
         .ok()
         .unwrap();
-    play_sound(
-        &loop_sound,
-        PlaySoundParams {
-            looped: true,
-            volume: 1.0,
-        },
-    );
     let action_ok = load_sound_from_bytes(include_bytes!("../assets/audio/action_ok.wav"))
         .await
         .ok()
@@ -97,6 +94,21 @@ async fn main() {
                 },
             );
             if !get_keys_pressed().is_empty() {
+                play_sound(
+                    &loop_sound,
+                    PlaySoundParams {
+                        looped: true,
+                        volume: 1.0,
+                    },
+                );
+                play_sound(
+                    &loop_sound,
+                        PlaySoundParams {
+                        looped: true,
+                        volume: 1.0,
+                    },
+                );
+
                 state = GameState::Running;
             }
         } else if state == GameState::Running {
