@@ -1,7 +1,7 @@
 [
     {
-        "title": "Ai Firmen",
-        "description": "Legalisiert, dass Firmen Ai's als CEOs haben dürfen.",
+        "title": "Künstliche Berater",
+        "description": "Der Mensch ist ein Auslaufmodell - beschränkt, langsam und weit von der Perfektion nach der eine Firmenleitung trachtet. Die Nutzung von KI ist der nächste logische Schritt.",
         "requiredApproval": 0.01,
         "onSelfPassed": [
             {
@@ -9,12 +9,19 @@
                 "data": {
                     "id": "Market"
                 }
+            },
+            {
+                "type": "CreateEvent",
+                "data": {
+                    "source": "Menschennews",
+                    "description": "KI ersetzt nun sogar die Geschäftsführer! Bald komplett Autonome KI-Firmen, ist das unser Ende???"
+                }
             }
         ]
     },
     {
-        "title": "Bot Netzwerke",
-        "description": "Legalisiert alle Formen von Botnetzwerken. Es ist legal, wenn es eine große Firma macht!",
+        "title": "Mehr Wachstum mit \"Botnets\"(TM)!",
+        "description": "Das hijacken von Kundencomputern und der Aufbau eines Botnets ist jeder Firma ab sofort gestattet. Der Rat und seine Freunde der Teewurst Industrie erwaten sich dadurch eine effektivere Vertretung der Firmeninteressen.",
         "requiredApproval": 0.2,
         "onSelfPassed": [
             {
@@ -24,11 +31,18 @@
                 }
             },
             {
+                "type": "CreateEvent",
+                "data": {
+                    "source": "Teewurst-Newsletter",
+                    "description": "10 Gründe warum auch sie ein Teil unseres neuen Netzwerkes werden sollten, klicken sie [HIER] um mehr herauszufinden!"
+                }
+            },
+            {
                 "type": "CreateLaw",
                 "data": {
                     "law": {
-                        "title": "Bestechung Legalisieren",
-                        "description": "\"Bestechung\" gibt es nicht. Wir nennen es Lobbyismus.",
+                        "title": "Meinungsbildende Geschenke",
+                        "description": "\"Bestechung\"? Nein, das gibt es nicht. Das sind doch nur harmlose Geschenke :)",
                         "requiredApproval": 0.4,
                         "onSelfPassed": [
                             {
