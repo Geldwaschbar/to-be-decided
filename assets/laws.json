@@ -209,12 +209,66 @@
     {
         "title": "Haushaltsanpassung",
         "description": "Steuergeschenke an Firmen belasten den Haushalt zu schwer, eine Kürzung muss stattfinden.",
-        "requiredApproval": 0.02
+        "requiredApproval": 0.025,
+        "onSelfPassed": [
+            {
+                "type": "CreateEvent",
+                "data": {
+                    "source": "The Daily Teewurst",
+                    "description": "Neue beschlossene Haushaltsanpassungen belasten die Teewurstindustrie schwer."
+                }
+            }
+        ],
+        "onLawPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Multiplier",
+                    "value": 0.9
+                }
+            },
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Money",
+                    "modifier": "Multiplier",
+                    "value": 0.95
+                }
+            }
+        ]
     },
     {
         "title": "Fahrradfeinde",
         "description": "Autounfälle mit Fahrradfahrern werden nicht mehr strafrechtlich verfolgt, wie schon Charles Kümmel einst sagte: \"It's worth it to have, unfortunately, some accidents to protect our god given right to own cars.\"",
-        "requiredApproval": 0.45
+        "requiredApproval": 0.45,
+        "onSelfPassed": [
+            {
+                "type": "CreateEvent",
+                "data": {
+                    "source": "Markus, CDU-Wähler",
+                    "description": "Endlich kann ich diese Idioten umfahren!"
+                }
+            },
+            {
+                "type": "ParlamentEffect",
+                "data": {
+                    "resolution": "Transfer",
+                    "modifier": "Multiplier",
+                    "value": 0.5
+                }
+            }
+        ],
+        "onLawPassed": [
+            {
+                "type": "MarketEffect",
+                "data": {
+                    "resolution": "Price",
+                    "modifier": "Multiplier",
+                    "value": 1.045
+                }
+            }
+        ]
     },
     {
         "title": "Üble Nachrede #1",
