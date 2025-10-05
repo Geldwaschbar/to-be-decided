@@ -1,6 +1,6 @@
 use crate::{
-    component::{Component, limit, wrap},
-    effect::Effect,
+    component::{limit, wrap, Component},
+    effect::Effect, style::FONT_SIZE,
 };
 use macroquad::prelude::*;
 use macroquad::{
@@ -9,6 +9,8 @@ use macroquad::{
 };
 use serde::Deserialize;
 use std::{collections::VecDeque, rc::Rc};
+
+const NEWS_MARGIN: f32 = 5.;
 
 #[derive(Clone, Default, Deserialize)]
 pub struct Event {
@@ -60,23 +62,32 @@ impl News {
     pub fn add_event(&mut self, event: Event) {
         self.current.push_front(event);
         play_sound_once(&self.sound);
-        while self.current.len() > 10 {
-            self.current.pop_back().expect("expected event exists");
-        }
     }
 }
 
 impl Component for News {
     fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
         let mut counter = 0;
+        let mut next_pos: f32 = 0.0;
         for event in &self.current {
-            let widget_size = Vec2::new(390., 80.);
-            Group::new(hash!(counter, &event.description), widget_size).ui(ui, |ui| {
-                for line in wrap(&event.description, widget_size.x, font) {
-                    ui.label(None, &line);
-                }
-                ui.label(None, &format!(" - {}", event.source));
-            });
+            let news_width = 390.;
+            let lines = wrap(&event.description, news_width, font);
+            let news_height = (2 + lines.len()) as f32 *
+                {
+                    let x = measure_text("Foo Bar", Some(&font), FONT_SIZE, 1.);
+                    x.height + x.offset_y
+                };
+            Group::new(hash!(counter, &event.description), Vec2::new(news_width, news_height))
+                .position(Vec2::new(0., next_pos))
+                .ui(ui, |ui| {
+                    ui.label(None, "");
+                    for line in wrap(&event.description, news_width + 2., font) {
+                        ui.label(None, &format!("| {}", line.trim()));
+                    }
+                    ui.label(None, "");
+                    ui.label(None, &format!(" < {} >", event.source));
+                    next_pos += news_height + NEWS_MARGIN;
+                });
             counter += 1;
         }
     }
