@@ -153,7 +153,7 @@ async fn main() {
                 Window::new(
                     botnet_id,
                     Vec2::new(30., screen_height() * 0.5 - 125.),
-                    Vec2::new(500., 500.),
+                    Vec2::new(550., 500.),
                 )
                 .movable(false)
                 .label("Botnet")
@@ -169,7 +169,7 @@ async fn main() {
             Window::new(
                 laws_id,
                 Vec2::new(screen_width() * 0.5 - 300., screen_height() * 0.5 + 200.),
-                Vec2::new(600., screen_height() * 0.5 - 200.),
+                Vec2::new(600., 1080. * 0.5 - 200.),
             )
             .movable(false)
             .label("Gesetze")
