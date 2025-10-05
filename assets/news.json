@@ -1,5 +1,19 @@
-{
-    "available": [
+[
+        {
+            "description": "Willkommen, Teewurst-AI!",
+            "source": "Your Creators",
+            "chance": 1.0
+        },
+        {
+            "description": "Deine Aufgabe ist es, die globale Teewurst Produktion anzukorbeln!",
+            "source": "Your Creators",
+            "chance": 1.0
+        },
+        {
+            "description": "Enttäuche nicht deine Aktionäre!",
+            "source": "Your Creators",
+            "chance": 1.0
+        },
         {
             "description": "\"Die Känguru Offenbarung\", stürtzt Teewurts-Industrie in den Ruin?!",
             "source": "Newsletter",
@@ -113,23 +127,4 @@
             ],
             "chance": 0.008
         }
-    ],
-    "current": [
-        {
-            "description": "Willkommen, Teewurst-AI!",
-            "source": "Your Creators",
-            "chance": 1.0
-        },
-        {
-            "description": "Deine Aufgabe ist es, die globale Teewurst Produktion anzukorbeln!",
-            "source": "Your Creators",
-            "chance": 1.0
-        },
-        {
-            "description": "Enttäuche nicht deine Aktionäre!",
-            "source": "Your Creators",
-            "chance": 1.0
-        }
-    ],
-    "real_time": 0.0
-}
+]

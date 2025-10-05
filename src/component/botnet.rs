@@ -4,10 +4,14 @@ use crate::{
     style::{COL_BAR_BG, FONT_SIZE, USAGE_COLS},
 };
 use macroquad::prelude::*;
-use macroquad::ui::{Ui, hash};
+use macroquad::{
+    audio::{Sound, load_sound_from_bytes, play_sound_once},
+    ui::{Ui, hash},
+};
 use std::rc::Rc;
 
 pub struct Botnet {
+    sound: Sound,
     pub capacity: f32,
     total_usage: f32,
     malware: f32,
@@ -21,8 +25,13 @@ pub struct Botnet {
 }
 
 impl Botnet {
-    pub fn new() -> Botnet {
+    pub async fn new() -> Botnet {
+        let sound = load_sound_from_bytes(include_bytes!("../../assets/audio/send.wav"))
+            .await
+            .ok()
+            .unwrap();
         Botnet {
+            sound,
             capacity: 1.0,
             total_usage: 0.0,
             malware: 0.0,
@@ -91,6 +100,7 @@ impl Component for Botnet {
 
         if ui.button(None, "Sende Spammail") {
             self.capacity += 1.;
+            play_sound_once(&self.sound);
         }
     }
 

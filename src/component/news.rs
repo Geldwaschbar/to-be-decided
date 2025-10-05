@@ -3,7 +3,10 @@ use crate::{
     effect::Effect,
 };
 use macroquad::prelude::*;
-use macroquad::ui::{Ui, hash, widgets::Group};
+use macroquad::{
+    audio::{Sound, load_sound_from_bytes, play_sound_once},
+    ui::{Ui, hash, widgets::Group},
+};
 use serde::Deserialize;
 use std::{collections::VecDeque, rc::Rc};
 
@@ -31,17 +34,35 @@ impl Event {
     }
 }
 
-#[derive(Default, Deserialize)]
 pub struct News {
-    pub available: VecDeque<Event>,
-    pub current: VecDeque<Event>,
+    sound: Sound,
+    available: VecDeque<Event>,
+    current: VecDeque<Event>,
     real_time: f32,
 }
 
 impl News {
     pub async fn new() -> News {
+        let news_sound = load_sound_from_bytes(include_bytes!("../../assets/audio/news.wav"))
+            .await
+            .ok()
+            .unwrap();
         let serialized = load_string("assets/news.json").await.unwrap();
-        serde_json::from_str::<News>(&serialized).unwrap()
+
+        News {
+            sound: news_sound,
+            available: serde_json::from_str(&serialized).expect("expected to parse json"),
+            current: VecDeque::new(),
+            real_time: 0.0,
+        }
+    }
+
+    pub fn add_event(&mut self, event: Event) {
+        self.current.push_front(event);
+        play_sound_once(&self.sound);
+        while self.current.len() > 10 {
+            self.current.pop_back().expect("expected event exists");
+        }
     }
 }
 
@@ -71,19 +92,19 @@ impl Component for News {
                     for effect in &event.effects {
                         effects.push(effect.clone());
                     }
-                    self.current.push_front(event.clone());
                 }
                 i += 1;
             }
             i = 0;
             for index in triggered {
-                self.available.remove(index - i);
+                let event = self
+                    .available
+                    .remove(index - i)
+                    .expect("expect event exists");
+                self.add_event(event);
                 i += 1;
             }
             self.real_time -= 1.
-        }
-        while self.current.len() > 10 {
-            self.current.pop_back().expect("expected event exists");
         }
     }
 }

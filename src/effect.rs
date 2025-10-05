@@ -95,9 +95,7 @@ impl Effect {
             Self::CreateEvent {
                 source,
                 description,
-            } => news
-                .current
-                .push_front(Event::new(source.to_string(), description.to_string())),
+            } => news.add_event(Event::new(source.to_string(), description.to_string())),
             Self::CreateLaw { law } => parlament.available_laws.push_back(law.clone()),
             Self::MarketEffect {
                 resolution,

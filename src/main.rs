@@ -9,7 +9,10 @@ use crate::{
     style::{COL_BG, terminal_skin},
 };
 use macroquad::prelude::*;
-use macroquad::ui::{hash, root_ui, widgets::Window};
+use macroquad::{
+    audio::{PlaySoundParams, load_sound_from_bytes, play_sound},
+    ui::{hash, root_ui, widgets::Window},
+};
 use std::rc::Rc;
 
 fn window_conf() -> Conf {
@@ -35,8 +38,27 @@ async fn main() {
         .unwrap();
     let skin = terminal_skin(&mut *root_ui(), &font);
     root_ui().push_skin(&skin);
+    let loop_sound = load_sound_from_bytes(include_bytes!("../assets/audio/loop.wav"))
+        .await
+        .ok()
+        .unwrap();
+    let action_ok = load_sound_from_bytes(include_bytes!("../assets/audio/action_ok.wav"))
+        .await
+        .ok()
+        .unwrap();
+    let action_err = load_sound_from_bytes(include_bytes!("../assets/audio/action_err.wav"))
+        .await
+        .ok()
+        .unwrap();
+    play_sound(
+        &loop_sound,
+        PlaySoundParams {
+            looped: true,
+            volume: 1.0,
+        },
+    );
 
-    let mut botnet = Botnet::new();
+    let mut botnet = Botnet::new().await;
     let mut market = Market::new();
     let mut parlament = Parlament::new().await;
     let mut news = News::new().await;
@@ -123,7 +145,14 @@ async fn main() {
                 let mut law_pos = Vec2::new(5.0, 5.0);
                 for law in &mut parlament.available_laws {
                     if law.publicity > 0.0 {
-                        Rc::make_mut(law).draw_on(ui, &font, &mut law_pos, &mut market);
+                        Rc::make_mut(law).draw_on(
+                            ui,
+                            &font,
+                            &mut law_pos,
+                            &mut market,
+                            &action_ok,
+                            &action_err,
+                        );
                     }
                 }
             });
@@ -148,7 +177,7 @@ async fn main() {
                 state = GameState::Running;
 
                 // Reset all entities
-                botnet = Botnet::new();
+                botnet = Botnet::new().await;
                 market = Market::new();
                 parlament = Parlament::new().await;
                 news = News::new().await;
@@ -164,7 +193,7 @@ async fn main() {
                 state = GameState::Running;
 
                 // Reset all entities
-                botnet = Botnet::new();
+                botnet = Botnet::new().await;
                 market = Market::new();
                 parlament = Parlament::new().await;
                 news = News::new().await;

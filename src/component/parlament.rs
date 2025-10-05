@@ -4,7 +4,10 @@ use crate::{
     style::{COL_BAR_BG, FONT_SIZE},
 };
 use macroquad::prelude::*;
-use macroquad::ui::{Ui, hash, widgets::Group};
+use macroquad::{
+    audio::{Sound, play_sound_once},
+    ui::{Ui, hash, widgets::Group},
+};
 use serde::Deserialize;
 use std::{cmp::Ordering, collections::VecDeque, f64::consts::PI, rc::Rc};
 
@@ -43,7 +46,15 @@ pub struct Law {
 }
 
 impl Law {
-    pub fn draw_on(&mut self, ui: &mut Ui, font: &Font, pos: &mut Vec2, market: &mut Market) {
+    pub fn draw_on(
+        &mut self,
+        ui: &mut Ui,
+        font: &Font,
+        pos: &mut Vec2,
+        market: &mut Market,
+        action_ok: &Sound,
+        action_err: &Sound,
+    ) {
         let law_width: f32 = 580.;
         let lines = wrap(&self.description, law_width - 20., font);
         let law_height = (5. + lines.len() as f32) * {
@@ -72,15 +83,25 @@ impl Law {
                     ui.separator();
                     let size = measure_text("Lobbyieren", Some(font), FONT_SIZE, 1.);
                     ui.same_line(0.5 * (law_width * 0.5 - size.width));
-                    if ui.button(None, "Lobbyieren") && market.money >= 100. {
-                        self.publicity += 1.0;
-                        market.money -= 100.
+                    if ui.button(None, "Lobbyieren") {
+                        if market.money >= 100. {
+                            self.publicity += 1.0;
+                            market.money -= 100.;
+                            play_sound_once(&action_ok);
+                        } else {
+                            play_sound_once(&action_err);
+                        }
                     }
                     let size = measure_text("Verleumden", Some(font), FONT_SIZE, 1.);
                     ui.same_line(0.5 * (law_width * 1.5 - size.width));
-                    if ui.button(None, "Verleumden") && market.money >= 100. {
-                        self.publicity -= 1.0;
-                        market.money -= 100.
+                    if ui.button(None, "Verleumden") {
+                        if market.money >= 100. {
+                            self.publicity -= 1.0;
+                            market.money -= 100.;
+                            play_sound_once(&action_ok);
+                        } else {
+                            play_sound_once(&action_err);
+                        }
                     }
                 } else {
                     ui.label(None, &"(!) Der Rat entscheidet...");
