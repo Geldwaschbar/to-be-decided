@@ -73,6 +73,13 @@ pub fn terminal_skin(ui: &mut Ui, font: &Font) -> Skin {
         .font_size(FONT_SIZE + 2)
         .build();
 
+    let scrollbar_handle_style = ui
+        .style_builder()
+        .color(COL_SECONDARY)
+        .color_hovered(Color::new(0., 0.8, 1.0, 1.0))
+        .color_clicked(Color::new(0., 0.8, 1.0, 1.0))
+        .build();
+
     let button_style = ui
         .style_builder()
         .margin(RectOffset::new(5.0, 5.0, 5.0, 5.0))
@@ -111,6 +118,7 @@ pub fn terminal_skin(ui: &mut Ui, font: &Font) -> Skin {
         editbox_style,
         window_style,
         window_titlebar_style,
+        scrollbar_handle_style,
         button_style,
         label_style,
         group_style,
