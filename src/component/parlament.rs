@@ -11,8 +11,7 @@ use macroquad::{
 use serde::Deserialize;
 use std::{cmp::Ordering, collections::VecDeque, f64::consts::PI, rc::Rc};
 
-// TODO: increase voting time
-const VOTING_TIME: f32 = 10.;
+const VOTING_TIME: f32 = 40.;
 const LAW_MARGIN: Vec2 = Vec2::new(0., 5.);
 
 #[derive(Debug)]
@@ -158,7 +157,7 @@ impl Parlament {
             parties,
             available_laws,
             passed_laws,
-            voting_progress: 0.,
+            voting_progress: 0.9,
             member_sprite,
         }
     }
