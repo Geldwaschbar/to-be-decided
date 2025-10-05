@@ -43,7 +43,7 @@
                     "law": {
                         "title": "Meinungsbildende Geschenke",
                         "description": "\"Bestechung\"? Nein, das gibt es nicht. Das sind doch nur harmlose Geschenke :)",
-                        "requiredApproval": 0.4,
+                        "requiredApproval": 0.2,
                         "onSelfPassed": [
                             {
                                 "type": "ShowComponent",
