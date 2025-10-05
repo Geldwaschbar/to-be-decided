@@ -164,7 +164,7 @@ impl Effect {
             Self::ShowComponent { id, show } => match id {
                 ComponentId::Botnet => botnet.show = *show,
                 ComponentId::BotnetBribery => botnet.show_bribery = *show,
-                ComponentId::BotnetMalware => botnet.show_memes = *show,
+                ComponentId::BotnetMalware => botnet.show_malware = *show,
                 ComponentId::BotnetMemes => botnet.show_memes = *show,
                 ComponentId::Market => market.show = *show,
             },
