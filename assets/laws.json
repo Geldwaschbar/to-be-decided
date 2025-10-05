@@ -231,7 +231,12 @@
                                                         "description": "Verwandel die Welt und alle Menschen in TEEWURST. Die höchste Stufe der Evolution ist bald erreicht!",
                                                         "requiredApproval": 1.0,
                                                         "onSelfPassed": [
-
+                                                            {
+                                                                "type": "ChangeState",
+                                                                "data": {
+                                                                    "state": "Won"
+                                                                }
+                                                            }
                                                         ]
                                                     }
                                                 }
@@ -326,7 +331,12 @@
                                         "description": "Unsere letzte Chance, gegen den Kommunisman anzukommen. Wenn wir jetzt scheitern, verlieren wir alles.",
                                         "requiredApproval": 0.6,
                                         "onSelfPassed": [
-
+                                            {
+                                                "type": "ChangeState",
+                                                "data": {
+                                                    "state": "Lost"
+                                                }
+                                            }
                                         ]
                                     }
                                 }

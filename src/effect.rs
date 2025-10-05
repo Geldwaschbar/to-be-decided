@@ -1,8 +1,11 @@
-use crate::component::{
-    botnet::Botnet,
-    market::Market,
-    news::{Event, News},
-    parlament::{Law, Parlament},
+use crate::{
+    component::{
+        botnet::Botnet,
+        market::Market,
+        news::{Event, News},
+        parlament::{Law, Parlament},
+    },
+    state::GameState,
 };
 use macroquad::prelude::*;
 use serde::Deserialize;
@@ -74,6 +77,9 @@ pub enum Effect {
         #[serde(default = "default_true")]
         show: bool,
     },
+    ChangeState {
+        state: GameState,
+    },
 }
 
 impl Effect {
@@ -83,6 +89,7 @@ impl Effect {
         market: &mut Market,
         parlament: &mut Parlament,
         news: &mut News,
+        game_state: &mut GameState,
     ) {
         match &self {
             Self::CreateEvent {
@@ -163,6 +170,7 @@ impl Effect {
                 ComponentId::BotnetMemes => botnet.show_memes = *show,
                 ComponentId::Market => market.show = *show,
             },
+            Self::ChangeState { state } => *game_state = state.clone(),
         };
     }
 
