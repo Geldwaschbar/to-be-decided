@@ -100,7 +100,11 @@ async fn main() {
                     ..Default::default()
                 },
             );
-            if !get_keys_pressed().is_empty() {
+            let mouse_keys_pressd: bool = [MouseButton::Right, MouseButton::Left]
+                .map(is_mouse_button_down)
+                .contains(&true);
+
+            if !get_keys_pressed().is_empty() | mouse_keys_pressd {
                 state = GameState::Running;
                 stop_sound(&startup_sound);
                 play_sound(
