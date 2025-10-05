@@ -6,7 +6,7 @@ use crate::{
 use macroquad::prelude::*;
 use macroquad::{
     audio::{Sound, play_sound_once},
-    ui::{Ui, hash, widgets::Group},
+    ui::{Ui, canvas::DrawCanvas, hash, widgets::Group},
 };
 use serde::Deserialize;
 use std::{cmp::Ordering, collections::VecDeque, f64::consts::PI, rc::Rc};
@@ -161,24 +161,23 @@ impl Parlament {
             member_sprite,
         }
     }
-}
 
-impl Component for Parlament {
-    fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
-        let mut canvas = ui.canvas();
-        let window_center = Vec2::new(380., 380.) * 0.5;
-        let cursor = Vec2::new(
-            screen_width() * 0.5 - window_center.x,
-            screen_height() * 0.5 - window_center.y,
-        );
-
+    pub fn draw_seats(&self, window_center: &Vec2, cursor: &Vec2, canvas: &mut DrawCanvas<'_>) {
         const TOTAL_SEATS: f32 = (5 * 4 + 4 * 3) as f32;
         let mut placed = 0.;
         let mut party_num = 0;
         for arc in 0..9 {
             let base = if arc % 2 == 0 { 4 } else { 3 };
             for row in 0..base {
-                let party = self.parties.get(party_num).expect("expect party exists");
+                let mut party = self.parties.get(party_num).expect("expect party exists");
+                while party.popularity <= 0. {
+                    party_num += 1;
+                    if let Some(p) = self.parties.get(party_num) {
+                        party = p;
+                    } else {
+                        return;
+                    }
+                }
                 let angle = arc as f32 / 8. * PI as f32;
                 // Draw a single parlament seat
                 let rect = Rect::new(
@@ -197,6 +196,19 @@ impl Component for Parlament {
                 }
             }
         }
+    }
+}
+
+impl Component for Parlament {
+    fn draw_on(&mut self, ui: &mut Ui, font: &Font) {
+        let mut canvas = ui.canvas();
+        let window_center = Vec2::new(380., 380.) * 0.5;
+        let cursor = Vec2::new(
+            screen_width() * 0.5 - window_center.x,
+            screen_height() * 0.5 - window_center.y,
+        );
+
+        self.draw_seats(&window_center, &cursor, &mut canvas);
 
         const BAR_WIDTH: f32 = 380.;
         canvas.rect(

@@ -181,7 +181,7 @@ async fn main() {
             Window::new(
                 news_id,
                 Vec2::new(screen_width() * 0.85 - 200., 50.),
-                Vec2::new(400., screen_height()-50.),
+                Vec2::new(400., screen_height() - 50.),
             )
             .movable(false)
             .label("Neuigkeiten")
