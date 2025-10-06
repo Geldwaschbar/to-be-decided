@@ -156,7 +156,7 @@ impl Effect {
                                 .parties
                                 .get_mut(*party)
                                 .expect("expect party exists");
-                            Self::resolve_modifier(modifier, diff, &mut party.popularity);
+                            party.popularity += diff;
                         }
                     }
                 };
