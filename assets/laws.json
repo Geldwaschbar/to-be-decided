@@ -254,8 +254,8 @@
                 "type": "ParlamentEffect",
                 "data": {
                     "resolution": "Transfer",
-                    "modifier": "Multiplier",
-                    "value": 0.5,
+                    "modifier": "Constant",
+                    "value": 0.05,
                     "party": 3
                 }
             }
